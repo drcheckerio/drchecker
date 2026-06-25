@@ -1,1 +1,31 @@
-aW1wb3J0IHR5cGUgeyBNZXRhZGF0YSB9IGZyb20gIm5leHQiOwppbXBvcnQgIi4vZ2xvYmFscy5jc3MiOwppbXBvcnQgeyBQcm92aWRlcnMgfSBmcm9tICIuL3Byb3ZpZGVycyI7CgpleHBvcnQgY29uc3QgbWV0YWRhdGE6IE1ldGFkYXRhID0gewogIHRpdGxlOiB7CiAgICBkZWZhdWx0OiAiRFIgQ2hlY2tlciDigJQgRnJlZSBCdWxrIERvbWFpbiBSYXRpbmcgQ2hlY2tlciIsCiAgICB0ZW1wbGF0ZTogIiVzIHwgRFIgQ2hlY2tlciIKICB9LAogIGRlc2NyaXB0aW9uOiAiQ2hlY2sgQWhyZWZzIERvbWFpbiBSYXRpbmcgZm9yIGFueSB3ZWJzaXRlIGluc3RhbnRseS4gRnJlZSBidWxrIERSIGNoZWNrZXIg4oCUIGNoZWNrIHVwIHRvIDEwMDAgZG9tYWlucyBhdCBvbmNlIHdpdGggcmVhbCBBaHJlZnMgZGF0YS4iLAogIGtleXdvcmRzOiBbImRvbWFpbiByYXRpbmcgY2hlY2tlciIsICJEUiBjaGVja2VyIiwgIkFocmVmcyBEUiIsICJidWxrIGRvbWFpbiByYXRpbmciLCAid2Vic2l0ZSBhdXRob3JpdHkgY2hlY2tlciIsICJTRU8gdG9vbCJdLAogIG9wZW5HcmFwaDogewogICAgdHlwZTogIndlYnNpdGUiLAogICAgdXJsOiAiaHR0cHM6Ly9kcmNoZWNrZXIuaW8iLAogICAgdGl0bGU6ICJEUiBDaGVja2VyIOKAlCBGcmVlIEJ1bGsgRG9tYWluIFJhdGluZyBDaGVja2VyIiwKICAgIGRlc2NyaXB0aW9uOiAiQ2hlY2sgQWhyZWZzIERvbWFpbiBSYXRpbmcgZm9yIGFueSB3ZWJzaXRlIGluc3RhbnRseS4gUmVhbCBkYXRhLCBsaWdodG5pbmcgZmFzdC4iLAogICAgc2l0ZU5hbWU6ICJEUiBDaGVja2VyIiwKICB9LAogIHJvYm90czogeyBpbmRleDogdHJ1ZSwgZm9sbG93OiB0cnVlIH0sCn07CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBSb290TGF5b3V0KHsgY2hpbGRyZW4gfTogeyBjaGlsZHJlbjogUmVhY3QuUmVhY3ROb2RlIH0pIHsKICByZXR1cm4gKAogICAgPGh0bWwgbGFuZz0iZW4iIHN1cHByZXNzSHlkcmF0aW9uV2FybmluZz4KICAgICAgPGhlYWQ+CiAgICAgICAgPGxpbmsgcmVsPSJwcmVjb25uZWN0IiBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tIiAvPgogICAgICAgIDxsaW5rIHJlbD0icHJlY29ubmVjdCIgaHJlZj0iaHR0cHM6Ly9mb250cy5nc3RhdGljLmNvbSIgY3Jvc3NPcmlnaW49ImFub255bW91cyIgLz4KICAgICAgICA8bGluayBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2NzczI/ZmFtaWx5PUludGVyOndnaHRAMzAwOzQwMDs1MDA7NjAwOzcwMDs4MDA7OTAwJmRpc3BsYXk9c3dhcCIgcmVsPSJzdHlsZXNoZWV0IiAvPgogICAgICA8L2hlYWQ+CiAgICAgIDxib2R5IHN1cHByZXNzSHlkcmF0aW9uV2FybmluZz4KICAgICAgICA8UHJvdmlkZXJzPntjaGlsZHJlbn08L1Byb3ZpZGVycz4KICAgICAgPC9ib2R5PgogICAgPC9odG1sPgogICk7Cn0K
+import type { Metadata } from "next";
+import "./globals.css";
+import { Providers } from "./providers";
+
+export const metadata: Metadata = {
+  title: {
+    default: "DR Checker — Free Bulk Domain Rating Checker",
+    template: "%s | DR Checker"
+  },
+  description: "Check Ahrefs Domain Rating for any website instantly. Free bulk DR checker — check up to 1000 domains at once with real Ahrefs data.",
+  keywords: ["domain rating checker", "DR checker", "Ahrefs DR", "bulk domain rating", "website authority checker", "SEO tool"],
+  openGraph: {
+    type: "website",
+    url: "https://drchecker.io",
+    title: "DR Checker — Free Bulk Domain Rating Checker",
+    description: "Check Ahrefs Domain Rating for any website instantly. Real data, lightning fast.",
+    siteName: "DR Checker",
+  },
+  robots: { index: true, follow: true },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body suppressHydrationWarning>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}
