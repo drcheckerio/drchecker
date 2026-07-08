@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X, BarChart3 } from 'lucide-react'
+import { Menu, X, BarChart3, TrendingUp } from 'lucide-react'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -14,27 +14,28 @@ export default function Navbar() {
   }, [])
 
   const navLinks = [
+    { label: 'DR Checker', href: '/' },
     { label: 'Bulk Checker', href: '/bulk-checker' },
-    { label: 'Increase DR', href: '/#increase-dr' },
+    { label: 'Increase DR', href: '/increase-dr' },
     { label: 'Pricing', href: '/#pricing' },
     { label: 'Blog', href: '/blog' },
-    { label: 'FAQ', href: '/#faq' },
   ]
 
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-40 transition-all duration-300"
       style={{
-        background: scrolled ? 'rgba(22,22,22,0.92)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
+        background: scrolled ? 'rgba(7,11,20,0.85)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(16px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(148,163,184,0.1)' : '1px solid transparent',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-shadow group-hover:shadow-orange-glow" style={{ background: 'linear-gradient(135deg, #FF7524 0%, #E85F0E 100%)' }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all group-hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%)', boxShadow: '0 0 20px rgba(99,130,255,0.35)' }}>
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col leading-none">
@@ -50,27 +51,30 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="nav-link px-4 py-2">Log in</Link>
-            <Link href="/signup" className="btn-orange px-5 py-2 text-sm">Sign up free</Link>
+            <Link href="/login" className="nav-link px-3 py-2">Log in</Link>
+            <Link href="/signup" className="btn-primary px-5 py-2 text-sm">Sign up free</Link>
           </div>
 
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden w-9 h-9 card flex items-center justify-center" aria-label="Menu">
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden w-9 h-9 card flex items-center justify-center" aria-label="Menu" style={{ borderRadius: '10px' }}>
             {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden mx-3 mb-3 card p-4" style={{ background: '#212121' }}>
+        <div className="md:hidden mx-3 mb-3 card p-4 animate-slide-up" style={{ background: 'rgba(10,15,30,0.97)' }}>
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-white/5 transition-colors" onClick={() => setMobileOpen(false)}>
+              <Link key={link.href} href={link.href}
+                className="px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                onClick={() => setMobileOpen(false)}>
+                {link.label === 'Increase DR' && <TrendingUp className="w-4 h-4" style={{ color: '#7C9AFF' }} />}
                 {link.label}
               </Link>
             ))}
-            <div className="border-t my-2" style={{ borderColor: 'rgba(255,255,255,0.08)' }} />
+            <div className="border-t my-2" style={{ borderColor: 'rgba(148,163,184,0.1)' }} />
             <Link href="/login" className="px-4 py-3 rounded-xl text-sm font-medium text-center text-white hover:bg-white/5" onClick={() => setMobileOpen(false)}>Log in</Link>
-            <Link href="/signup" className="btn-orange py-3 text-sm" onClick={() => setMobileOpen(false)}>Sign up free</Link>
+            <Link href="/signup" className="btn-primary py-3 text-sm" onClick={() => setMobileOpen(false)}>Sign up free</Link>
           </div>
         </div>
       )}

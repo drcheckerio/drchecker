@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
 import Navbar from '@/components/layout/Navbar'
-import AnnouncementBar from '@/components/layout/AnnouncementBar'
 import Footer from '@/components/layout/Footer'
 import { DRResult } from '@/types'
 import { cleanDomain, getDRColor, getDRRating } from '@/lib/utils'
@@ -107,17 +106,16 @@ export default function BulkCheckerPage() {
   const domainCount = input.split('\n').filter(d => d.trim()).length
   const SortIcon = ({ col }: { col: SortKey }) => {
     if (sortKey !== col) return <ArrowUpDown className="w-3 h-3 opacity-40" />
-    return sortDir === 'asc' ? <ChevronUp className="w-3 h-3" style={{ color: '#FF7524' }} /> : <ChevronDown className="w-3 h-3" style={{ color: '#FF7524' }} />
+    return sortDir === 'asc' ? <ChevronUp className="w-3 h-3" style={{ color: '#4F7CFF' }} /> : <ChevronDown className="w-3 h-3" style={{ color: '#4F7CFF' }} />
   }
 
   return (
     <div className="min-h-screen">
-      <AnnouncementBar />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
         <div className="text-center mb-10">
-          <div className="badge-orange mb-4"><Layers className="w-3 h-3" /> Bulk Checker</div>
-          <h1 className="text-3xl sm:text-4xl font-black mb-4 text-white">Bulk Domain Rating <span className="orange-text-gradient">Checker</span></h1>
+          <div className="badge-primary mb-4"><Layers className="w-3 h-3" /> Bulk Checker</div>
+          <h1 className="text-3xl sm:text-4xl font-black mb-4 text-white">Bulk Domain Rating <span className="gradient-text">Checker</span></h1>
           <p className="text-muted max-w-xl mx-auto">Check Ahrefs DR for multiple domains at once. Paste one domain per line.</p>
         </div>
 
@@ -128,20 +126,20 @@ export default function BulkCheckerPage() {
             { icon: '👑', label: 'Pro — $5/mo', limit: '1,000 domains · Unlimited', active: false, href: '/#pricing' },
           ].map((tier) => (
             <div key={tier.label} className="card p-4 flex items-center gap-3"
-              style={tier.active ? { borderColor: 'rgba(255,117,36,0.4)', background: 'rgba(255,117,36,0.05)' } : {}}>
+              style={tier.active ? { borderColor: 'rgba(79,124,255,0.4)', background: 'rgba(79,124,255,0.05)' } : {}}>
               <span className="text-xl">{tier.icon}</span>
               <div className="min-w-0">
                 <div className="text-xs font-extrabold text-white">{tier.label}</div>
                 <div className="text-xs text-muted truncate">{tier.limit}</div>
               </div>
               {tier.active
-                ? <span className="ml-auto text-xs font-bold flex-shrink-0" style={{ color: '#FF7524' }}>Current</span>
-                : <Link href={tier.href} className="ml-auto text-xs font-bold hover:underline flex-shrink-0" style={{ color: '#FF7524' }}>Upgrade</Link>}
+                ? <span className="ml-auto text-xs font-bold flex-shrink-0" style={{ color: '#4F7CFF' }}>Current</span>
+                : <Link href={tier.href} className="ml-auto text-xs font-bold hover:underline flex-shrink-0" style={{ color: '#4F7CFF' }}>Upgrade</Link>}
             </div>
           ))}
         </div>
 
-        <div className="card p-5 sm:p-6 mb-6" style={{ background: '#262626' }}>
+        <div className="card p-5 sm:p-6 mb-6" style={{ background: 'rgba(15,22,41,0.65)' }}>
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
             <label className="text-sm font-bold text-white">Enter Domains <span className="text-muted font-normal">(one per line)</span></label>
             <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${domainCount > GUEST_DOMAINS_PER_CHECK ? '' : 'text-muted'}`}
@@ -163,14 +161,14 @@ export default function BulkCheckerPage() {
             </div>
           )}
           <button onClick={handleCheck} disabled={loading || !input.trim()}
-            className="mt-4 btn-orange w-full py-3.5 text-sm gap-2">
+            className="mt-4 btn-primary w-full py-3.5 text-sm gap-2">
             {loading
               ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking domains...</>
               : <><Globe className="w-4 h-4" /> Check DR for All Domains</>}
           </button>
           {loading && progress > 0 && (
             <div className="mt-3 w-full h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
-              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #FF7524, #FF8F4D)' }} />
+              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #4F7CFF, #8B5CF6)' }} />
             </div>
           )}
           {checksUsed !== null && checksUsed < GUEST_CHECKS_PER_DAY && (
@@ -182,12 +180,12 @@ export default function BulkCheckerPage() {
           <div className="mb-6 px-4 py-4 rounded-xl text-sm flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between"
             style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', color: '#F87171' }}>
             <span>{error}</span>
-            <Link href="/signup" className="btn-orange px-4 py-2 text-xs flex-shrink-0">Sign Up Free</Link>
+            <Link href="/signup" className="btn-primary px-4 py-2 text-xs flex-shrink-0">Sign Up Free</Link>
           </div>
         )}
 
         {results.length > 0 && (
-          <div className="card overflow-hidden animate-slide-up" style={{ background: '#262626' }}>
+          <div className="card overflow-hidden animate-slide-up" style={{ background: 'rgba(15,22,41,0.65)' }}>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 sm:px-6 py-4 gap-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
               <div>
                 <h3 className="font-extrabold text-white">{results.length} Results</h3>
@@ -197,7 +195,7 @@ export default function BulkCheckerPage() {
                 <button onClick={copyResults} className="btn-outline flex items-center gap-2 px-3 py-2 text-xs">
                   {copied ? <><Check className="w-3.5 h-3.5" style={{ color: '#22C55E' }} />Copied!</> : <><Copy className="w-3.5 h-3.5" />Copy</>}
                 </button>
-                <button onClick={downloadCSV} className="btn-orange flex items-center gap-2 px-3 py-2 text-xs">
+                <button onClick={downloadCSV} className="btn-primary flex items-center gap-2 px-3 py-2 text-xs">
                   <Download className="w-3.5 h-3.5" /> Download CSV
                 </button>
               </div>
@@ -258,7 +256,7 @@ export default function BulkCheckerPage() {
                 { label: 'Excellent (70+)', value: results.filter(r => r.dr >= 70).length },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-xl font-black orange-text-gradient">{stat.value}</div>
+                  <div className="text-xl font-black gradient-text">{stat.value}</div>
                   <div className="text-xs text-muted">{stat.label}</div>
                 </div>
               ))}
@@ -266,12 +264,12 @@ export default function BulkCheckerPage() {
           </div>
         )}
 
-        <div className="mt-8 card-navy p-6 text-center">
-          <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#FF7524' }} />
+        <div className="mt-8 card-glow p-6 text-center">
+          <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#4F7CFF' }} />
           <h3 className="font-extrabold text-white mb-2">Need Bigger Checks?</h3>
           <p className="text-muted text-sm mb-5 max-w-md mx-auto">Free account: 100 domains × 10 checks/day. Pro: 1,000 domains with unlimited checks for just $5/month.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/signup" className="btn-orange px-6 py-2.5 text-sm">Sign Up Free</Link>
+            <Link href="/signup" className="btn-primary px-6 py-2.5 text-sm">Sign Up Free</Link>
             <Link href="/#pricing" className="btn-outline px-6 py-2.5 text-sm">See Pro Plan — $5/mo</Link>
           </div>
         </div>

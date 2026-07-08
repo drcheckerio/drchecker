@@ -20,7 +20,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
       const html2canvas = (await import('html2canvas')).default
       if (!cardRef.current) return
       const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: '#1E1E1E',
+        backgroundColor: '#0A0F1E',
         scale: 2,
         useCORS: true,
         logging: false,
@@ -50,10 +50,10 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
         </button>
       </div>
 
-      <div ref={cardRef} className="rounded-2xl p-4 sm:p-6" style={{ background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <div ref={cardRef} className="rounded-2xl p-4 sm:p-6" style={{ background: '#0A0F1E', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
 
-          <div className="lg:col-span-3 card p-5 sm:p-6" style={{ background: '#262626' }}>
+          <div className="lg:col-span-3 card p-5 sm:p-6" style={{ background: 'rgba(15,22,41,0.65)' }}>
             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
               <div>
                 <h3 className="font-extrabold text-base text-white tracking-wide">DOMAIN RATING</h3>
@@ -70,11 +70,11 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               <DRSpeedometer score={result.dr} size={250} animated={true} />
             </div>
 
-            <div className="rounded-xl p-3 mt-2" style={{ background: '#1B1B1B', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="rounded-xl p-3 mt-2" style={{ background: 'rgba(7,11,20,0.7)', border: '1px solid rgba(255,255,255,0.07)' }}>
               <p className="text-xs text-muted mb-2 font-semibold">Result for</p>
               <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: 'rgba(255,117,36,0.15)' }}>
-                  <Globe className="w-3.5 h-3.5" style={{ color: '#FF7524' }} />
+                <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: 'rgba(79,124,255,0.15)' }}>
+                  <Globe className="w-3.5 h-3.5" style={{ color: '#4F7CFF' }} />
                 </div>
                 <span className="font-bold text-sm text-white">{domain}</span>
               </div>
@@ -90,11 +90,11 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
 
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="card p-4" style={{ background: '#262626' }}>
+              <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
                 <p className="text-xs text-muted font-semibold mb-3">DR Score</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,117,36,0.15)', border: '1px solid rgba(255,117,36,0.3)' }}>
-                    <TrendingUp className="w-5 h-5" style={{ color: '#FF7524' }} />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(79,124,255,0.15)', border: '1px solid rgba(79,124,255,0.3)' }}>
+                    <TrendingUp className="w-5 h-5" style={{ color: '#4F7CFF' }} />
                   </div>
                   <div>
                     <div className="text-2xl font-black" style={{ color }}>{result.dr}</div>
@@ -102,10 +102,10 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
                   </div>
                 </div>
               </div>
-              <div className="card p-4" style={{ background: '#262626' }}>
+              <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
                 <p className="text-xs text-muted font-semibold mb-3">Rating Scale</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(48,60,85,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(30,41,66,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>
                     <BarChart3 className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -116,7 +116,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               </div>
             </div>
 
-            <div className="card p-4 flex-1" style={{ background: '#262626' }}>
+            <div className="card p-4 flex-1" style={{ background: 'rgba(15,22,41,0.65)' }}>
               <p className="text-xs font-extrabold text-white uppercase tracking-wider mb-3">DR Score Range</p>
               <div className="grid grid-cols-2 gap-2">
                 {scoreRanges.map((r) => (
@@ -136,7 +136,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               </div>
             </div>
 
-            <div className="rounded-xl px-4 py-3" style={{ background: 'rgba(48,60,85,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="rounded-xl px-4 py-3" style={{ background: 'rgba(30,41,66,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <p className="text-xs text-muted leading-relaxed">
                 DR (Domain Rating) is a score developed by Ahrefs measuring the strength of a website's backlink profile on a scale of 0 to 100.
               </p>
@@ -145,24 +145,24 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
         </div>
 
         <div className="mt-4 flex items-center justify-center gap-2 pt-3 flex-wrap" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF7524 0%, #E85F0E 100%)' }}>
+          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%)' }}>
             <BarChart3 className="w-3 h-3 text-white" />
           </div>
-          <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#FF7524' }}>drchecker.io</span></span>
+          <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#4F7CFF' }}>drchecker.io</span></span>
           <span className="text-xs text-muted">— Free Bulk Ahrefs DR Checker</span>
         </div>
       </div>
 
-      <div className="mt-5 card-navy p-5 sm:p-6">
+      <div className="mt-5 card-glow p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,117,36,0.2)', border: '1px solid rgba(255,117,36,0.4)' }}>
-            <TrendingUp className="w-6 h-6" style={{ color: '#FF7524' }} />
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(79,124,255,0.2)', border: '1px solid rgba(79,124,255,0.4)' }}>
+            <TrendingUp className="w-6 h-6" style={{ color: '#4F7CFF' }} />
           </div>
           <div className="flex-1">
             <p className="font-extrabold text-white text-base mb-1">Want a Higher DR for {domain}?</p>
             <p className="text-sm text-muted leading-relaxed">We increase Domain Rating to 20+, 30+, 40+, 50+ or even 70+ — with permanent guarantees. Delivered in 2–4 weeks.</p>
           </div>
-          <Link href="/#increase-dr" className="btn-orange px-6 py-3 text-sm flex-shrink-0 w-full sm:w-auto">
+          <Link href="/increase-dr" className="btn-primary px-6 py-3 text-sm flex-shrink-0 w-full sm:w-auto">
             Increase DR Now <ChevronRight className="w-4 h-4 ml-1" />
           </Link>
         </div>

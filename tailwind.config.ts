@@ -32,8 +32,8 @@ const config: Config = {
         "navy-gradient": "linear-gradient(135deg, #303C55 0%, #252F45 100%)",
       },
       boxShadow: {
-        "orange-glow": "0 0 24px rgba(255,117,36,0.35)",
-        "orange-glow-lg": "0 0 40px rgba(255,117,36,0.5)",
+        "primary-glow": "0 0 24px rgba(99,130,255,0.4)",
+        "primary-glow-lg": "0 0 40px rgba(99,130,255,0.55)",
         card: "0 4px 24px rgba(0,0,0,0.4)",
       },
       animation: {
