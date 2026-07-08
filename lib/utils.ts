@@ -1,1 +1,72 @@
-aW1wb3J0IHsgRFJSYXRpbmcsIFVzZXJQbGFuIH0gZnJvbSAnQC90eXBlcycKCmV4cG9ydCBmdW5jdGlvbiBnZXREUlJhdGluZyhzY29yZTogbnVtYmVyKTogRFJSYXRpbmcgewogIGlmIChzY29yZSA+PSA3MCkgcmV0dXJuICdFeGNlbGxlbnQnCiAgaWYgKHNjb3JlID49IDUwKSByZXR1cm4gJ0dvb2QnCiAgaWYgKHNjb3JlID49IDMwKSByZXR1cm4gJ0ZhaXInCiAgcmV0dXJuICdQb29yJwp9CgpleHBvcnQgZnVuY3Rpb24gZ2V0RFJDb2xvcihzY29yZTogbnVtYmVyKTogc3RyaW5nIHsKICBpZiAoc2NvcmUgPj0gNzApIHJldHVybiAnIzIyYzU1ZScKICBpZiAoc2NvcmUgPj0gNTApIHJldHVybiAnIzNiODJmNicKICBpZiAoc2NvcmUgPj0gMzApIHJldHVybiAnI2Y1OWUwYicKICByZXR1cm4gJyNlZjQ0NDQnCn0KCmV4cG9ydCBmdW5jdGlvbiBnZXREUkxhYmVsKHNjb3JlOiBudW1iZXIpOiBzdHJpbmcgewogIGlmIChzY29yZSA+PSA3MCkgcmV0dXJuICdFeGNlbGxlbnQnCiAgaWYgKHNjb3JlID49IDUwKSByZXR1cm4gJ0dvb2QnCiAgaWYgKHNjb3JlID49IDMwKSByZXR1cm4gJ0ZhaXInCiAgcmV0dXJuICdQb29yJwp9CgpleHBvcnQgZnVuY3Rpb24gZ2V0RFJEZXNjcmlwdGlvbihkb21haW46IHN0cmluZywgc2NvcmU6IG51bWJlcik6IHN0cmluZyB7CiAgY29uc3QgcmF0aW5nID0gZ2V0RFJSYXRpbmcoc2NvcmUpCiAgY29uc3QgZGVzY3JpcHRpb25zID0gewogICAgRXhjZWxsZW50OiBgJHtkb21haW59IGhhcyBhIERSIG9mICR7c2NvcmV9LiBUaGlzIGlzIGEgdG9wLXRpZXIgcmF0aW5nIOKAlCBpdCBzdWdnZXN0cyBhbiBvdXRzdGFuZGluZyBiYWNrbGluayBwcm9maWxlIHdpdGggaGlnaC1hdXRob3JpdHkgcmVmZXJyaW5nIGRvbWFpbnMuYCwKICAgIEdvb2Q6IGAke2RvbWFpbn0gaGFzIGEgRFIgb2YgJHtzY29yZX0uIFRoaXMgaXMgYSBzb2xpZCByYXRpbmcg4oCUIHRoZSBzaXRlIGhhcyBhIGhlYWx0aHkgYmFja2xpbmsgcHJvZmlsZSB3aXRoIGdvb2QgZG9tYWluIGF1dGhvcml0eS5gLAogICAgRmFpcjogYCR7ZG9tYWlufSBoYXMgYSBEUiBvZiAke3Njb3JlfS4gVGhpcyBpcyBhIG1vZGVyYXRlIHJhdGluZyDigJQgdGhlcmUgaXMgcm9vbSB0byBncm93IHRoZSBiYWNrbGluayBwcm9maWxlIGFuZCBkb21haW4gYXV0aG9yaXR5LmAsCiAgICBQb29yOiBgJHtkb21haW59IGhhcyBhIERSIG9mICR7c2NvcmV9LiBUaGlzIGlzIGEgbG93IHJhdGluZyDigJQgdGhlIHNpdGUgaXMgcmVsYXRpdmVseSBuZXcgb3IgaGFzIGxpbWl0ZWQgYmFja2xpbmtzLiBGb2N1cyBvbiBidWlsZGluZyBxdWFsaXR5IGxpbmtzLmAsCiAgfQogIHJldHVybiBkZXNjcmlwdGlvbnNbcmF0aW5nXQp9CgpleHBvcnQgaW50ZXJmYWNlIENoZWNrTGltaXRzIHsKICBtYXhEb21haW5zUGVyUnVuOiBudW1iZXIKICBtYXhSdW5zUGVyRGF5OiBudW1iZXIgfCBudWxsIC8vIG51bGwgPSB1bmxpbWl0ZWQKICBsYWJlbDogc3RyaW5nCn0KCmV4cG9ydCBmdW5jdGlvbiBnZXRQbGFuTGltaXRzKHBsYW46IFVzZXJQbGFuIHwgbnVsbCk6IENoZWNrTGltaXRzIHsKICBpZiAoIXBsYW4pIHsKICAgIHJldHVybiB7IG1heERvbWFpbnNQZXJSdW46IDMsIG1heFJ1bnNQZXJEYXk6IG51bGwsIGxhYmVsOiAnR3Vlc3QnIH0KICB9CiAgaWYgKHBsYW4gPT09ICdwcm8nKSB7CiAgICByZXR1cm4geyBtYXhEb21haW5zUGVyUnVuOiAxMDAwLCBtYXhSdW5zUGVyRGF5OiBudWxsLCBsYWJlbDogJ1BybycgfQogIH0KICByZXR1cm4geyBtYXhEb21haW5zUGVyUnVuOiAxMDAsIG1heFJ1bnNQZXJEYXk6IDEwLCBsYWJlbDogJ0ZyZWUnIH0KfQoKZXhwb3J0IGZ1bmN0aW9uIGNsZWFuRG9tYWluKGlucHV0OiBzdHJpbmcpOiBzdHJpbmcgewogIHRyeSB7CiAgICBsZXQgZG9tYWluID0gaW5wdXQudHJpbSgpLnRvTG93ZXJDYXNlKCkKICAgIGlmICghZG9tYWluLnN0YXJ0c1dpdGgoJ2h0dHAnKSkgewogICAgICBkb21haW4gPSAnaHR0cHM6Ly8nICsgZG9tYWluCiAgICB9CiAgICBjb25zdCB1cmwgPSBuZXcgVVJMKGRvbWFpbikKICAgIHJldHVybiB1cmwuaG9zdG5hbWUucmVwbGFjZSgvXnd3d1wuLywgJycpCiAgfSBjYXRjaCB7CiAgICByZXR1cm4gaW5wdXQudHJpbSgpLnRvTG93ZXJDYXNlKCkucmVwbGFjZSgvXihodHRwcz86XC9cLyk/KHd3d1wuKT8vLCAnJykuc3BsaXQoJy8nKVswXQogIH0KfQoKZXhwb3J0IGZ1bmN0aW9uIGZvcm1hdE51bWJlcihudW06IG51bWJlcik6IHN0cmluZyB7CiAgaWYgKG51bSA+PSAxMDAwMDAwKSByZXR1cm4gKG51bSAvIDEwMDAwMDApLnRvRml4ZWQoMSkgKyAnTScKICBpZiAobnVtID49IDEwMDApIHJldHVybiAobnVtIC8gMTAwMCkudG9GaXhlZCgxKSArICdLJwogIHJldHVybiBudW0udG9TdHJpbmcoKQp9CgpleHBvcnQgZnVuY3Rpb24gY24oLi4uY2xhc3NlczogKHN0cmluZyB8IHVuZGVmaW5lZCB8IG51bGwgfCBmYWxzZSlbXSk6IHN0cmluZyB7CiAgcmV0dXJuIGNsYXNzZXMuZmlsdGVyKEJvb2xlYW4pLmpvaW4oJyAnKQp9Cg==
+import { DRRating, UserPlan } from '@/types'
+
+export function getDRRating(score: number): DRRating {
+  if (score >= 70) return 'Excellent'
+  if (score >= 50) return 'Good'
+  if (score >= 30) return 'Fair'
+  return 'Poor'
+}
+
+export function getDRColor(score: number): string {
+  if (score >= 70) return '#22c55e'
+  if (score >= 50) return '#3b82f6'
+  if (score >= 30) return '#f59e0b'
+  return '#ef4444'
+}
+
+export function getDRLabel(score: number): string {
+  if (score >= 70) return 'Excellent'
+  if (score >= 50) return 'Good'
+  if (score >= 30) return 'Fair'
+  return 'Poor'
+}
+
+export function getDRDescription(domain: string, score: number): string {
+  const rating = getDRRating(score)
+  const descriptions = {
+    Excellent: `${domain} has a DR of ${score}. This is a top-tier rating — it suggests an outstanding backlink profile with high-authority referring domains.`,
+    Good: `${domain} has a DR of ${score}. This is a solid rating — the site has a healthy backlink profile with good domain authority.`,
+    Fair: `${domain} has a DR of ${score}. This is a moderate rating — there is room to grow the backlink profile and domain authority.`,
+    Poor: `${domain} has a DR of ${score}. This is a low rating — the site is relatively new or has limited backlinks. Focus on building quality links.`,
+  }
+  return descriptions[rating]
+}
+
+export interface CheckLimits {
+  maxDomainsPerRun: number
+  maxRunsPerDay: number | null // null = unlimited
+  label: string
+}
+
+export function getPlanLimits(plan: UserPlan | null): CheckLimits {
+  if (!plan) {
+    return { maxDomainsPerRun: 3, maxRunsPerDay: null, label: 'Guest' }
+  }
+  if (plan === 'pro') {
+    return { maxDomainsPerRun: 1000, maxRunsPerDay: null, label: 'Pro' }
+  }
+  return { maxDomainsPerRun: 100, maxRunsPerDay: 10, label: 'Free' }
+}
+
+export function cleanDomain(input: string): string {
+  try {
+    let domain = input.trim().toLowerCase()
+    if (!domain.startsWith('http')) {
+      domain = 'https://' + domain
+    }
+    const url = new URL(domain)
+    return url.hostname.replace(/^www\./, '')
+  } catch {
+    return input.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0]
+  }
+}
+
+export function formatNumber(num: number): string {
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'K'
+  return num.toString()
+}
+
+export function cn(...classes: (string | undefined | null | false)[]): string {
+  return classes.filter(Boolean).join(' ')
+}
