@@ -1,1 +1,26 @@
-J3VzZSBjbGllbnQnCmltcG9ydCBMaW5rIGZyb20gJ25leHQvbGluaycKaW1wb3J0IHsgWmFwLCBYIH0gZnJvbSAnbHVjaWRlLXJlYWN0JwppbXBvcnQgeyB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQW5ub3VuY2VtZW50QmFyKCkgewogIGNvbnN0IFt2aXNpYmxlLCBzZXRWaXNpYmxlXSA9IHVzZVN0YXRlKHRydWUpCiAgaWYgKCF2aXNpYmxlKSByZXR1cm4gbnVsbAoKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9ImFubm91bmNlbWVudC1iYXIgcmVsYXRpdmUgei01MCI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtYXgtdy03eGwgbXgtYXV0byBweC00IGgtMTAgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTIiPgogICAgICAgIDxaYXAgY2xhc3NOYW1lPSJ3LTMuNSBoLTMuNSB0ZXh0LXllbGxvdy0zMDAgZmxleC1zaHJpbmstMCIgLz4KICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtd2hpdGUgdGV4dC14cyBzbTp0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtY2VudGVyIj4KICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0ib3BhY2l0eS05MCI+Q2hlY2sgMTAwMCBkb21haW5zIGF0IG9uY2Ug4oCUIDwvc3Bhbj4KICAgICAgICAgIDxMaW5rIGhyZWY9Ii9wcmljaW5nIiBjbGFzc05hbWU9ImZvbnQtYm9sZCB1bmRlcmxpbmUgdW5kZXJsaW5lLW9mZnNldC0yIGhvdmVyOnRleHQteWVsbG93LTIwMCB0cmFuc2l0aW9uLWNvbG9ycyI+CiAgICAgICAgICAgIEdldCBQcm8gZm9yICQ5Ljk5L21vbnRoIOKGkgogICAgICAgICAgPC9MaW5rPgogICAgICAgIDwvcD4KICAgICAgICA8YnV0dG9uCiAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRWaXNpYmxlKGZhbHNlKX0KICAgICAgICAgIGNsYXNzTmFtZT0iYWJzb2x1dGUgcmlnaHQtNCB0ZXh0LXdoaXRlLzcwIGhvdmVyOnRleHQtd2hpdGUgdHJhbnNpdGlvbi1jb2xvcnMiCiAgICAgICAgICBhcmlhLWxhYmVsPSJDbG9zZSIKICAgICAgICA+CiAgICAgICAgICA8WCBjbGFzc05hbWU9InctMy41IGgtMy41IiAvPgogICAgICAgIDwvYnV0dG9uPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICkKfQo=
+'use client'
+import Link from 'next/link'
+import { Zap, X } from 'lucide-react'
+import { useState } from 'react'
+
+export default function AnnouncementBar() {
+  const [visible, setVisible] = useState(true)
+  if (!visible) return null
+
+  return (
+    <div className="announcement-bar relative z-50">
+      <div className="max-w-7xl mx-auto px-4 h-10 flex items-center justify-center gap-2">
+        <Zap className="w-3.5 h-3.5 text-white flex-shrink-0" />
+        <p className="text-white text-xs sm:text-sm font-semibold text-center">
+          Check 1,000 domains per run —{' '}
+          <Link href="/#pricing" className="font-extrabold underline underline-offset-2 hover:opacity-80 transition-opacity">
+            Go Pro for just $5/month →
+          </Link>
+        </p>
+        <button onClick={() => setVisible(false)} className="absolute right-4 text-white/70 hover:text-white transition-colors" aria-label="Close">
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+  )
+}

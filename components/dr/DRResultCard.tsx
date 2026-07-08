@@ -1,1 +1,172 @@
-J3VzZSBjbGllbnQnCmltcG9ydCB7IHVzZVJlZiB9IGZyb20gJ3JlYWN0JwppbXBvcnQgeyBEb3dubG9hZCwgR2xvYmUsIFRyZW5kaW5nVXAsIENoZXZyb25SaWdodCB9IGZyb20gJ2x1Y2lkZS1yZWFjdCcKaW1wb3J0IERSU3BlZWRvbWV0ZXIgZnJvbSAnLi9EUlNwZWVkb21ldGVyJwppbXBvcnQgeyBEUlJlc3VsdCB9IGZyb20gJ0AvdHlwZXMnCmltcG9ydCB7IGdldERSQ29sb3IsIGdldERSUmF0aW5nLCBnZXREUkRlc2NyaXB0aW9uLCBmb3JtYXROdW1iZXIgfSBmcm9tICdAL2xpYi91dGlscycKaW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJwoKaW50ZXJmYWNlIERSUmVzdWx0Q2FyZFByb3BzIHsKICByZXN1bHQ6IERSUmVzdWx0CiAgZG9tYWluOiBzdHJpbmcKfQoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRFJSZXN1bHRDYXJkKHsgcmVzdWx0LCBkb21haW4gfTogRFJSZXN1bHRDYXJkUHJvcHMpIHsKICBjb25zdCBjYXJkUmVmID0gdXNlUmVmPEhUTUxEaXZFbGVtZW50PihudWxsKQogIGNvbnN0IHJhdGluZyA9IGdldERSUmF0aW5nKHJlc3VsdC5kcikKICBjb25zdCBjb2xvciA9IGdldERSQ29sb3IocmVzdWx0LmRyKQogIGNvbnN0IGRlc2NyaXB0aW9uID0gZ2V0RFJEZXNjcmlwdGlvbihkb21haW4sIHJlc3VsdC5kcikKCiAgY29uc3QgZG93bmxvYWRBc1BORyA9IGFzeW5jICgpID0+IHsKICAgIHRyeSB7CiAgICAgIGNvbnN0IGh0bWwyY2FudmFzID0gKGF3YWl0IGltcG9ydCgnaHRtbDJjYW52YXMnKSkuZGVmYXVsdAogICAgICBpZiAoIWNhcmRSZWYuY3VycmVudCkgcmV0dXJuCiAgICAgIGNvbnN0IGNhbnZhcyA9IGF3YWl0IGh0bWwyY2FudmFzKGNhcmRSZWYuY3VycmVudCwgewogICAgICAgIGJhY2tncm91bmRDb2xvcjogJyMwODBDMTQnLAogICAgICAgIHNjYWxlOiAyLAogICAgICAgIHVzZUNPUlM6IHRydWUsCiAgICAgICAgbG9nZ2luZzogZmFsc2UsCiAgICAgIH0pCiAgICAgIGNvbnN0IGxpbmsgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdhJykKICAgICAgbGluay5kb3dubG9hZCA9IGBkci1zY29yZS0ke2RvbWFpbn0ucG5nYAogICAgICBsaW5rLmhyZWYgPSBjYW52YXMudG9EYXRhVVJMKCdpbWFnZS9wbmcnKQogICAgICBsaW5rLmNsaWNrKCkKICAgIH0gY2F0Y2ggKGVycikgewogICAgICBjb25zb2xlLmVycm9yKCdEb3dubG9hZCBmYWlsZWQ6JywgZXJyKQogICAgfQogIH0KCiAgY29uc3Qgc2NvcmVSYW5nZXMgPSBbCiAgICB7IHJhbmdlOiAnMCDigJMgMjknLCBsYWJlbDogJ1Bvb3InLCBjb2xvcjogJyNlZjQ0NDQnLCBiZzogJ3JnYmEoMjM5LDY4LDY4LDAuMTIpJywgYm9yZGVyOiAncmdiYSgyMzksNjgsNjgsMC4yNSknLCBhY3RpdmU6IHJlc3VsdC5kciA8IDMwIH0sCiAgICB7IHJhbmdlOiAnMzAg4oCTIDQ5JywgbGFiZWw6ICdGYWlyJywgY29sb3I6ICcjZjU5ZTBiJywgYmc6ICdyZ2JhKDI0NSwxNTgsMTEsMC4xMiknLCBib3JkZXI6ICdyZ2JhKDI0NSwxNTgsMTEsMC4yNSknLCBhY3RpdmU6IHJlc3VsdC5kciA+PSAzMCAmJiByZXN1bHQuZHIgPCA1MCB9LAogICAgeyByYW5nZTogJzUwIOKAkyA2OScsIGxhYmVsOiAnR29vZCcsIGNvbG9yOiAnIzNiODJmNicsIGJnOiAncmdiYSg1OSwxMzAsMjQ2LDAuMTIpJywgYm9yZGVyOiAncmdiYSg1OSwxMzAsMjQ2LDAuMjUpJywgYWN0aXZlOiByZXN1bHQuZHIgPj0gNTAgJiYgcmVzdWx0LmRyIDwgNzAgfSwKICAgIHsgcmFuZ2U6ICc3MCDigJMgMTAwJywgbGFiZWw6ICdFeGNlbGxlbnQnLCBjb2xvcjogJyMyMmM1NWUnLCBiZzogJ3JnYmEoMzQsMTk3LDk0LDAuMTIpJywgYm9yZGVyOiAncmdiYSgzNCwxOTcsOTQsMC4yNSknLCBhY3RpdmU6IHJlc3VsdC5kciA+PSA3MCB9LAogIF0KCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJhbmltYXRlLXNsaWRlLXVwIj4KICAgICAgey8qIERvd25sb2FkIEJ1dHRvbiAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXgganVzdGlmeS1lbmQgbWItMyI+CiAgICAgICAgPGJ1dHRvbgogICAgICAgICAgb25DbGljaz17ZG93bmxvYWRBc1BOR30KICAgICAgICAgIGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgcHgtNCBweS0yIHJvdW5kZWQteGwgZ2xhc3MtY2FyZCB0ZXh0LXNtIGZvbnQtbWVkaXVtIGhvdmVyOmJvcmRlci1icmFuZC01MDAgdHJhbnNpdGlvbi1hbGwgdGV4dC1tdXRlZCBob3Zlcjp0ZXh0LWZvcmVncm91bmQiCiAgICAgICAgPgogICAgICAgICAgPERvd25sb2FkIGNsYXNzTmFtZT0idy00IGgtNCIgLz4KICAgICAgICAgIERvd25sb2FkIFBORwogICAgICAgIDwvYnV0dG9uPgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBDYXJkIChjYXB0dXJlZCBmb3IgUE5HKSAqL30KICAgICAgPGRpdiByZWY9e2NhcmRSZWZ9IGNsYXNzTmFtZT0iZ3JpZCBncmlkLWNvbHMtMSBsZzpncmlkLWNvbHMtNSBnYXAtNCI+CgogICAgICAgIHsvKiBMZWZ0OiBTcGVlZG9tZXRlciBQYW5lbCAqL30KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibGc6Y29sLXNwYW4tMyBnbGFzcy1jYXJkIHAtNiI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIG1iLTIiPgogICAgICAgICAgICA8ZGl2PgogICAgICAgICAgICAgIDxoMyBjbGFzc05hbWU9ImZvbnQtYm9sZCB0ZXh0LWJhc2UgdGV4dC1mb3JlZ3JvdW5kIj5ET01BSU4gUkFUSU5HPC9oMz4KICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZCBmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMSBtdC0wLjUiPgogICAgICAgICAgICAgICAgQWhyZWZzIERvbWFpbiBSYXRpbmcKICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idy0zLjUgaC0zLjUgcm91bmRlZC1mdWxsIGJvcmRlciBib3JkZXItbXV0ZWQgaW5saW5lLWZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHRleHQtWzhweF0gY3Vyc29yLWhlbHAiIHRpdGxlPSJEb21haW4gUmF0aW5nIChEUikgaXMgYW4gQWhyZWZzIG1ldHJpYyB0aGF0IG1lYXN1cmVzIHRoZSBzdHJlbmd0aCBvZiBhIHdlYnNpdGUncyBiYWNrbGluayBwcm9maWxlIG9uIGEgc2NhbGUgZnJvbSAwIHRvIDEwMC4iPmk8L3NwYW4+CiAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtY2VudGVyIGdhcC0xLjUgcHgtMyBweS0xLjUgcm91bmRlZC1mdWxsIHRleHQteHMgZm9udC1tZWRpdW0iIHN0eWxlPXt7IGJhY2tncm91bmQ6ICdyZ2JhKDM0LDE5Nyw5NCwwLjEyKScsIGJvcmRlcjogJzFweCBzb2xpZCByZ2JhKDM0LDE5Nyw5NCwwLjMpJywgY29sb3I6ICcjMjJjNTVlJyB9fT4KICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9InctMS41IGgtMS41IHJvdW5kZWQtZnVsbCBiZy1ncmVlbi01MDAgYW5pbWF0ZS1wdWxzZSI+PC9zcGFuPgogICAgICAgICAgICAgIFVwZGF0ZWQganVzdCBub3cKICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICB7LyogU3BlZWRvbWV0ZXIgKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBqdXN0aWZ5LWNlbnRlciBteS0yIj4KICAgICAgICAgICAgPERSU3BlZWRvbWV0ZXIgc2NvcmU9e3Jlc3VsdC5kcn0gc2l6ZT17MjYwfSBhbmltYXRlZD17dHJ1ZX0gLz4KICAgICAgICAgIDwvZGl2PgoKICAgICAgICAgIHsvKiBEb21haW4gaW5mbyAqL30KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJnbGFzcy1jYXJkIHAtMyBtdC0yIiBzdHlsZT17eyBiYWNrZ3JvdW5kOiAncmdiYSgyNTUsMjU1LDI1NSwwLjAzKScgfX0+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkIG1iLTIgZm9udC1tZWRpdW0iPlJlc3VsdCBmb3I8L3A+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMiBtYi0yIj4KICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idy02IGgtNiByb3VuZGVkLW1kIGJnLWdsYXNzIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIj4KICAgICAgICAgICAgICAgIDxHbG9iZSBjbGFzc05hbWU9InctMy41IGgtMy41IHRleHQtYnJhbmQtNDAwIiAvPgogICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iZm9udC1zZW1pYm9sZCB0ZXh0LXNtIj57ZG9tYWlufTwvc3Bhbj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkIGxlYWRpbmctcmVsYXhlZCI+CiAgICAgICAgICAgICAge2RvbWFpbn0gaGFzIGF7JyAnfQogICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0iZm9udC1ib2xkIiBzdHlsZT17eyBjb2xvciB9fT5EUiBvZiB7cmVzdWx0LmRyfTwvc3Bhbj4ueycgJ30KICAgICAgICAgICAgICB7cmVzdWx0LmRyID49IDcwID8gJ1RvcC10aWVyIHJhdGluZyDigJQgdGhpcyBzdWdnZXN0cyBhbiBvdXRzdGFuZGluZyBiYWNrbGluayBwcm9maWxlLicgOgogICAgICAgICAgICAgICByZXN1bHQuZHIgPj0gNTAgPyAnU29saWQgcmF0aW5nIOKAlCB0aGlzIHNpdGUgaGFzIGEgaGVhbHRoeSBhbmQgZ3Jvd2luZyBiYWNrbGluayBwcm9maWxlLicgOgogICAgICAgICAgICAgICByZXN1bHQuZHIgPj0gMzAgPyAnTW9kZXJhdGUgcmF0aW5nIOKAlCB0aGVyZSBpcyBjbGVhciByb29tIHRvIGltcHJvdmUgZG9tYWluIGF1dGhvcml0eS4nIDoKICAgICAgICAgICAgICAgJ05ldyBvciBsb3ctYXV0aG9yaXR5IHNpdGUg4oCUIGZvY3VzIG9uIGJ1aWxkaW5nIHF1YWxpdHkgYmFja2xpbmtzLid9CiAgICAgICAgICAgIDwvcD4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgoKICAgICAgICB7LyogUmlnaHQ6IEluZm8gUGFuZWxzICovfQogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJsZzpjb2wtc3Bhbi0yIGZsZXggZmxleC1jb2wgZ2FwLTQiPgoKICAgICAgICAgIHsvKiBSb3cgMTogRFIgU2NvcmUgKyBSYXRpbmcgU2NhbGUgKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZ3JpZCBncmlkLWNvbHMtMiBnYXAtNCI+CiAgICAgICAgICAgIHsvKiBEUiBTY29yZSAqL30KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdsYXNzLWNhcmQgcC00Ij4KICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZCBmb250LW1lZGl1bSBtYi0zIj5EUiBTY29yZTwvcD4KICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTMiPgogICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InctMTAgaC0xMCByb3VuZGVkLXhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIiBzdHlsZT17eyBiYWNrZ3JvdW5kOiAncmdiYSg5OSwxMDIsMjQxLDAuMTUpJywgYm9yZGVyOiAnMXB4IHNvbGlkIHJnYmEoOTksMTAyLDI0MSwwLjI1KScgfX0+CiAgICAgICAgICAgICAgICAgIDxUcmVuZGluZ1VwIGNsYXNzTmFtZT0idy01IGgtNSB0ZXh0LWJyYW5kLTQwMCIgLz4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InRleHQtMnhsIGZvbnQtYmxhY2siIHN0eWxlPXt7IGNvbG9yIH19PntyZXN1bHQuZHJ9PC9kaXY+CiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQiPm91dCBvZiAxMDA8L2Rpdj4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICAgIHsvKiBSYXRpbmcgU2NhbGUgKi99CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJnbGFzcy1jYXJkIHAtNCI+CiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQgZm9udC1tZWRpdW0gbWItMyI+UmF0aW5nIFNjYWxlPC9wPgogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBnYXAtMyI+CiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idy0xMCBoLTEwIHJvdW5kZWQteGwgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIiIHN0eWxlPXt7IGJhY2tncm91bmQ6ICdyZ2JhKDk5LDEwMiwyNDEsMC4xNSknLCBib3JkZXI6ICcxcHggc29saWQgcmdiYSg5OSwxMDIsMjQxLDAuMjUpJyB9fT4KICAgICAgICAgICAgICAgICAgPHN2ZyBjbGFzc05hbWU9InctNSBoLTUgdGV4dC1icmFuZC00MDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZVdpZHRoPSIyIj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjEuMjEgMTUuODlBMTAgMTAgMCAxIDEgOCAyLjgzIiAvPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yMiAxMkExMCAxMCAwIDAgMCAxMiAydjEweiIgLz4KICAgICAgICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJ0ZXh0LTJ4bCBmb250LWJsYWNrIHRleHQtZm9yZWdyb3VuZCI+MOKAkzEwMDwvZGl2PgogICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkIj5BaHJlZnMgUmF0aW5nPC9kaXY+CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICB7LyogRFIgU2NvcmUgUmFuZ2UgKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZ2xhc3MtY2FyZCBwLTQgZmxleC0xIj4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtYm9sZCB0ZXh0LWZvcmVncm91bmQgdXBwZXJjYXNlIHRyYWNraW5nLXdpZGVyIG1iLTMiPkRSIFNDT1JFIFJBTkdFPC9wPgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZ3JpZCBncmlkLWNvbHMtMiBnYXAtMiI+CiAgICAgICAgICAgICAge3Njb3JlUmFuZ2VzLm1hcCgocmFuZ2UpID0+ICgKICAgICAgICAgICAgICAgIDxkaXYKICAgICAgICAgICAgICAgICAga2V5PXtyYW5nZS5sYWJlbH0KICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJyb3VuZGVkLXhsIHAtMi41IGJvcmRlciB0cmFuc2l0aW9uLWFsbCIKICAgICAgICAgICAgICAgICAgc3R5bGU9e3sKICAgICAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiByYW5nZS5hY3RpdmUgPyByYW5nZS5iZyA6ICdyZ2JhKDI1NSwyNTUsMjU1LDAuMDIpJywKICAgICAgICAgICAgICAgICAgICBib3JkZXJDb2xvcjogcmFuZ2UuYWN0aXZlID8gcmFuZ2UuYm9yZGVyIDogJ3JnYmEoMjU1LDI1NSwyNTUsMC4wNiknLAogICAgICAgICAgICAgICAgICAgIGJveFNoYWRvdzogcmFuZ2UuYWN0aXZlID8gYDAgMCAxMnB4ICR7cmFuZ2UuY29sb3J9MjBgIDogJ25vbmUnLAogICAgICAgICAgICAgICAgICB9fQogICAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTEuNSBtYi0xIj4KICAgICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9InctMiBoLTIgcm91bmRlZC1mdWxsIiBzdHlsZT17eyBiYWNrZ3JvdW5kOiByYW5nZS5jb2xvciB9fT48L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtYm9sZCIgc3R5bGU9e3sgY29sb3I6IHJhbmdlLmFjdGl2ZSA/IHJhbmdlLmNvbG9yIDogJ3JnYmEoMjU1LDI1NSwyNTUsMC40KScgfX0+CiAgICAgICAgICAgICAgICAgICAgICB7cmFuZ2UucmFuZ2V9CiAgICAgICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtc2VtaWJvbGQiIHN0eWxlPXt7IGNvbG9yOiByYW5nZS5hY3RpdmUgPyByYW5nZS5jb2xvciA6ICdyZ2JhKDI1NSwyNTUsMjU1LDAuMyknIH19PgogICAgICAgICAgICAgICAgICAgIHtyYW5nZS5sYWJlbH0KICAgICAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgKSl9CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC9kaXY+CgogICAgICAgICAgey8qIEltcHJvdmUgRFIgQ1RBICovfQogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdsYXNzLWNhcmQgcC00IiBzdHlsZT17eyBiYWNrZ3JvdW5kOiAnbGluZWFyLWdyYWRpZW50KDEzNWRlZywgcmdiYSg5OSwxMDIsMjQxLDAuMSkgMCUsIHJnYmEoOTksMTAyLDI0MSwwLjA1KSAxMDAlKScsIGJvcmRlckNvbG9yOiAncmdiYSg5OSwxMDIsMjQxLDAuMiknIH19PgogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1zdGFydCBnYXAtMyI+CiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InctMTAgaC0xMCByb3VuZGVkLXhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGZsZXgtc2hyaW5rLTAiIHN0eWxlPXt7IGJhY2tncm91bmQ6ICdyZ2JhKDk5LDEwMiwyNDEsMC4yKScsIGJvcmRlcjogJzFweCBzb2xpZCByZ2JhKDk5LDEwMiwyNDEsMC4zKScgfX0+CiAgICAgICAgICAgICAgICA8VHJlbmRpbmdVcCBjbGFzc05hbWU9InctNSBoLTUgdGV4dC1icmFuZC00MDAiIC8+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXgtMSBtaW4tdy0wIj4KICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0iZm9udC1ib2xkIHRleHQtc20gbWItMSI+SU1QUk9WRSBEUjwvcD4KICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkIGxlYWRpbmctcmVsYXhlZCI+RXhwbG9yZSBwb3dlcmZ1bCBzZXJ2aWNlcyB0byBib29zdCB5b3VyIERvbWFpbiBSYXRpbmcgYW5kIHN0cmVuZ3RoZW4geW91ciB3ZWJzaXRlJ3MgYXV0aG9yaXR5LjwvcD4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxMaW5rIGhyZWY9Ii8jc2VydmljZXMiIGNsYXNzTmFtZT0ibXQtMyB3LWZ1bGwgYnRuLWJyYW5kIHB5LTIgdGV4dC14cyBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBnYXAtMS41Ij4KICAgICAgICAgICAgICBFeHBsb3JlIFNlcnZpY2VzCiAgICAgICAgICAgICAgPENoZXZyb25SaWdodCBjbGFzc05hbWU9InctMy41IGgtMy41IiAvPgogICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICB7LyogRXh0cmEgc3RhdHMgaWYgYXZhaWxhYmxlICovfQogICAgICAgICAgeyhyZXN1bHQuYmFja2xpbmtzICE9PSB1bmRlZmluZWQgfHwgcmVzdWx0LnJlZmVycmluZ19kb21haW5zICE9PSB1bmRlZmluZWQpICYmICgKICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ3JpZC1jb2xzLTIgZ2FwLTMiPgogICAgICAgICAgICAgIHtyZXN1bHQuYmFja2xpbmtzICE9PSB1bmRlZmluZWQgJiYgKAogICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdsYXNzLWNhcmQgcC0zIHRleHQtY2VudGVyIj4KICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InRleHQtbGcgZm9udC1ib2xkIHRleHQtYnJhbmQtNDAwIj57Zm9ybWF0TnVtYmVyKHJlc3VsdC5iYWNrbGlua3MpfTwvZGl2PgogICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idGV4dC14cyB0ZXh0LW11dGVkIG10LTAuNSI+QmFja2xpbmtzPC9kaXY+CiAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICApfQogICAgICAgICAgICAgIHtyZXN1bHQucmVmZXJyaW5nX2RvbWFpbnMgIT09IHVuZGVmaW5lZCAmJiAoCiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZ2xhc3MtY2FyZCBwLTMgdGV4dC1jZW50ZXIiPgogICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idGV4dC1sZyBmb250LWJvbGQgdGV4dC1icmFuZC00MDAiPntmb3JtYXROdW1iZXIocmVzdWx0LnJlZmVycmluZ19kb21haW5zKX08L2Rpdj4KICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InRleHQteHMgdGV4dC1tdXRlZCBtdC0wLjUiPlJlZi4gRG9tYWluczwvZGl2PgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgKX0KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICApfQogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIHsvKiBCb3R0b20gbm90ZSAqL30KICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTQgZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTIgcHgtNCBweS0yLjUgcm91bmRlZC14bCIgc3R5bGU9e3sgYmFja2dyb3VuZDogJ3JnYmEoMjU1LDI1NSwyNTUsMC4wMyknLCBib3JkZXI6ICcxcHggc29saWQgcmdiYSgyNTUsMjU1LDI1NSwwLjA2KScgfX0+CiAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJ3LTMuNSBoLTMuNSByb3VuZGVkLWZ1bGwgYm9yZGVyIGJvcmRlci1tdXRlZCBpbmxpbmUtZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgdGV4dC1bOHB4XSB0ZXh0LW11dGVkIGZsZXgtc2hyaW5rLTAiPmk8L3NwYW4+CiAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIHRleHQtbXV0ZWQiPgogICAgICAgICAgRFIgKERvbWFpbiBSYXRpbmcpIGlzIGEgc2NvcmUgZGV2ZWxvcGVkIGJ5IEFocmVmcyB0byBtZWFzdXJlIHRoZSBzdHJlbmd0aCBvZiBhIHdlYnNpdGUncyBiYWNrbGluayBwcm9maWxlIG9uIGEgc2NhbGUgb2YgMCB0byAxMDAuCiAgICAgICAgPC9wPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICkKfQo=
+'use client'
+import { useRef } from 'react'
+import { Download, Globe, TrendingUp, ChevronRight, BarChart3 } from 'lucide-react'
+import DRSpeedometer from './DRSpeedometer'
+import { DRResult } from '@/types'
+import { getDRColor } from '@/lib/utils'
+import Link from 'next/link'
+
+interface DRResultCardProps {
+  result: DRResult
+  domain: string
+}
+
+export default function DRResultCard({ result, domain }: DRResultCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const color = getDRColor(result.dr)
+
+  const downloadAsPNG = async () => {
+    try {
+      const html2canvas = (await import('html2canvas')).default
+      if (!cardRef.current) return
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: '#1E1E1E',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      })
+      const link = document.createElement('a')
+      link.download = `${domain}-dr-score.png`
+      link.href = canvas.toDataURL('image/png')
+      link.click()
+    } catch (err) {
+      console.error('Download failed:', err)
+    }
+  }
+
+  const scoreRanges = [
+    { range: '0 – 29', label: 'Poor', color: '#EF4444', active: result.dr < 30 },
+    { range: '30 – 49', label: 'Fair', color: '#F59E0B', active: result.dr >= 30 && result.dr < 50 },
+    { range: '50 – 69', label: 'Good', color: '#3B82F6', active: result.dr >= 50 && result.dr < 70 },
+    { range: '70 – 100', label: 'Excellent', color: '#22C55E', active: result.dr >= 70 },
+  ]
+
+  return (
+    <div className="animate-slide-up">
+      <div className="flex justify-end mb-3">
+        <button onClick={downloadAsPNG}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl card text-sm font-semibold text-muted hover:text-white transition-colors">
+          <Download className="w-4 h-4" /> Download PNG
+        </button>
+      </div>
+
+      <div ref={cardRef} className="rounded-2xl p-4 sm:p-6" style={{ background: '#1E1E1E', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+          <div className="lg:col-span-3 card p-5 sm:p-6" style={{ background: '#262626' }}>
+            <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
+              <div>
+                <h3 className="font-extrabold text-base text-white tracking-wide">DOMAIN RATING</h3>
+                <p className="text-xs text-muted mt-0.5">Ahrefs Domain Rating</p>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+                style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#22C55E' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse-soft"></span>
+                Live Ahrefs Data
+              </div>
+            </div>
+
+            <div className="flex justify-center my-1">
+              <DRSpeedometer score={result.dr} size={250} animated={true} />
+            </div>
+
+            <div className="rounded-xl p-3 mt-2" style={{ background: '#1B1B1B', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <p className="text-xs text-muted mb-2 font-semibold">Result for</p>
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: 'rgba(255,117,36,0.15)' }}>
+                  <Globe className="w-3.5 h-3.5" style={{ color: '#FF7524' }} />
+                </div>
+                <span className="font-bold text-sm text-white">{domain}</span>
+              </div>
+              <p className="text-xs text-muted leading-relaxed">
+                {domain} has a <span className="font-extrabold" style={{ color }}>DR of {result.dr}</span>.{' '}
+                {result.dr >= 70 ? 'Top-tier rating — an outstanding backlink profile.' :
+                 result.dr >= 50 ? 'Solid rating — a healthy, growing backlink profile.' :
+                 result.dr >= 30 ? 'Moderate rating — clear room to increase authority.' :
+                 'Low rating — increasing DR will unlock real SEO power.'}
+              </p>
+            </div>
+          </div>
+
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="card p-4" style={{ background: '#262626' }}>
+                <p className="text-xs text-muted font-semibold mb-3">DR Score</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,117,36,0.15)', border: '1px solid rgba(255,117,36,0.3)' }}>
+                    <TrendingUp className="w-5 h-5" style={{ color: '#FF7524' }} />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-black" style={{ color }}>{result.dr}</div>
+                    <div className="text-xs text-muted">out of 100</div>
+                  </div>
+                </div>
+              </div>
+              <div className="card p-4" style={{ background: '#262626' }}>
+                <p className="text-xs text-muted font-semibold mb-3">Rating Scale</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(48,60,85,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <BarChart3 className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-black text-white">0–100</div>
+                    <div className="text-xs text-muted">Ahrefs Rating</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="card p-4 flex-1" style={{ background: '#262626' }}>
+              <p className="text-xs font-extrabold text-white uppercase tracking-wider mb-3">DR Score Range</p>
+              <div className="grid grid-cols-2 gap-2">
+                {scoreRanges.map((r) => (
+                  <div key={r.label} className="rounded-xl p-2.5 transition-all"
+                    style={{
+                      background: r.active ? `${r.color}1E` : 'rgba(255,255,255,0.02)',
+                      border: `1px solid ${r.active ? `${r.color}50` : 'rgba(255,255,255,0.06)'}`,
+                      boxShadow: r.active ? `0 0 14px ${r.color}25` : 'none',
+                    }}>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full" style={{ background: r.color }}></span>
+                      <span className="text-xs font-extrabold" style={{ color: r.active ? r.color : 'rgba(255,255,255,0.4)' }}>{r.range}</span>
+                    </div>
+                    <p className="text-xs font-bold" style={{ color: r.active ? r.color : 'rgba(255,255,255,0.3)' }}>{r.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl px-4 py-3" style={{ background: 'rgba(48,60,85,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <p className="text-xs text-muted leading-relaxed">
+                DR (Domain Rating) is a score developed by Ahrefs measuring the strength of a website's backlink profile on a scale of 0 to 100.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 flex items-center justify-center gap-2 pt-3 flex-wrap" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF7524 0%, #E85F0E 100%)' }}>
+            <BarChart3 className="w-3 h-3 text-white" />
+          </div>
+          <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#FF7524' }}>drchecker.io</span></span>
+          <span className="text-xs text-muted">— Free Bulk Ahrefs DR Checker</span>
+        </div>
+      </div>
+
+      <div className="mt-5 card-navy p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,117,36,0.2)', border: '1px solid rgba(255,117,36,0.4)' }}>
+            <TrendingUp className="w-6 h-6" style={{ color: '#FF7524' }} />
+          </div>
+          <div className="flex-1">
+            <p className="font-extrabold text-white text-base mb-1">Want a Higher DR for {domain}?</p>
+            <p className="text-sm text-muted leading-relaxed">We increase Domain Rating to 20+, 30+, 40+, 50+ or even 70+ — with permanent guarantees. Delivered in 2–4 weeks.</p>
+          </div>
+          <Link href="/#increase-dr" className="btn-orange px-6 py-3 text-sm flex-shrink-0 w-full sm:w-auto">
+            Increase DR Now <ChevronRight className="w-4 h-4 ml-1" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
