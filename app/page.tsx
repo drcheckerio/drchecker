@@ -91,12 +91,12 @@ export default function HomePage() {
 
       {/* HERO + CHECKER */}
       <section className="relative pt-28 sm:pt-32 pb-12 overflow-hidden">
-        <div className="orb w-80 h-80 top-8 -left-24" style={{ background: 'rgba(79,124,255,0.16)' }} />
-        <div className="orb w-96 h-96 top-32 -right-32" style={{ background: 'rgba(139,92,246,0.12)', animationDelay: '2.2s' }} />
+        <div className="orb w-80 h-80 top-8 -left-24" style={{ background: 'rgba(255,138,30,0.16)' }} />
+        <div className="orb w-96 h-96 top-32 -right-32" style={{ background: 'rgba(255,106,0,0.12)', animationDelay: '2.2s' }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center mb-6">
             <div className="badge-primary">
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse-soft" style={{ background: '#4F7CFF' }}></span>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse-soft" style={{ background: '#FF8A1E' }}></span>
               Live Data from Ahrefs
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function HomePage() {
           <div className="max-w-3xl mx-auto">
             <div className="card p-2 flex flex-col sm:flex-row gap-2" style={{ background: 'rgba(15,22,41,0.65)' }}>
               <div className="flex-1 flex items-center gap-3 px-4">
-                <Globe className="w-4 h-4 flex-shrink-0" style={{ color: '#4F7CFF' }} />
+                <Globe className="w-4 h-4 flex-shrink-0" style={{ color: '#FF8A1E' }} />
                 <input
                   type="text"
                   placeholder="Enter domain (e.g. example.com)"
@@ -135,7 +135,7 @@ export default function HomePage() {
               <p className="text-xs text-muted">Free · 20 domains per check · 3 checks/day for guests</p>
               <Link href="/bulk-checker"
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all hover:opacity-90"
-                style={{ background: 'rgba(79,124,255,0.14)', border: '1px solid rgba(79,124,255,0.35)', color: '#7C9AFF' }}>
+                style={{ background: 'rgba(255,138,30,0.14)', border: '1px solid rgba(255,138,30,0.35)', color: '#FFA94D' }}>
                 <Layers className="w-4 h-4" /> Bulk DR Check <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -152,7 +152,7 @@ export default function HomePage() {
             <div className="max-w-5xl mx-auto mt-8" ref={resultRef} style={{ scrollMarginTop: '90px' }}>
               <div className="card-glow px-5 py-4 mb-5 flex flex-col sm:flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
-                  <Crown className="w-5 h-5 flex-shrink-0" style={{ color: '#4F7CFF' }} />
+                  <Crown className="w-5 h-5 flex-shrink-0" style={{ color: '#FF8A1E' }} />
                   <p className="text-sm text-white font-semibold">
                     Checking many sites? <span className="text-muted font-normal">Pro gives you 1,000 domains per check, unlimited — just $5/month.</span>
                   </p>
@@ -177,15 +177,15 @@ export default function HomePage() {
             {plans.map((plan) => (
               <div key={plan.name}
                 className={`relative p-6 flex flex-col rounded-2xl transition-transform duration-300 hover:-translate-y-1 ${plan.highlight ? 'card-glow' : 'card'}`}
-                style={plan.highlight ? { border: '1px solid rgba(79,124,255,0.5)', boxShadow: '0 0 40px rgba(79,124,255,0.15)' } : {}}>
+                style={plan.highlight ? { border: '1px solid rgba(255,138,30,0.5)', boxShadow: '0 0 40px rgba(255,138,30,0.15)' } : {}}>
                 {plan.highlight && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="badge-primary px-4 py-1" style={{ background: '#4F7CFF', color: '#fff', border: 'none' }}>Best Value</div>
+                    <div className="badge-primary px-4 py-1" style={{ background: '#FF8A1E', color: '#fff', border: 'none' }}>Best Value</div>
                   </div>
                 )}
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style={{ background: plan.highlight ? 'rgba(79,124,255,0.2)' : 'rgba(255,255,255,0.06)', color: plan.highlight ? '#4F7CFF' : '#A3A3A3' }}>
+                    style={{ background: plan.highlight ? 'rgba(255,138,30,0.2)' : 'rgba(255,255,255,0.06)', color: plan.highlight ? '#FF8A1E' : '#A3A3A3' }}>
                     {plan.icon}
                   </div>
                   <h3 className="font-extrabold text-white">{plan.name}</h3>
@@ -224,7 +224,7 @@ export default function HomePage() {
             </p>
             <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
               style={{ background: 'rgba(30,41,66,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
-              <Clock className="w-4 h-4" style={{ color: '#4F7CFF' }} />
+              <Clock className="w-4 h-4" style={{ color: '#FF8A1E' }} />
               Delivery time: 2–4 weeks
             </div>
           </div>
@@ -233,16 +233,16 @@ export default function HomePage() {
             {drPackages.map((pkg) => (
               <div key={pkg.target}
                 className={`relative p-6 rounded-2xl transition-transform duration-300 hover:-translate-y-1 ${pkg.popular ? 'card-glow' : 'card'}`}
-                style={pkg.popular ? { border: '1px solid rgba(79,124,255,0.5)', boxShadow: '0 0 36px rgba(79,124,255,0.15)' } : {}}>
+                style={pkg.popular ? { border: '1px solid rgba(255,138,30,0.5)', boxShadow: '0 0 36px rgba(255,138,30,0.15)' } : {}}>
                 {pkg.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="badge-primary px-4 py-1" style={{ background: '#4F7CFF', color: '#fff', border: 'none' }}>Most Popular</div>
+                    <div className="badge-primary px-4 py-1" style={{ background: '#FF8A1E', color: '#fff', border: 'none' }}>Most Popular</div>
                   </div>
                 )}
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center"
-                    style={{ background: 'rgba(79,124,255,0.15)', border: '1px solid rgba(79,124,255,0.3)' }}>
-                    <TrendingUp className="w-5 h-5" style={{ color: '#4F7CFF' }} />
+                    style={{ background: 'rgba(255,138,30,0.15)', border: '1px solid rgba(255,138,30,0.3)' }}>
+                    <TrendingUp className="w-5 h-5" style={{ color: '#FF8A1E' }} />
                   </div>
                   <div className="text-right">
                     <div className="text-3xl font-black text-white">${pkg.price}</div>
@@ -268,7 +268,7 @@ export default function HomePage() {
               </div>
             ))}
 
-            <div className="p-6 rounded-2xl card flex flex-col justify-between" style={{ borderStyle: 'dashed', borderColor: 'rgba(79,124,255,0.4)' }}>
+            <div className="p-6 rounded-2xl card flex flex-col justify-between" style={{ borderStyle: 'dashed', borderColor: 'rgba(255,138,30,0.4)' }}>
               <div>
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
                   style={{ background: 'rgba(30,41,66,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>
@@ -308,12 +308,12 @@ export default function HomePage() {
               <div key={s.step} className="card p-6 relative group">
                 <div className="absolute top-4 right-4 text-6xl font-black" style={{ color: 'rgba(255,255,255,0.04)' }}>{s.step}</div>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-4 group-hover:shadow-primary-glow transition-shadow"
-                  style={{ background: 'linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%)' }}>
+                  style={{ background: 'linear-gradient(135deg, #FF8A1E 0%, #FF6A00 100%)' }}>
                   {s.icon}
                 </div>
                 <h3 className="font-extrabold text-white mb-2">{s.title}</h3>
                 <p className="text-muted text-sm leading-relaxed">{s.desc}</p>
-                {i < 2 && <div className="hidden md:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-10"><ArrowRight className="w-6 h-6" style={{ color: '#4F7CFF' }} /></div>}
+                {i < 2 && <div className="hidden md:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-10"><ArrowRight className="w-6 h-6" style={{ color: '#FF8A1E' }} /></div>}
               </div>
             ))}
           </div>
@@ -338,7 +338,7 @@ export default function HomePage() {
             ].map((f) => (
               <div key={f.title} className="card p-5 flex gap-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(79,124,255,0.13)', color: '#4F7CFF', border: '1px solid rgba(79,124,255,0.25)' }}>
+                  style={{ background: 'rgba(255,138,30,0.13)', color: '#FF8A1E', border: '1px solid rgba(255,138,30,0.25)' }}>
                   {f.icon}
                 </div>
                 <div>

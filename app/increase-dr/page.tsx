@@ -32,8 +32,8 @@ export default function IncreaseDRPage() {
 
       {/* Hero */}
       <section className="relative pt-32 pb-14 overflow-hidden">
-        <div className="orb w-72 h-72 top-10 -left-20" style={{ background: 'rgba(79,124,255,0.18)' }} />
-        <div className="orb w-80 h-80 top-24 -right-24" style={{ background: 'rgba(139,92,246,0.14)', animationDelay: '2s' }} />
+        <div className="orb w-72 h-72 top-10 -left-20" style={{ background: 'rgba(255,138,30,0.18)' }} />
+        <div className="orb w-80 h-80 top-24 -right-24" style={{ background: 'rgba(255,106,0,0.14)', animationDelay: '2s' }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="badge-primary mb-5 inline-flex"><TrendingUp className="w-3.5 h-3.5" /> Our #1 Service</div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-5 text-white">
@@ -50,7 +50,7 @@ export default function IncreaseDRPage() {
               { icon: <Award className="w-4 h-4" />, text: 'Permanent Guarantee' },
             ].map((b) => (
               <div key={b.text} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold card" style={{ borderRadius: '999px' }}>
-                <span style={{ color: '#7C9AFF' }}>{b.icon}</span>
+                <span style={{ color: '#FFA94D' }}>{b.icon}</span>
                 <span className="text-white">{b.text}</span>
               </div>
             ))}
@@ -67,12 +67,12 @@ export default function IncreaseDRPage() {
                 <div className={`relative p-6 rounded-2xl h-full transition-transform duration-300 hover:-translate-y-1.5 ${pkg.popular ? 'card-glow' : 'card'}`}>
                   {pkg.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <div className="px-4 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #4F7CFF, #8B5CF6)' }}>Most Popular</div>
+                      <div className="px-4 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #FF8A1E, #FF6A00)' }}>Most Popular</div>
                     </div>
                   )}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'rgba(79,124,255,0.13)', border: '1px solid rgba(99,130,255,0.3)' }}>
-                      <TrendingUp className="w-5 h-5" style={{ color: '#7C9AFF' }} />
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,138,30,0.13)', border: '1px solid rgba(255,138,30,0.3)' }}>
+                      <TrendingUp className="w-5 h-5" style={{ color: '#FFA94D' }} />
                     </div>
                     <div className="text-right">
                       <div className="text-3xl font-black text-white">${pkg.price}</div>
@@ -101,7 +101,7 @@ export default function IncreaseDRPage() {
 
             {/* Custom */}
             <Reveal delay={400}>
-              <div className="p-6 rounded-2xl card h-full flex flex-col justify-between" style={{ borderStyle: 'dashed', borderColor: 'rgba(99,130,255,0.4)' }}>
+              <div className="p-6 rounded-2xl card h-full flex flex-col justify-between" style={{ borderStyle: 'dashed', borderColor: 'rgba(255,138,30,0.4)' }}>
                 <div>
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style={{ background: 'rgba(30,41,66,0.6)', border: '1px solid rgba(148,163,184,0.15)' }}>
                     <MessageCircle className="w-5 h-5 text-white" />
@@ -140,7 +140,7 @@ export default function IncreaseDRPage() {
                 <div className="card p-6 h-full flex gap-4">
                   <div className="flex flex-col items-center flex-shrink-0">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white"
-                      style={{ background: 'linear-gradient(135deg, #4F7CFF, #8B5CF6)', boxShadow: '0 0 18px rgba(99,130,255,0.3)' }}>
+                      style={{ background: 'linear-gradient(135deg, #FF8A1E, #FF6A00)', boxShadow: '0 0 18px rgba(255,138,30,0.3)' }}>
                       {s.icon}
                     </div>
                     <div className="text-xs font-black text-muted mt-2">0{i + 1}</div>
@@ -175,7 +175,7 @@ export default function IncreaseDRPage() {
                     <strong className="text-white">DR 50+ and 70+ packages:</strong> Full 1 Year Permanent Guarantee. Any drop below target within 12 months is fixed free of charge.
                   </p>
                   <p className="text-muted text-sm leading-relaxed">
-                    <strong className="text-white">Delivery:</strong> All campaigns complete within 2–4 weeks — the natural time Ahrefs takes to crawl new links and recalculate your rating. You can verify progress anytime using our <Link href="/" className="underline" style={{ color: '#7C9AFF' }}>free DR checker</Link>.
+                    <strong className="text-white">Delivery:</strong> All campaigns complete within 2–4 weeks — the natural time Ahrefs takes to crawl new links and recalculate your rating. You can verify progress anytime using our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link>.
                   </p>
                 </div>
               </div>

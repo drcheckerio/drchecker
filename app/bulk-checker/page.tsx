@@ -106,7 +106,7 @@ export default function BulkCheckerPage() {
   const domainCount = input.split('\n').filter(d => d.trim()).length
   const SortIcon = ({ col }: { col: SortKey }) => {
     if (sortKey !== col) return <ArrowUpDown className="w-3 h-3 opacity-40" />
-    return sortDir === 'asc' ? <ChevronUp className="w-3 h-3" style={{ color: '#4F7CFF' }} /> : <ChevronDown className="w-3 h-3" style={{ color: '#4F7CFF' }} />
+    return sortDir === 'asc' ? <ChevronUp className="w-3 h-3" style={{ color: '#FF8A1E' }} /> : <ChevronDown className="w-3 h-3" style={{ color: '#FF8A1E' }} />
   }
 
   return (
@@ -126,15 +126,15 @@ export default function BulkCheckerPage() {
             { icon: '👑', label: 'Pro — $5/mo', limit: '1,000 domains · Unlimited', active: false, href: '/#pricing' },
           ].map((tier) => (
             <div key={tier.label} className="card p-4 flex items-center gap-3"
-              style={tier.active ? { borderColor: 'rgba(79,124,255,0.4)', background: 'rgba(79,124,255,0.05)' } : {}}>
+              style={tier.active ? { borderColor: 'rgba(255,138,30,0.4)', background: 'rgba(255,138,30,0.05)' } : {}}>
               <span className="text-xl">{tier.icon}</span>
               <div className="min-w-0">
                 <div className="text-xs font-extrabold text-white">{tier.label}</div>
                 <div className="text-xs text-muted truncate">{tier.limit}</div>
               </div>
               {tier.active
-                ? <span className="ml-auto text-xs font-bold flex-shrink-0" style={{ color: '#4F7CFF' }}>Current</span>
-                : <Link href={tier.href} className="ml-auto text-xs font-bold hover:underline flex-shrink-0" style={{ color: '#4F7CFF' }}>Upgrade</Link>}
+                ? <span className="ml-auto text-xs font-bold flex-shrink-0" style={{ color: '#FF8A1E' }}>Current</span>
+                : <Link href={tier.href} className="ml-auto text-xs font-bold hover:underline flex-shrink-0" style={{ color: '#FF8A1E' }}>Upgrade</Link>}
             </div>
           ))}
         </div>
@@ -168,7 +168,7 @@ export default function BulkCheckerPage() {
           </button>
           {loading && progress > 0 && (
             <div className="mt-3 w-full h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
-              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #4F7CFF, #8B5CF6)' }} />
+              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #FF8A1E, #FF6A00)' }} />
             </div>
           )}
           {checksUsed !== null && checksUsed < GUEST_CHECKS_PER_DAY && (
@@ -265,7 +265,7 @@ export default function BulkCheckerPage() {
         )}
 
         <div className="mt-8 card-glow p-6 text-center">
-          <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#4F7CFF' }} />
+          <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#FF8A1E' }} />
           <h3 className="font-extrabold text-white mb-2">Need Bigger Checks?</h3>
           <p className="text-muted text-sm mb-5 max-w-md mx-auto">Free account: 100 domains × 10 checks/day. Pro: 1,000 domains with unlimited checks for just $5/month.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

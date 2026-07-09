@@ -26,11 +26,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%)' }}>
-                <BarChart3 className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-extrabold text-lg text-white">DR Checker</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-mark.png" alt="DR Checker logo" width={38} height={38} className="rounded-xl" />
+              <span className="font-extrabold text-lg text-white">DR <span style={{ color: '#FF8A1E' }}>Checker</span></span>
             </Link>
             <p className="text-muted text-sm leading-relaxed max-w-xs">
               The fastest way to check Ahrefs Domain Rating for any website — free bulk DR checker with live Ahrefs data, plus guaranteed DR increase services.
@@ -55,7 +53,7 @@ export default function Footer() {
         <div className="mt-12 pt-7 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid rgba(148,163,184,0.1)' }}>
           <p className="text-muted text-xs">© {year} drchecker.io — All rights reserved.</p>
           <p className="text-muted text-xs flex items-center gap-1.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse-soft" style={{ background: '#4F7CFF' }}></span>
+            <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse-soft" style={{ background: '#FF8A1E' }}></span>
             Live DR data powered by Ahrefs
           </p>
         </div>

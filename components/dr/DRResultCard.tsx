@@ -73,8 +73,8 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
             <div className="rounded-xl p-3 mt-2" style={{ background: 'rgba(7,11,20,0.7)', border: '1px solid rgba(255,255,255,0.07)' }}>
               <p className="text-xs text-muted mb-2 font-semibold">Result for</p>
               <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: 'rgba(79,124,255,0.15)' }}>
-                  <Globe className="w-3.5 h-3.5" style={{ color: '#4F7CFF' }} />
+                <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: 'rgba(255,138,30,0.15)' }}>
+                  <Globe className="w-3.5 h-3.5" style={{ color: '#FF8A1E' }} />
                 </div>
                 <span className="font-bold text-sm text-white">{domain}</span>
               </div>
@@ -93,8 +93,8 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
                 <p className="text-xs text-muted font-semibold mb-3">DR Score</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(79,124,255,0.15)', border: '1px solid rgba(79,124,255,0.3)' }}>
-                    <TrendingUp className="w-5 h-5" style={{ color: '#4F7CFF' }} />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,138,30,0.15)', border: '1px solid rgba(255,138,30,0.3)' }}>
+                    <TrendingUp className="w-5 h-5" style={{ color: '#FF8A1E' }} />
                   </div>
                   <div>
                     <div className="text-2xl font-black" style={{ color }}>{result.dr}</div>
@@ -145,18 +145,17 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
         </div>
 
         <div className="mt-4 flex items-center justify-center gap-2 pt-3 flex-wrap" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%)' }}>
-            <BarChart3 className="w-3 h-3 text-white" />
-          </div>
-          <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#4F7CFF' }}>drchecker.io</span></span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark.png" alt="drchecker.io" width={20} height={20} className="rounded-md" />
+          <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#FF8A1E' }}>drchecker.io</span></span>
           <span className="text-xs text-muted">— Free Bulk Ahrefs DR Checker</span>
         </div>
       </div>
 
       <div className="mt-5 card-glow p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(79,124,255,0.2)', border: '1px solid rgba(79,124,255,0.4)' }}>
-            <TrendingUp className="w-6 h-6" style={{ color: '#4F7CFF' }} />
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,138,30,0.2)', border: '1px solid rgba(255,138,30,0.4)' }}>
+            <TrendingUp className="w-6 h-6" style={{ color: '#FF8A1E' }} />
           </div>
           <div className="flex-1">
             <p className="font-extrabold text-white text-base mb-1">Want a Higher DR for {domain}?</p>

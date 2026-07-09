@@ -34,12 +34,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all group-hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%)', boxShadow: '0 0 20px rgba(99,130,255,0.35)' }}>
-              <BarChart3 className="w-5 h-5 text-white" />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-mark.png" alt="DR Checker logo" width={38} height={38}
+              className="rounded-xl transition-transform group-hover:scale-105"
+              style={{ boxShadow: '0 0 20px rgba(255,138,30,0.3)' }} />
             <div className="flex flex-col leading-none">
-              <span className="font-extrabold text-base text-white tracking-tight">DR Checker</span>
+              <span className="font-extrabold text-base text-white tracking-tight">DR <span style={{ color: '#FF8A1E' }}>Checker</span></span>
               <span className="text-[10px] text-muted font-medium">drchecker.io</span>
             </div>
           </Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
               <Link key={link.href} href={link.href}
                 className="px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-white/5 transition-colors flex items-center gap-2"
                 onClick={() => setMobileOpen(false)}>
-                {link.label === 'Increase DR' && <TrendingUp className="w-4 h-4" style={{ color: '#7C9AFF' }} />}
+                {link.label === 'Increase DR' && <TrendingUp className="w-4 h-4" style={{ color: '#FFA94D' }} />}
                 {link.label}
               </Link>
             ))}

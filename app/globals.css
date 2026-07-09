@@ -9,9 +9,9 @@
     --card: rgba(15, 22, 41, 0.65);
     --card-solid: #0F1629;
     --border: rgba(148, 163, 184, 0.12);
-    --border-hover: rgba(99, 130, 255, 0.45);
-    --primary: #4F7CFF;
-    --primary-2: #8B5CF6;
+    --border-hover: rgba(255, 138, 30, 0.45);
+    --primary: #FF8A1E;
+    --primary-2: #FF6A00;
     --text: #F4F7FF;
     --text-muted: #8B96AD;
   }
@@ -35,9 +35,9 @@
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(ellipse 55% 40% at 20% -5%, rgba(79, 124, 255, 0.13) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 35% at 85% 10%, rgba(139, 92, 246, 0.10) 0%, transparent 55%),
-      radial-gradient(ellipse 60% 40% at 50% 110%, rgba(79, 124, 255, 0.07) 0%, transparent 60%);
+      radial-gradient(ellipse 55% 40% at 20% -5%, rgba(255, 138, 30, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 35% at 85% 10%, rgba(148, 163, 184, 0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 50% 110%, rgba(255, 138, 30, 0.05) 0%, transparent 60%);
     pointer-events: none;
   }
 }
@@ -53,20 +53,20 @@
   }
   .card:hover {
     border-color: var(--border-hover);
-    box-shadow: 0 8px 40px rgba(79, 124, 255, 0.10), inset 0 1px 0 rgba(255,255,255,0.05);
+    box-shadow: 0 8px 40px rgba(255, 138, 30, 0.10), inset 0 1px 0 rgba(255,255,255,0.05);
   }
 
   .card-glow {
-    background: linear-gradient(160deg, rgba(79,124,255,0.10) 0%, rgba(139,92,246,0.06) 100%), var(--card);
-    border: 1px solid rgba(99, 130, 255, 0.30);
+    background: linear-gradient(160deg, rgba(255,138,30,0.10) 0%, rgba(255,106,0,0.05) 100%), var(--card);
+    border: 1px solid rgba(255, 138, 30, 0.30);
     border-radius: 18px;
     backdrop-filter: blur(14px);
-    box-shadow: 0 0 50px rgba(79, 124, 255, 0.12);
+    box-shadow: 0 0 50px rgba(255, 138, 30, 0.12);
   }
 
   .btn-primary {
     position: relative;
-    background: linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%);
+    background: linear-gradient(135deg, #FF8A1E 0%, #FF6A00 100%);
     color: #fff;
     border: none;
     border-radius: 12px;
@@ -88,7 +88,7 @@
     transition: left 0.5s ease;
   }
   .btn-primary:hover::after { left: 120%; }
-  .btn-primary:hover { box-shadow: 0 0 32px rgba(99, 130, 255, 0.5); transform: translateY(-2px); }
+  .btn-primary:hover { box-shadow: 0 0 32px rgba(255, 138, 30, 0.5); transform: translateY(-2px); }
   .btn-primary:active { transform: translateY(0); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
@@ -104,12 +104,12 @@
     align-items: center;
     justify-content: center;
   }
-  .btn-outline:hover { border-color: var(--primary); color: #A5BDFF; background: rgba(79,124,255,0.08); }
+  .btn-outline:hover { border-color: var(--primary); color: #FFB25E; background: rgba(255,138,30,0.08); }
 
   .text-muted { color: var(--text-muted); }
 
   .gradient-text {
-    background: linear-gradient(120deg, #6C9BFF 0%, #A78BFA 60%, #6C9BFF 100%);
+    background: linear-gradient(120deg, #FFB25E 0%, #FF7A1A 55%, #FFD9A8 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -130,16 +130,16 @@
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .input-dark:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79,124,255,0.14); }
+  .input-dark:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(255,138,30,0.14); }
   .input-dark::placeholder { color: #5A657E; }
 
   .badge-primary {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 5px 14px; border-radius: 999px;
     font-size: 0.75rem; font-weight: 700;
-    background: rgba(79,124,255,0.12);
-    color: #A5BDFF;
-    border: 1px solid rgba(99,130,255,0.35);
+    background: rgba(255,138,30,0.12);
+    color: #FFB25E;
+    border: 1px solid rgba(255,138,30,0.35);
     backdrop-filter: blur(8px);
   }
 
@@ -156,7 +156,7 @@
     left: 0; bottom: -4px;
     width: 0; height: 2px;
     border-radius: 2px;
-    background: linear-gradient(90deg, #4F7CFF, #8B5CF6);
+    background: linear-gradient(90deg, #FF8A1E, #FF6A00);
     transition: width 0.25s ease;
   }
   .nav-link:hover { color: #fff; }
@@ -171,12 +171,12 @@
   .data-table th:hover { color: #fff; }
   .data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: rgba(79,124,255,0.04); }
+  .data-table tr:hover td { background: rgba(255,138,30,0.04); }
 
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(99,130,255,0.35); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(99,130,255,0.6); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,138,30,0.35); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,138,30,0.6); }
 
   .section { padding: 76px 0; }
   @media (max-width: 640px) { .section { padding: 50px 0; } }
@@ -205,8 +205,8 @@
   article.seo-content h2 { font-size: 1.75rem; font-weight: 800; margin: 2.5rem 0 1rem; color: #fff; }
   article.seo-content h3 { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 0.75rem; color: #fff; }
   article.seo-content p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.1rem; font-size: 0.95rem; }
-  article.seo-content a { color: #7C9AFF; text-decoration: underline; text-underline-offset: 3px; }
-  article.seo-content a:hover { color: #A5BDFF; }
+  article.seo-content a { color: #FFA94D; text-decoration: underline; text-underline-offset: 3px; }
+  article.seo-content a:hover { color: #FFB25E; }
   article.seo-content strong { color: #fff; }
   article.seo-content ul { margin: 0 0 1.1rem 1.25rem; }
   article.seo-content li { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 0.4rem; list-style: disc; }
@@ -215,7 +215,7 @@
   .legal-content p, .legal-content li { color: var(--text-muted); line-height: 1.8; font-size: 0.93rem; margin-bottom: 0.9rem; }
   .legal-content ul { margin: 0 0 1rem 1.25rem; }
   .legal-content li { list-style: disc; margin-bottom: 0.4rem; }
-  .legal-content a { color: #7C9AFF; text-decoration: underline; }
+  .legal-content a { color: #FFA94D; text-decoration: underline; }
 }
 
 @layer utilities {

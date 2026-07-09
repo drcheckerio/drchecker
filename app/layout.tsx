@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     title: "Ahrefs DR Checker — Free Bulk Domain Rating Checker",
     description: "Check Ahrefs DR of any website free. Bulk check up to 1,000 domains. Guaranteed DR increase services available.",
     siteName: "DR Checker",
+    images: [{ url: "/logo-full.png", width: 1200, height: 600, alt: "DR Checker — Free Bulk Ahrefs DR Checker" }],
   },
   robots: { index: true, follow: true },
 };
