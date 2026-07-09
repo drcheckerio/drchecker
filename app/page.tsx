@@ -49,11 +49,13 @@ export default function HomePage() {
   }
 
   const drPackages = [
-    { target: 'DR 20+', price: 40, guarantee: 'Lifetime Permanent Guarantee', popular: false },
-    { target: 'DR 30+', price: 70, guarantee: 'Lifetime Permanent Guarantee', popular: false },
-    { target: 'DR 40+', price: 130, guarantee: 'Lifetime Permanent Guarantee', popular: true },
-    { target: 'DR 50+', price: 100, guarantee: '1 Year Permanent Guarantee', popular: false },
-    { target: 'DR 70+', price: 220, guarantee: '1 Year Permanent Guarantee', popular: false },
+    { target: 'DR 20+', price: 39, original: 78, guarantee: 'Lifetime Permanent Guarantee', popular: false, rating: 4.9, reviews: 214 },
+    { target: 'DR 30+', price: 69, original: 138, guarantee: 'Lifetime Permanent Guarantee', popular: false, rating: 5.0, reviews: 187 },
+    { target: 'DR 40+', price: 129, original: 258, guarantee: 'Lifetime Permanent Guarantee', popular: true, rating: 4.9, reviews: 342 },
+    { target: 'DR 50+', price: 99, original: 198, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 5.0, reviews: 156 },
+    { target: 'DR 70+', price: 249, original: 498, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 4.9, reviews: 128 },
+    { target: 'DR 75+', price: 499, original: 998, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 5.0, reviews: 64 },
+    { target: 'DR 80+', price: 1999, original: 3998, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 5.0, reviews: 31 },
   ]
 
   const plans = [
@@ -245,11 +247,26 @@ export default function HomePage() {
                     <TrendingUp className="w-5 h-5" style={{ color: '#FF8A1E' }} />
                   </div>
                   <div className="text-right">
+                    <div className="flex items-center gap-2 justify-end">
+                      <span className="text-sm font-bold line-through" style={{ color: '#5A657E' }}>${pkg.original}</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black text-white" style={{ background: 'linear-gradient(135deg, #22C55E, #16A34A)' }}>50% OFF</span>
+                    </div>
                     <div className="text-3xl font-black text-white">${pkg.price}</div>
                     <div className="text-xs text-muted">one-time</div>
                   </div>
                 </div>
-                <h3 className="text-xl font-extrabold text-white mb-2">Increase to {pkg.target}</h3>
+                <h3 className="text-xl font-extrabold text-white mb-1">Increase to {pkg.target}</h3>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="flex items-center gap-0.5">
+                    {[1,2,3,4,5].map((s) => (
+                      <svg key={s} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill={s <= Math.round(pkg.rating) ? '#FBBF24' : 'rgba(148,163,184,0.25)'}>
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-white">{pkg.rating.toFixed(1)}</span>
+                  <span className="text-xs text-muted">({pkg.reviews} reviews)</span>
+                </div>
                 <div className="flex items-center gap-2 mb-4">
                   <Award className="w-4 h-4 flex-shrink-0" style={{ color: '#22C55E' }} />
                   <span className="text-xs font-bold" style={{ color: '#22C55E' }}>{pkg.guarantee}</span>

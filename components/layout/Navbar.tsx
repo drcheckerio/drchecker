@@ -35,13 +35,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5 group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-mark.png" alt="DR Checker logo" width={38} height={38}
+            <img src="/logo-mark.png" alt="DR Checker logo" width={44} height={44}
               className="rounded-xl transition-transform group-hover:scale-105"
               style={{ boxShadow: '0 0 20px rgba(255,138,30,0.3)' }} />
-            <div className="flex flex-col leading-none">
-              <span className="font-extrabold text-base text-white tracking-tight">DR <span style={{ color: '#FF8A1E' }}>Checker</span></span>
-              <span className="text-[10px] text-muted font-medium">drchecker.io</span>
-            </div>
+            <span className="font-extrabold text-lg text-white tracking-tight">DR <span style={{ color: '#FF8A1E' }}>Checker</span></span>
           </Link>
 
           <div className="hidden md:flex items-center gap-7">
