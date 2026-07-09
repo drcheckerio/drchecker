@@ -92,9 +92,10 @@ export default function HomePage() {
       <Navbar />
 
       {/* HERO + CHECKER */}
-      <section className="relative pt-28 sm:pt-32 pb-12 overflow-hidden">
-        <div className="orb w-80 h-80 top-8 -left-24" style={{ background: 'rgba(255,138,30,0.16)' }} />
-        <div className="orb w-96 h-96 top-32 -right-32" style={{ background: 'rgba(255,106,0,0.12)', animationDelay: '2.2s' }} />
+      <section className="relative pt-32 sm:pt-36 pb-12 overflow-hidden">
+        <div className="hero-grid" />
+        <div className="hero-spotlight" />
+        <div className="hero-beam" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center mb-6">
             <div className="badge-primary">

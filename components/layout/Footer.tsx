@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="inline-block mb-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-nav.png" alt="DR Checker logo" className="h-12 w-auto" />
+              <img src="/logo-nav.png" alt="DR Checker logo" className="h-14 w-auto" />
             </Link>
             <p className="text-muted text-sm leading-relaxed max-w-xs">
               The fastest way to check Ahrefs Domain Rating for any website — free bulk DR checker with live Ahrefs data, plus guaranteed DR increase services.

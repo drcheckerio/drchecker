@@ -46,9 +46,10 @@ export default function IncreaseDRPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-12 overflow-hidden">
-        <div className="orb w-72 h-72 top-10 -left-20" style={{ background: 'rgba(255,138,30,0.16)' }} />
-        <div className="orb w-80 h-80 top-24 -right-24" style={{ background: 'rgba(148,163,184,0.09)', animationDelay: '2s' }} />
+      <section className="relative pt-36 pb-12 overflow-hidden">
+        <div className="hero-grid" />
+        <div className="hero-spotlight" />
+        <div className="hero-beam" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="badge-primary mb-5 inline-flex"><Zap className="w-3.5 h-3.5" /> Limited Launch Offer — 50% OFF All Packages</div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-5 text-white">

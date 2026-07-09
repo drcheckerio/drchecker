@@ -32,11 +32,11 @@ export default function Navbar() {
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-nav.png" alt="DR Checker — Free Bulk Ahrefs Domain Rating Checker"
-              className="h-11 w-auto transition-transform group-hover:scale-[1.03]" />
+              className="h-14 sm:h-16 w-auto transition-transform group-hover:scale-[1.03]" />
           </Link>
 
           <div className="hidden md:flex items-center gap-7">
