@@ -25,10 +25,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
+            <Link href="/" className="inline-block mb-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-mark.png" alt="DR Checker logo" width={38} height={38} className="rounded-xl" />
-              <span className="font-extrabold text-lg text-white">DR <span style={{ color: '#FF8A1E' }}>Checker</span></span>
+              <img src="/logo-nav.png" alt="DR Checker logo" className="h-12 w-auto" />
             </Link>
             <p className="text-muted text-sm leading-relaxed max-w-xs">
               The fastest way to check Ahrefs Domain Rating for any website — free bulk DR checker with live Ahrefs data, plus guaranteed DR increase services.
