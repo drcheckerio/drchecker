@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import DRResultCard from '@/components/dr/DRResultCard'
+import Reveal from '@/components/layout/Reveal'
 import { DRResult } from '@/types'
 import { cleanDomain } from '@/lib/utils'
 import Link from 'next/link'
@@ -23,8 +24,13 @@ export default function HomePage() {
   useEffect(() => {
     if (result && resultRef.current) {
       setTimeout(() => {
-        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 100)
+        const el = resultRef.current
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const fits = rect.height < window.innerHeight - 100
+        // Scroll so the FULL card is visible; speedometer starts only after it's in view
+        el.scrollIntoView({ behavior: 'smooth', block: fits ? 'center' : 'start' })
+      }, 120)
     }
   }, [result])
 
@@ -415,87 +421,61 @@ export default function HomePage() {
       {/* SEO CONTENT */}
       <section className="section">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <article className="seo-content">
-            <h2 className="text-white">The Complete Guide to Ahrefs Domain Rating (DR)</h2>
-            <p>
-              If you work in SEO, buy or sell websites, build links, or run any kind of online business, you have almost certainly come across the term <strong>Domain Rating</strong> — usually shortened to <strong>DR</strong>. It is one of the most widely used authority metrics in the entire SEO industry, and understanding it properly can transform the way you approach link building, content strategy, and website valuation. This guide explains everything you need to know about Ahrefs DR: what it is, how it is calculated, what counts as a good score, how to check it for free using our <Link href="/">Ahrefs DR checker</Link>, and — most importantly — how to increase it.
-            </p>
+          <div>
+            <Reveal>
+              <div className="text-center mb-10">
+                <div className="badge-primary mb-4 inline-flex">Complete Guide</div>
+                <h2 className="text-3xl sm:text-4xl font-black text-white">The Complete Guide to <span className="gradient-text">Ahrefs Domain Rating</span></h2>
+              </div>
+            </Reveal>
 
-            <h3 className="text-white">What is Ahrefs Domain Rating?</h3>
-            <p>
-              <strong>Ahrefs Domain Rating (DR)</strong> is a proprietary metric created by Ahrefs, one of the largest and most respected SEO toolsets in the world. DR measures the overall strength of a website's backlink profile on a logarithmic scale from 0 to 100. A brand-new website with no backlinks starts at DR 0, while global giants like Google, YouTube, and Wikipedia sit at or near DR 100.
-            </p>
-            <p>
-              The keyword here is <strong>backlink profile</strong>. DR does not measure traffic, content quality, or how well a site ranks. It measures one thing: how strong and authoritative the links pointing to a website are. Because backlinks remain one of Google's most important ranking factors, DR has become the industry's standard shorthand for "how powerful is this website?"
-            </p>
-
-            <h3 className="text-white">How is Domain Rating Calculated?</h3>
-            <p>
-              Ahrefs has never published its exact formula, but the company has openly explained the core mechanics. The calculation works in three broad steps. First, Ahrefs counts how many <strong>unique domains</strong> link to your website — note that a hundred links from one domain count far less than one link each from a hundred different domains. Second, it evaluates the <strong>DR of each linking domain</strong>: a backlink from a DR 85 website transfers dramatically more "rating juice" than a link from a DR 15 blog. Third, it considers how many other websites each of those linking domains also links out to — the more sites a domain links to, the more its authority is split between them.
-            </p>
-            <p>
-              The results are then plotted on a <strong>logarithmic scale</strong>. This is a crucial detail that many people miss: moving from DR 10 to DR 20 is relatively easy, but moving from DR 70 to DR 80 requires exponentially more link authority. This is exactly why high-DR websites are so valuable and why our <Link href="/increase-dr">Increase DR service</Link> is priced by target tier.
-            </p>
-
-            <h3 className="text-white">What is a Good Domain Rating?</h3>
-            <p>
-              There is no universal "good" DR — it always depends on your niche and your competitors. That said, the SEO industry broadly recognizes four tiers. A DR of <strong>0–29</strong> is considered Poor: these are typically new websites or sites that have never invested in link building. A DR of <strong>30–49</strong> is Fair: the site has a real, growing backlink profile and some competitive presence. A DR of <strong>50–69</strong> is Good: these are strong, established websites that can compete for meaningful keywords in most industries. A DR of <strong>70–100</strong> is Excellent: this is elite territory occupied by major publications, global brands, and authority sites.
-            </p>
-            <p>
-              The smartest way to use these tiers is comparatively. Run your own domain and your top three competitors through our <Link href="/bulk-checker">bulk DR checker</Link> and see where you stand. If your competitors average DR 45 and you sit at DR 22, you have found your gap — and closing it should become a core part of your SEO strategy.
-            </p>
-
-            <h3 className="text-white">DR vs DA: What's the Difference?</h3>
-            <p>
-              People often confuse Ahrefs DR with Moz's <strong>Domain Authority (DA)</strong>. Both metrics attempt to measure website authority on a 0–100 scale, but they come from different companies, use different crawlers, and rely on different link databases. Ahrefs operates one of the largest live backlink indexes in the world, which is why many SEO professionals treat DR as the more responsive and reliable of the two metrics. In the link-buying and website-flipping markets specifically, DR has become the dominant currency — listings on marketplaces almost always quote Ahrefs DR first.
-            </p>
-
-            <h3 className="text-white">Why Does Domain Rating Matter So Much?</h3>
-            <p>
-              First, <strong>rankings</strong>. While DR itself is not a direct Google ranking factor, the thing it measures — backlink authority — absolutely is. Sites with higher DR consistently rank faster and higher for competitive keywords because Google trusts domains with strong link profiles.
-            </p>
-            <p>
-              Second, <strong>monetization</strong>. If you sell guest posts or link placements, your DR directly sets your prices. A DR 50 site can charge several times more per placement than a DR 20 site. Increasing your DR is quite literally increasing your income per link sold.
-            </p>
-            <p>
-              Third, <strong>website value</strong>. When websites are bought and sold, DR is one of the first metrics every buyer checks. Two sites with identical traffic can sell for very different prices purely because of the difference in their Domain Rating.
-            </p>
-            <p>
-              Fourth, <strong>partnerships and outreach</strong>. Brands, sponsors, and PR agencies filter potential partners by DR. A higher DR gets your outreach emails answered and gets your site included in paid campaigns.
-            </p>
-
-            <h3 className="text-white">How to Check Ahrefs DR for Free</h3>
-            <p>
-              Normally, checking DR requires an Ahrefs subscription starting at $99+ per month. Our free <Link href="/">DR checker</Link> pulls the same live Ahrefs data at zero cost. As a guest you can check up to <strong>20 domains per check, 3 times per day</strong> — no account needed. Create a <Link href="/signup">free account</Link> and that jumps to <strong>100 domains per check, 10 times per day</strong>, with CSV export included. Power users, agencies, and link builders can upgrade to <Link href="/#pricing">Pro for just $5/month</Link> and unlock <strong>1,000 domains per check with unlimited checks</strong> — the highest limits of any DR checker available.
-            </p>
-            <p>
-              Every single-domain check also generates a beautiful shareable result card with an animated DR gauge that you can download as a PNG — perfect for client reports, marketplace listings, and social proof.
-            </p>
-
-            <h3 className="text-white">How to Increase Your Domain Rating</h3>
-            <p>
-              Since DR is purely a function of your backlink profile, increasing it comes down to one thing: <strong>earning links from high-DR domains</strong>. The classic organic routes include creating link-worthy content (original research, free tools, in-depth guides), digital PR campaigns, guest posting on authoritative sites, and reclaiming broken or lost links. These methods work, but they are slow — often taking six to twelve months to move DR meaningfully — and they demand significant time, skill, and budget.
-            </p>
-            <p>
-              That is exactly why we built our <Link href="/increase-dr">Increase DR service</Link>. We handle the entire process for you: our team places high-authority backlinks using proven white-hat methodology, and your DR rises to a guaranteed target — <strong>DR 20+, 30+, 40+, 50+, or 70+</strong>. Results typically appear within <strong>2–4 weeks</strong> as Ahrefs recrawls and recalculates. Our DR 20+ through 40+ packages carry a <strong>Lifetime Permanent Guarantee</strong>, and our DR 50+ and 70+ packages include a full <strong>1 Year Guarantee</strong> — if your rating drops below target within the guarantee window, we restore it at no extra cost.
-            </p>
-
-            <h3 className="text-white">Common Myths About Domain Rating</h3>
-            <p>
-              <strong>Myth 1: "DR is a Google ranking factor."</strong> It isn't — Google has its own internal systems. But DR closely mirrors the link authority signals Google does use, which is why the correlation between DR and rankings is so strong.
-            </p>
-            <p>
-              <strong>Myth 2: "More backlinks always means higher DR."</strong> False. A thousand links from weak, spammy domains can do less for your DR than five links from genuinely authoritative websites. Quality beats quantity every time.
-            </p>
-            <p>
-              <strong>Myth 3: "DR updates instantly."</strong> Ahrefs recalculates DR as it recrawls the web, which can take days to weeks. This is why our DR increase campaigns quote a 2–4 week delivery window — the links land quickly, but Ahrefs needs time to register them.
-            </p>
-
-            <h3 className="text-white">Start Checking and Growing Your DR Today</h3>
-            <p>
-              Whether you're auditing your own site, vetting domains before purchase, pricing your link inventory, or researching competitors — knowing your Domain Rating is step one. Use our free <Link href="/">Ahrefs DR checker</Link> above, run your whole portfolio through the <Link href="/bulk-checker">bulk checker</Link>, and when you're ready to level up, our <Link href="/increase-dr">Increase DR packages</Link> will get you there with a guarantee. Questions? <Link href="/contact">Contact us</Link> anytime — we're happy to help.
-            </p>
-          </article>
+            <div className="space-y-4">
+              {[
+                { icon: '📖', title: 'What is Ahrefs Domain Rating?', body: <>
+                  <p className="text-muted text-sm leading-relaxed mb-3"><strong className="text-white">Ahrefs Domain Rating (DR)</strong> is a proprietary metric created by Ahrefs that measures the overall strength of a website's backlink profile on a logarithmic scale from 0 to 100. A brand-new website starts at DR 0, while global giants like Google and Wikipedia sit at or near DR 100.</p>
+                  <p className="text-muted text-sm leading-relaxed">DR does not measure traffic or content quality — it measures one thing: how strong and authoritative the links pointing to a website are. Because backlinks remain one of Google's most important ranking factors, DR has become the industry's standard shorthand for website authority.</p>
+                </> },
+                { icon: '🧮', title: 'How is Domain Rating Calculated?', body: <>
+                  <p className="text-muted text-sm leading-relaxed mb-3">Ahrefs counts how many <strong className="text-white">unique domains</strong> link to your website, evaluates the <strong className="text-white">DR of each linking domain</strong> (a link from DR 85 transfers far more authority than one from DR 15), and considers how many other sites each linker also links to.</p>
+                  <p className="text-muted text-sm leading-relaxed">Results sit on a <strong className="text-white">logarithmic scale</strong> — moving from DR 10 to 20 is easy, but DR 70 to 80 requires exponentially more link authority. This is why high-DR sites are so valuable and why our <Link href="/increase-dr" className="underline" style={{ color: '#FFA94D' }}>Increase DR service</Link> is priced by target tier.</p>
+                </> },
+                { icon: '🎯', title: 'What is a Good Domain Rating?', body: <>
+                  <p className="text-muted text-sm leading-relaxed mb-3">The industry recognizes four tiers: <strong style={{ color: '#EF4444' }}>0–29 Poor</strong> (new sites), <strong style={{ color: '#F59E0B' }}>30–49 Fair</strong> (growing authority), <strong style={{ color: '#3B82F6' }}>50–69 Good</strong> (strong, competitive sites), and <strong style={{ color: '#22C55E' }}>70–100 Excellent</strong> (elite authority).</p>
+                  <p className="text-muted text-sm leading-relaxed">The smartest use is comparative: run your domain and your top competitors through our <Link href="/bulk-checker" className="underline" style={{ color: '#FFA94D' }}>bulk DR checker</Link>. If competitors average DR 45 and you sit at DR 22, closing that gap should become a core part of your SEO strategy.</p>
+                </> },
+                { icon: '⚖️', title: 'DR vs DA — What is the Difference?', body: <>
+                  <p className="text-muted text-sm leading-relaxed">DR is Ahrefs' metric; DA (Domain Authority) is Moz's. Both measure authority on a 0–100 scale but use different crawlers and databases. Ahrefs operates one of the largest live backlink indexes in the world, which is why most SEO professionals — and virtually all link marketplaces — treat DR as the primary currency of website authority.</p>
+                </> },
+                { icon: '🚀', title: 'Why Does Domain Rating Matter?', body: <>
+                  <p className="text-muted text-sm leading-relaxed mb-3"><strong className="text-white">Rankings:</strong> sites with higher DR consistently rank faster and higher. <strong className="text-white">Monetization:</strong> your DR directly sets your guest post and link placement prices — a DR 50 site charges several times more than a DR 20 site.</p>
+                  <p className="text-muted text-sm leading-relaxed"><strong className="text-white">Website value:</strong> DR is the first metric every website buyer checks. <strong className="text-white">Partnerships:</strong> brands and agencies filter outreach targets by DR — a strong rating gets your emails answered.</p>
+                </> },
+                { icon: '🆓', title: 'How to Check Ahrefs DR for Free', body: <>
+                  <p className="text-muted text-sm leading-relaxed">Checking DR normally requires a $99+/month Ahrefs subscription. Our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> pulls the same live data at zero cost — guests get 20 domains per check 3 times daily, a <Link href="/signup" className="underline" style={{ color: '#FFA94D' }}>free account</Link> unlocks 100 domains 10 times daily, and <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>Pro at $5/month</Link> gives you 1,000 domains per check with unlimited runs. Every single check produces a shareable result card downloadable as PNG.</p>
+                </> },
+                { icon: '📈', title: 'How to Increase Your Domain Rating', body: <>
+                  <p className="text-muted text-sm leading-relaxed mb-3">Organic routes — link-worthy content, digital PR, guest posting — work but often take 6–12 months. Our <Link href="/increase-dr" className="underline" style={{ color: '#FFA94D' }}>Increase DR service</Link> handles everything: high-authority white-hat backlinks raise your DR to a guaranteed target of <strong className="text-white">20+, 30+, 40+, 50+, 70+, 75+ or 80+</strong> within 2–4 weeks.</p>
+                  <p className="text-muted text-sm leading-relaxed">DR 20–40 packages carry a <strong style={{ color: '#22C55E' }}>Lifetime Permanent Guarantee</strong>; DR 50–80 packages include a full <strong style={{ color: '#22C55E' }}>1 Year Guarantee</strong>. If your rating drops below target inside the window, we restore it free.</p>
+                </> },
+                { icon: '💡', title: 'Common Myths About DR', body: <>
+                  <p className="text-muted text-sm leading-relaxed mb-3"><strong className="text-white">"DR is a Google ranking factor"</strong> — it isn't, but it closely mirrors the link signals Google does use. <strong className="text-white">"More backlinks always means higher DR"</strong> — false; five links from authoritative domains beat a thousand spammy ones.</p>
+                  <p className="text-muted text-sm leading-relaxed"><strong className="text-white">"DR updates instantly"</strong> — Ahrefs recalculates as it recrawls the web, taking days to weeks. That's exactly why honest DR campaigns quote 2–4 week timelines.</p>
+                </> },
+              ].map((sec, i) => (
+                <Reveal key={sec.title} delay={i * 60}>
+                  <div className="card p-6 hover:-translate-y-0.5 transition-transform">
+                    <div className="flex items-start gap-4">
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'rgba(255,138,30,0.12)', border: '1px solid rgba(255,138,30,0.25)' }}>{sec.icon}</div>
+                      <div className="min-w-0">
+                        <h3 className="font-extrabold text-white text-lg mb-2">{sec.title}</h3>
+                        {sec.body}
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

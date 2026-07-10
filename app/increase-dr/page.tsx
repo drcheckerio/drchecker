@@ -235,56 +235,39 @@ export default function IncreaseDRPage() {
       {/* SEO CONTENT */}
       <section className="section pt-0">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <article className="seo-content">
+          <div>
             <Reveal>
-              <h2>How to Increase Domain Rating (DR) — The Definitive Guide</h2>
-              <p>
-                <strong>Increasing your Ahrefs Domain Rating</strong> is one of the highest-leverage moves you can make for any website. A higher DR raises your Google ranking potential, multiplies what you can charge for guest posts and link placements, increases your website's resale value, and opens doors to premium partnerships. On this page we explain exactly how DR increases work, why our service is trusted by over a thousand website owners, and how to choose the right package for your goals.
-              </p>
+              <div className="text-center mb-10">
+                <div className="badge-primary mb-4 inline-flex">Definitive Guide</div>
+                <h2 className="text-3xl sm:text-4xl font-black text-white">How to Increase <span className="gradient-text">Domain Rating</span></h2>
+              </div>
             </Reveal>
 
-            <Reveal>
-              <h3>Why Increase Your Domain Rating?</h3>
-              <p>
-                Domain Rating is the SEO industry's standard shorthand for website authority. When you <strong>increase DR</strong>, everything downstream gets easier: your content ranks faster because Google trusts authoritative link profiles, outreach targets reply because your metrics pass their filters, and marketplaces value your site higher because DR is the first number every buyer checks. For sites that monetize through link selling, the effect is direct and immediate — a DR 50 website commands several times the per-placement price of a DR 20 website. In practical terms, a one-time investment in raising your DR pays for itself with just a handful of link sales.
-              </p>
-            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { icon: '🚀', title: 'Why Increase Your DR?', body: 'A higher DR raises your Google ranking potential, multiplies what you charge for guest posts and link placements, increases your website resale value, and opens premium partnerships. A DR 50 site commands several times the per-placement price of a DR 20 site — one DR investment pays for itself with a handful of link sales.' },
+                { icon: '⚙️', title: 'How Our Service Works', body: 'Ahrefs calculates DR purely from the strength of unique domains linking to you. We audit your profile, then place high-authority backlinks from strong, established domains. As Ahrefs recrawls over 2–4 weeks, your DR climbs to the guaranteed target — verifiable in real time with our free checker or your own Ahrefs account.' },
+                { icon: '🎯', title: 'Choosing Your Package', body: 'DR 20+ ($39) and 30+ ($69) give new sites instant baseline credibility. DR 40+ ($129), our most popular, qualifies you for most paid link marketplaces. DR 50+ ($99) makes you genuinely strong in competitive niches. DR 70+ ($249), 75+ ($499) and elite 80+ ($1,999) put you in major-publication territory — all currently 50% off.' },
+                { icon: '🛡️', title: 'Is It Safe?', body: 'Yes — we never use spam networks, hacked domains, or manipulative anchor schemes. Placements come from real, established, high-authority domains — exactly the profile Google rewards. That is why we can offer Lifetime Guarantees on DR 20/30/40 and full 1 Year Guarantees on DR 50 through 80.' },
+                { icon: '⏱️', title: 'Honest Timelines', body: 'Campaigns complete in 2–4 weeks. Links are placed fast, but Ahrefs needs time to crawl, index, and recalculate — the same cycle for everyone. Anyone promising legitimate DR jumps in 24 hours is using manipulations that collapse. Miss your guaranteed target in the window? Full refund.' },
+                { icon: '✅', title: 'Start Today', body: 'Check your current rating with our free DR checker, run your portfolio through the bulk checker, then pick your target package above. Custom multi-site and agency quotes are always available — contact us anytime.' },
+              ].map((sec, i) => (
+                <Reveal key={sec.title} delay={i * 70}>
+                  <div className="card p-6 h-full hover:-translate-y-0.5 transition-transform">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-4" style={{ background: 'rgba(255,138,30,0.12)', border: '1px solid rgba(255,138,30,0.25)' }}>{sec.icon}</div>
+                    <h3 className="font-extrabold text-white text-lg mb-2">{sec.title}</h3>
+                    <p className="text-muted text-sm leading-relaxed">{sec.body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
 
             <Reveal>
-              <h3>How Our DR Increase Service Works</h3>
-              <p>
-                Ahrefs calculates DR from one thing only: the strength of the unique domains linking to your website. Our methodology works directly with that mechanism. After you order, we audit your current backlink profile, then place <strong>high-authority backlinks from strong, established domains</strong> pointing to your site. As Ahrefs recrawls the web over the following 2–4 weeks, it registers these new authority signals and recalculates your Domain Rating upward to your guaranteed target. Everything we do is white-hat and verifiable — you can watch your DR climb in real time using our <Link href="/">free Ahrefs DR checker</Link> or your own Ahrefs account.
+              <p className="text-center text-sm text-muted mt-8">
+                Check your rating first with our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> · bulk audit at the <Link href="/bulk-checker" className="underline" style={{ color: '#FFA94D' }}>bulk checker</Link> · full terms in our <Link href="/refund-policy" className="underline" style={{ color: '#FFA94D' }}>refund policy</Link>
               </p>
             </Reveal>
-
-            <Reveal>
-              <h3>Which DR Package Should You Choose?</h3>
-              <p>
-                <strong>DR 20+ ($39)</strong> and <strong>DR 30+ ($69)</strong> are perfect for brand-new websites that need baseline credibility fast — ideal before pitching guest posts or applying to ad networks. <strong>DR 40+ ($129)</strong>, our most popular package, hits the sweet spot where sites qualify for the majority of paid link-placement marketplaces. <strong>DR 50+ ($99)</strong> positions you as a genuinely strong domain in competitive niches. For premium plays — flipping high-value sites, dominating tough SERPs, or building an authority brand — <strong>DR 70+ ($249)</strong>, <strong>DR 75+ ($499)</strong> and our elite <strong>DR 80+ ($1,999)</strong> packages put you in the same authority tier as major publications. Every package is currently <strong>50% off</strong> as part of our launch offer.
-              </p>
-            </Reveal>
-
-            <Reveal>
-              <h3>Is Increasing DR Safe for My Website?</h3>
-              <p>
-                Yes — when it's done the way we do it. We never use spam networks, hacked domains, or manipulative anchor schemes that could trigger penalties. Our placements come from real, established, high-authority domains, which is precisely the kind of link profile Google's algorithms are designed to reward. That's also why we can offer guarantees no one else matches: <strong>Lifetime Permanent Guarantees</strong> on DR 20/30/40 packages and full <strong>1 Year Guarantees</strong> on DR 50/70/75/80. If your rating drops below target inside the guarantee window, we restore it free — no arguments, no fine print.
-              </p>
-            </Reveal>
-
-            <Reveal>
-              <h3>How Long Does It Take to Increase DR?</h3>
-              <p>
-                Our campaigns complete in <strong>2–4 weeks</strong>. The links themselves are placed quickly, but Ahrefs needs time to crawl them, index them, and recalculate your score — that recalculation cycle is what sets the timeline, and it's the same for everyone in the industry. Anyone promising a legitimate DR jump in "24 hours" is either using manipulations that will collapse (and possibly get flagged) or simply not telling the truth. We quote honest timelines and back them with our refund policy: if we miss your guaranteed target within the promised window, you get <Link href="/refund-policy">your money back</Link>.
-              </p>
-            </Reveal>
-
-            <Reveal>
-              <h3>Start Today</h3>
-              <p>
-                First, check your current rating with our <Link href="/">free DR checker</Link> — or run your whole portfolio through the <Link href="/bulk-checker">bulk checker</Link>. Then pick your target package above and place your order. Questions before you buy? <Link href="/contact">Contact us</Link> — we respond fast, and custom multi-site or agency quotes are always available.
-              </p>
-            </Reveal>
-          </article>
+          </div>
         </div>
       </section>
 

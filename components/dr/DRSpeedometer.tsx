@@ -6,15 +6,19 @@ interface SpeedometerProps {
   score: number
   size?: number
   animated?: boolean
+  start?: boolean
 }
 
-export default function DRSpeedometer({ score, size = 280, animated = true }: SpeedometerProps) {
+export default function DRSpeedometer({ score, size = 280, animated = true, start = true }: SpeedometerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [currentScore, setCurrentScore] = useState(0)
+  const [currentScore, setCurrentScore] = useState(animated ? 0 : score)
   const animRef = useRef<number>()
+  const startedRef = useRef(false)
 
   useEffect(() => {
     if (!animated) { setCurrentScore(score); return }
+    if (!start || startedRef.current) return
+    startedRef.current = true
     const duration = 1800
     const startTime = performance.now()
     const animate = (t: number) => {
@@ -23,9 +27,9 @@ export default function DRSpeedometer({ score, size = 280, animated = true }: Sp
       setCurrentScore(Math.round(score * eased))
       if (progress < 1) animRef.current = requestAnimationFrame(animate)
     }
-    const timer = setTimeout(() => { animRef.current = requestAnimationFrame(animate) }, 250)
+    const timer = setTimeout(() => { animRef.current = requestAnimationFrame(animate) }, 200)
     return () => { clearTimeout(timer); if (animRef.current) cancelAnimationFrame(animRef.current) }
-  }, [score, animated])
+  }, [score, animated, start])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -124,12 +128,13 @@ export default function DRSpeedometer({ score, size = 280, animated = true }: Sp
 
   const color = getDRColor(score)
   const rating = getDRRating(score)
+  const displayColor = getDRColor(currentScore)
 
   return (
     <div className="flex flex-col items-center relative">
       <canvas ref={canvasRef} style={{ width: size, height: size }} />
       <div className="text-center -mt-12 relative z-10">
-        <div className="text-5xl font-black" style={{ color }}>{currentScore}</div>
+        <div className="text-5xl font-black" style={{ color: displayColor }}>{currentScore}</div>
         <div className="text-xs font-bold text-muted uppercase tracking-widest mt-1">DR SCORE</div>
         <div className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold"
           style={{ background: `${color}20`, color, border: `1px solid ${color}45` }}>
