@@ -142,7 +142,7 @@ export default function HomePage() {
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-between mt-3 px-1 gap-2">
               <p className="text-xs text-muted">Free · 20 domains per check · 3 checks/day for guests</p>
-              <Link href="/bulk-checker"
+              <Link href="/bulk-dr-checker"
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: 'rgba(255,138,30,0.14)', border: '1px solid rgba(255,138,30,0.35)', color: '#FFA94D' }}>
                 <Layers className="w-4 h-4" /> Bulk DR Check <ChevronRight className="w-3.5 h-3.5" />
@@ -441,7 +441,7 @@ export default function HomePage() {
                 </> },
                 { icon: '🎯', title: 'What is a Good Domain Rating?', body: <>
                   <p className="text-muted text-sm leading-relaxed mb-3">The industry recognizes four tiers: <strong style={{ color: '#EF4444' }}>0–29 Poor</strong> (new sites), <strong style={{ color: '#F59E0B' }}>30–49 Fair</strong> (growing authority), <strong style={{ color: '#3B82F6' }}>50–69 Good</strong> (strong, competitive sites), and <strong style={{ color: '#22C55E' }}>70–100 Excellent</strong> (elite authority).</p>
-                  <p className="text-muted text-sm leading-relaxed">The smartest use is comparative: run your domain and your top competitors through our <Link href="/bulk-checker" className="underline" style={{ color: '#FFA94D' }}>bulk DR checker</Link>. If competitors average DR 45 and you sit at DR 22, closing that gap should become a core part of your SEO strategy.</p>
+                  <p className="text-muted text-sm leading-relaxed">The smartest use is comparative: run your domain and your top competitors through our <Link href="/bulk-dr-checker" className="underline" style={{ color: '#FFA94D' }}>bulk DR checker</Link>. If competitors average DR 45 and you sit at DR 22, closing that gap should become a core part of your SEO strategy.</p>
                 </> },
                 { icon: '⚖️', title: 'DR vs DA — What is the Difference?', body: <>
                   <p className="text-muted text-sm leading-relaxed">DR is Ahrefs' metric; DA (Domain Authority) is Moz's. Both measure authority on a 0–100 scale but use different crawlers and databases. Ahrefs operates one of the largest live backlink indexes in the world, which is why most SEO professionals — and virtually all link marketplaces — treat DR as the primary currency of website authority.</p>

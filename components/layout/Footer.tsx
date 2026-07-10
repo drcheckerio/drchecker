@@ -6,7 +6,7 @@ export default function Footer() {
   const links = {
     Tools: [
       { label: 'DR Checker', href: '/' },
-      { label: 'Bulk DR Checker', href: '/bulk-checker' },
+      { label: 'Bulk DR Checker', href: '/bulk-dr-checker' },
       { label: 'Increase DR', href: '/increase-dr' },
     ],
     Company: [

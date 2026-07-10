@@ -15,7 +15,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'DR Checker', href: '/' },
-    { label: 'Bulk Checker', href: '/bulk-checker' },
+    { label: 'Bulk DR Checker', href: '/bulk-dr-checker' },
     { label: 'Increase DR', href: '/increase-dr' },
     { label: 'Pricing', href: '/#pricing' },
     { label: 'Blog', href: '/blog' },

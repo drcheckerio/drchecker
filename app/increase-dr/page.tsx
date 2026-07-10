@@ -264,7 +264,7 @@ export default function IncreaseDRPage() {
 
             <Reveal>
               <p className="text-center text-sm text-muted mt-8">
-                Check your rating first with our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> · bulk audit at the <Link href="/bulk-checker" className="underline" style={{ color: '#FFA94D' }}>bulk checker</Link> · full terms in our <Link href="/refund-policy" className="underline" style={{ color: '#FFA94D' }}>refund policy</Link>
+                Check your rating first with our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> · bulk audit at the <Link href="/bulk-dr-checker" className="underline" style={{ color: '#FFA94D' }}>bulk checker</Link> · full terms in our <Link href="/refund-policy" className="underline" style={{ color: '#FFA94D' }}>refund policy</Link>
               </p>
             </Reveal>
           </div>
