@@ -34,11 +34,13 @@ export default function HomePage() {
     }
   }, [result])
 
-  const handleCheck = async () => {
-    if (!domain.trim()) return
+  const handleCheck = async (overrideDomain?: string) => {
+    const target = overrideDomain ?? domain
+    if (!target.trim()) return
+    if (overrideDomain) setDomain(overrideDomain)
     setLoading(true); setError(''); setResult(null)
     try {
-      const clean = cleanDomain(domain)
+      const clean = cleanDomain(target)
       const res = await fetch('/api/dr-check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -133,7 +135,7 @@ export default function HomePage() {
                   className="flex-1 bg-transparent py-3 text-sm outline-none text-white placeholder:text-neutral-500 min-w-0"
                 />
               </div>
-              <button onClick={handleCheck} disabled={loading || !domain.trim()}
+              <button onClick={() => handleCheck()} disabled={loading || !domain.trim()}
                 className="btn-primary px-6 py-3 text-sm gap-2 flex-shrink-0">
                 {loading
                   ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking...</>
@@ -148,6 +150,61 @@ export default function HomePage() {
                 <Layers className="w-4 h-4" /> Bulk DR Check <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
+
+            {!result && !loading && (
+              <>
+                {/* Quick-try chips */}
+                <div className="flex flex-wrap items-center justify-center gap-2 mt-7">
+                  <span className="text-xs text-muted mr-1">Try a popular domain:</span>
+                  {['google.com', 'ahrefs.com', 'amazon.com', 'bbc.com'].map((d) => (
+                    <button key={d} onClick={() => handleCheck(d)}
+                      className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-white transition-all hover:-translate-y-0.5"
+                      style={{ background: 'rgba(148,163,184,0.07)', border: '1px solid rgba(148,163,184,0.18)' }}>
+                      {d}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Trust strip */}
+                <div className="mt-6 rounded-2xl px-4 py-5 sm:px-8"
+                  style={{ background: 'rgba(15,22,41,0.55)', border: '1px solid rgba(148,163,184,0.12)', backdropFilter: 'blur(12px)' }}>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-5">
+                    {[
+                      { dot: '#22C55E', num: '1M+', label: 'Domains Checked' },
+                      { dot: '#3B82F6', num: 'Live', label: 'Real Ahrefs Data' },
+                      { dot: '#F59E0B', num: '1,000', label: 'Domains per Check' },
+                      { dot: '#94A3B8', num: '4.9/5', label: 'User Rating' },
+                    ].map((s, i) => (
+                      <div key={s.label} className="flex items-center justify-center gap-3"
+                        style={{ borderLeft: i > 0 ? '1px solid rgba(148,163,184,0.1)' : 'none' }}>
+                        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: s.dot, boxShadow: `0 0 10px ${s.dot}80` }}></span>
+                        <div className="text-left">
+                          <div className="text-lg font-black text-white leading-none">{s.num}</div>
+                          <div className="text-[11px] text-muted mt-1">{s.label}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* DR scale legend strip */}
+                <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+                  {[
+                    { range: '0–29', label: 'Poor', color: '#EF4444' },
+                    { range: '30–49', label: 'Fair', color: '#F59E0B' },
+                    { range: '50–69', label: 'Good', color: '#3B82F6' },
+                    { range: '70–100', label: 'Excellent', color: '#22C55E' },
+                  ].map((t) => (
+                    <div key={t.label} className="flex items-center gap-2 px-3.5 py-2 rounded-xl"
+                      style={{ background: `${t.color}0D`, border: `1px solid ${t.color}30` }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: t.color }}></span>
+                      <span className="text-xs font-bold" style={{ color: t.color }}>{t.range}</span>
+                      <span className="text-[11px] font-medium" style={{ color: `${t.color}CC` }}>{t.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {error && (
