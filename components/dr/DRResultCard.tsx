@@ -106,6 +106,16 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               <DRSpeedometer score={result.dr} size={250} animated={true} start={startAnim} />
             </div>
 
+            {/* Desktop-only: credit below the speedometer */}
+            <div className="hidden lg:flex items-center justify-center mt-4 py-2.5 rounded-xl" style={{ background: 'rgba(255,138,30,0.07)', border: '1px solid rgba(255,138,30,0.2)' }}>
+              <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo-mark.png" alt="drchecker.io" width={20} height={20} className="rounded-md" />
+                <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#FF8A1E' }}>drchecker.io</span></span>
+                <span className="text-xs text-muted">— Free Bulk Ahrefs DR Checker</span>
+              </div>
+            </div>
+
             {/* Mobile-only: credit ABOVE result — stays in every screenshot */}
             <div className="lg:hidden flex items-center justify-center mt-3 py-2.5 rounded-xl" style={{ background: 'rgba(255,138,30,0.07)', border: '1px solid rgba(255,138,30,0.2)' }}>
               <div className="flex items-center gap-2 flex-wrap">
@@ -179,15 +189,6 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               </div>
             </div>
 
-            {/* Credit ABOVE result — stays in every screenshot */}
-            <div className="flex items-center justify-center py-2.5 rounded-xl" style={{ background: 'rgba(255,138,30,0.07)', border: '1px solid rgba(255,138,30,0.2)' }}>
-              <div className="flex items-center gap-2 flex-wrap">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo-mark.png" alt="drchecker.io" width={20} height={20} className="rounded-md" />
-                <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#FF8A1E' }}>drchecker.io</span></span>
-                <span className="text-xs text-muted hidden sm:inline">— Free Bulk Ahrefs DR Checker</span>
-              </div>
-            </div>
             {/* Result for — below DR Score Range */}
             <div className="rounded-xl p-4 flex-1" style={{ background: 'rgba(7,11,20,0.7)', border: '1px solid rgba(148,163,184,0.1)' }}>
               <p className="text-xs text-muted mb-2 font-semibold">Result for</p>
