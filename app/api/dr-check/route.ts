@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cleanDomain } from '@/lib/utils'
+import { createServerSupabaseClient } from '@/lib/supabase'
 
-// The DR API endpoint is stored server-side ONLY via environment variable.
-// It is never exposed to the browser or client source code.
 const DR_API = process.env.DR_API_ENDPOINT
+
+const LIMITS = {
+  guest: { perCheck: 20, perDay: null as number | null },
+  free: { perCheck: 100, perDay: 10 },
+  pro: { perCheck: 1000, perDay: null as number | null },
+}
 
 async function fetchDR(domain: string) {
   try {
@@ -25,16 +30,51 @@ async function fetchDR(domain: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!DR_API) {
-      return NextResponse.json({ error: 'DR API not configured' }, { status: 500 })
-    }
+    if (!DR_API) return NextResponse.json({ error: 'DR API not configured' }, { status: 500 })
 
     const { domains } = await req.json()
     if (!domains || !Array.isArray(domains) || domains.length === 0) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
     }
 
-    const cleaned = Array.from(new Set(domains.slice(0, 1000).map(cleanDomain).filter(Boolean)))
+    // ===== Identify user & plan =====
+    let tier: 'guest' | 'free' | 'pro' = 'guest'
+    let profile: any = null
+    const admin = createServerSupabaseClient()
+
+    const auth = req.headers.get('authorization')
+    if (auth?.startsWith('Bearer ')) {
+      const token = auth.slice(7)
+      const { data: { user } } = await admin.auth.getUser(token)
+      if (user) {
+        const { data: prof } = await admin.from('profiles').select('*').eq('id', user.id).single()
+        if (prof) {
+          profile = prof
+          tier = prof.plan === 'pro' ? 'pro' : 'free'
+        }
+      }
+    }
+
+    const limits = LIMITS[tier]
+
+    // ===== Daily check limit for free users =====
+    if (profile && limits.perDay !== null) {
+      const today = new Date().toISOString().slice(0, 10)
+      let checksToday = profile.checks_today ?? 0
+      if (profile.last_check_date !== today) checksToday = 0
+      if (checksToday >= limits.perDay) {
+        return NextResponse.json({
+          error: `Daily limit reached (${limits.perDay} checks/day on Free). Upgrade to Pro for unlimited checks.`,
+          limitReached: true,
+        }, { status: 429 })
+      }
+      await admin.from('profiles').update({
+        checks_today: checksToday + 1,
+        last_check_date: today,
+      }).eq('id', profile.id)
+    }
+
+    const cleaned = Array.from(new Set(domains.slice(0, limits.perCheck).map(cleanDomain).filter(Boolean)))
 
     const results: any[] = []
     for (let i = 0; i < cleaned.length; i += 10) {
@@ -43,7 +83,7 @@ export async function POST(req: NextRequest) {
       results.push(...batchResults)
     }
 
-    return NextResponse.json({ results })
+    return NextResponse.json({ results, tier, capApplied: limits.perCheck })
   } catch (error) {
     console.error('DR Check error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
