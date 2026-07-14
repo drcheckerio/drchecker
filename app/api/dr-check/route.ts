@@ -27,7 +27,8 @@ function toResult(domain: string, dr: number) {
   }
 }
 
-// Fetch DR with automatic retries + backoff to survive upstream rate limiting
+// Fetch DR with automatic retries + backoff to survive upstream rate limiting.
+// Domains Ahrefs has no data for (brand-new/unindexed) are a VALID result: DR 0 — not an error.
 async function fetchDR(domain: string): Promise<{ domain: string; dr: number; rating: string; error?: string }> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
@@ -35,15 +36,24 @@ async function fetchDR(domain: string): Promise<{ domain: string; dr: number; ra
         next: { revalidate: 21600 },
         signal: AbortSignal.timeout(8000),
       })
+
+      // Transient upstream problems → retry
       if (res.status === 429 || res.status >= 500) throw new Error(`upstream ${res.status}`)
-      if (!res.ok) throw new Error(`API ${res.status}`)
-      const data = await res.json()
+
+      // 4xx (except 429) = the API understood us but has nothing for this domain → DR 0
+      if (!res.ok) return toResult(domain, 0)
+
+      let data: any = null
+      try { data = await res.json() } catch { return toResult(domain, 0) }
+
       const raw = data?.domain_rating?.domain_rating
-      if (raw === undefined || raw === null) throw new Error('empty payload')
-      return toResult(domain, Math.round(raw))
+      // Response OK but no DR data → Ahrefs doesn't know this domain → DR 0
+      if (raw === undefined || raw === null) return toResult(domain, 0)
+
+      return toResult(domain, Math.round(Number(raw) || 0))
     } catch {
       if (attempt < MAX_ATTEMPTS) {
-        // Backoff grows per attempt: 400ms, 900ms
+        // Backoff grows per attempt: 500ms, 1100ms
         await sleep(400 * attempt + 100)
       }
     }
