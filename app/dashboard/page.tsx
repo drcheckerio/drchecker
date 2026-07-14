@@ -22,7 +22,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState<DRResult[]>([])
   const [error, setError] = useState('')
-  const [sortKey, setSortKey] = useState<SortKey>('dr')
+  const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [copied, setCopied] = useState(false)
 
@@ -53,7 +53,7 @@ export default function DashboardPage() {
   const handleCheck = async () => {
     const domains = input.split('\n').map(d => d.trim()).filter(Boolean)
     if (!domains.length) return
-    setLoading(true); setError(''); setResults([])
+    setLoading(true); setError(''); setResults([]); setSortKey(null)
     try {
       const res = await fetch('/api/dr-check', {
         method: 'POST',
@@ -76,7 +76,7 @@ export default function DashboardPage() {
     finally { setLoading(false) }
   }
 
-  const sorted = [...results].sort((a, b) => {
+  const sorted = sortKey === null ? [...results] : [...results].sort((a, b) => {
     let cmp = 0
     if (sortKey === 'dr') cmp = a.dr - b.dr
     else if (sortKey === 'domain') cmp = a.domain.localeCompare(b.domain)

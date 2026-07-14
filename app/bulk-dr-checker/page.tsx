@@ -34,7 +34,7 @@ export default function BulkCheckerPage() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState<DRResult[]>([])
-  const [sortKey, setSortKey] = useState<SortKey>('dr')
+  const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState('')
@@ -52,7 +52,7 @@ export default function BulkCheckerPage() {
 
     const domains = input.split('\n').map(d => d.trim()).filter(Boolean).slice(0, GUEST_DOMAINS_PER_CHECK)
     if (!domains.length) return
-    setLoading(true); setError(''); setResults([]); setProgress(0)
+    setLoading(true); setError(''); setResults([]); setSortKey(null); setProgress(0)
     try {
       const cleaned = domains.map(cleanDomain).filter(Boolean)
       const progressInterval = setInterval(() => setProgress(p => Math.min(p + 12, 88)), 250)
@@ -74,7 +74,7 @@ export default function BulkCheckerPage() {
     finally { setLoading(false); setTimeout(() => setProgress(0), 600) }
   }
 
-  const sortedResults = [...results].sort((a, b) => {
+  const sortedResults = sortKey === null ? [...results] : [...results].sort((a, b) => {
     let cmp = 0
     if (sortKey === 'dr') cmp = a.dr - b.dr
     else if (sortKey === 'domain') cmp = a.domain.localeCompare(b.domain)
