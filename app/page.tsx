@@ -231,6 +231,73 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* DA vs DR vs TF COMPARISON */}
+      <section className="section">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <div className="text-center mb-12">
+              <div className="badge-primary mb-4 inline-flex">Metrics Explained</div>
+              <h2 className="text-3xl sm:text-4xl font-black mb-4 text-white">DR vs DA vs TF — <span className="gradient-text">What's the Difference?</span></h2>
+              <p className="text-muted max-w-2xl mx-auto leading-relaxed">
+                Domain Rating (DR), Domain Authority (DA) and Trust Flow (TF) are the three most-used authority metrics in SEO. Each comes from a different provider and measures backlink strength in its own way. Here's how they compare.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+            {[
+              {
+                abbr: 'DR', name: 'Domain Rating', provider: 'by Ahrefs', color: '#FF8A1E',
+                desc: 'Measures the strength of a website\'s backlink profile on a 0–100 logarithmic scale. The dominant currency in link building and site-flipping markets.',
+                points: ['Based on Ahrefs\' live link index', 'Focuses on referring domain strength', 'Industry standard for link value'],
+              },
+              {
+                abbr: 'DA', name: 'Domain Authority', provider: 'by Moz', color: '#3B82F6',
+                desc: 'Moz\'s 0–100 score predicting how well a domain will rank in search. Widely quoted in outreach and guest-posting circles.',
+                points: ['Based on Moz\'s Link Explorer', 'Predicts ranking potential', 'Popular in outreach vetting'],
+              },
+              {
+                abbr: 'TF', name: 'Trust Flow', provider: 'by Majestic', color: '#22C55E',
+                desc: 'Majestic\'s metric scoring the quality and trustworthiness of links pointing to a site, paired with Citation Flow for quantity.',
+                points: ['Based on Majestic\'s index', 'Weights link trust & quality', 'Best read alongside Citation Flow'],
+              },
+            ].map((m, i) => (
+              <Reveal key={m.abbr} delay={i * 90}>
+                <div className="card p-6 h-full">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center font-black text-lg"
+                      style={{ background: `${m.color}18`, color: m.color, border: `1px solid ${m.color}40` }}>
+                      {m.abbr}
+                    </div>
+                    <div>
+                      <div className="font-extrabold text-white leading-tight">{m.name}</div>
+                      <div className="text-xs text-muted">{m.provider}</div>
+                    </div>
+                  </div>
+                  <p className="text-muted text-sm leading-relaxed mb-4">{m.desc}</p>
+                  <ul className="space-y-2">
+                    {m.points.map((p) => (
+                      <li key={p} className="flex items-start gap-2 text-xs text-muted">
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: m.color }}></span>
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={200}>
+            <div className="card p-6 sm:p-7">
+              <p className="text-muted text-sm leading-relaxed">
+                <strong className="text-white">Which should you use?</strong> Most SEO professionals lead with <strong className="text-white">DR</strong> because Ahrefs runs one of the largest live backlink indexes, making it the most responsive of the three — and the default metric quoted on link marketplaces. That said, smart link vetting rarely relies on a single number. Cross-referencing metrics gives a fuller picture: a domain with strong DR but weak Trust Flow may have high link <em>volume</em> but questionable link <em>quality</em>. For a second opinion on any domain, you can check its Moz score with this <a href="https://dachecker.io/domain-authority-checker" target="_blank" rel="noopener" className="font-semibold underline" style={{ color: '#FFA94D' }}>Domain Authority Checker</a>, then compare it against the DR you get here. Reading DR, DA and TF together is the most reliable way to judge a site\'s true authority before you buy a link or a domain.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* PRICING */}
       <section className="section" id="pricing">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
