@@ -53,7 +53,7 @@ export default function Footer() {
           <p className="text-muted text-xs">© {year} drchecker.io — All rights reserved.</p>
           <p className="text-muted text-xs flex items-center gap-1.5">
             <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse-soft" style={{ background: '#FF8A1E' }}></span>
-            Live DR data powered by Ahrefs
+            <a href="https://ahrefs.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Domain Rating by Ahrefs</a>
           </p>
         </div>
       </div>
