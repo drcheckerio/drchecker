@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     images: [{ url: "/logo-full.png", width: 1200, height: 600, alt: "DR Checker — Free Bulk Ahrefs DR Checker" }],
   },
   robots: { index: true, follow: true },
+  verification: { google: '038Zy26d8MIZrr_v03ytiDGcOaioLdaal1fcqgRJpNY' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
