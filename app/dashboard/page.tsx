@@ -39,9 +39,14 @@ export default function DashboardPage() {
     })
   }, [router, loadProfile])
 
-  const isPro = profile?.plan === 'pro'
+  const plan = profile?.plan === 'pro' ? 'pro' : profile?.plan === 'starter' ? 'starter' : 'free'
+  const isPro = plan === 'pro'
+  const isStarter = plan === 'starter'
+  const isPaid = isPro || isStarter
   const perCheck = isPro ? 1000 : 100
-  const perDay = isPro ? null : 10
+  const perDay = isPaid ? null : 10
+  const planLabel = isPro ? 'PRO Plan' : isStarter ? 'STARTER Plan' : 'Free Plan'
+  const planShort = isPro ? 'Pro' : isStarter ? 'Starter' : 'Free'
   const today = new Date().toISOString().slice(0, 10)
   const usedToday = profile?.last_check_date === today ? (profile?.checks_today ?? 0) : 0
 
@@ -146,12 +151,12 @@ export default function DashboardPage() {
             </h1>
             <p className="text-muted text-sm mt-1">Your bulk DR checking dashboard</p>
           </div>
-          <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold ${isPro ? '' : ''}`}
-            style={isPro
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold"
+            style={isPaid
               ? { background: 'linear-gradient(135deg, rgba(255,138,30,0.2), rgba(255,106,0,0.1))', border: '1px solid rgba(255,138,30,0.45)', color: '#FFA94D' }
               : { background: 'rgba(148,163,184,0.08)', border: '1px solid rgba(148,163,184,0.2)', color: '#CBD5E1' }}>
-            {isPro ? <Crown className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
-            {isPro ? 'PRO Plan' : 'Free Plan'}
+            {isPro ? <Crown className="w-4 h-4" /> : isStarter ? <Zap className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
+            {planLabel}
           </div>
         </div>
 
@@ -161,7 +166,7 @@ export default function DashboardPage() {
             { icon: <BarChart3 className="w-5 h-5" />, label: 'Domains per Check', value: perCheck.toLocaleString(), color: '#3B82F6' },
             { icon: <Zap className="w-5 h-5" />, label: 'Checks per Day', value: perDay === null ? 'Unlimited' : `${perDay}`, color: '#22C55E' },
             { icon: <TrendingUp className="w-5 h-5" />, label: 'Used Today', value: perDay === null ? '∞' : `${usedToday} / ${perDay}`, color: '#F59E0B' },
-            { icon: <Crown className="w-5 h-5" />, label: 'Plan', value: isPro ? 'Pro' : 'Free', color: '#FF8A1E' },
+            { icon: <Crown className="w-5 h-5" />, label: 'Plan', value: planShort, color: '#FF8A1E' },
           ].map((s, i) => (
             <div key={s.label} className="card p-5 animate-slide-up" style={{ animationDelay: `${i * 60}ms` }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: `${s.color}18`, color: s.color, border: `1px solid ${s.color}35` }}>
@@ -173,16 +178,20 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* Upgrade banner for free users */}
+        {/* Upgrade banner */}
         {!isPro && (
           <div className="card-glow p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Crown className="w-6 h-6 flex-shrink-0" style={{ color: '#FF8A1E' }} />
               <p className="text-sm text-white font-semibold">
-                Upgrade to Pro <span className="text-muted font-normal">— 1,000 domains per check, unlimited checks, just $5/month.</span>
+                {isStarter ? (
+                  <>Upgrade to Pro <span className="text-muted font-normal">— jump from 100 to 1,000 domains per check for $49/month.</span></>
+                ) : (
+                  <>Need more checks? <span className="text-muted font-normal">Starter ($9/mo) removes daily limits. Pro ($49/mo) unlocks 1,000 domains per check.</span></>
+                )}
               </p>
             </div>
-            <Link href="/#pricing" className="btn-primary px-5 py-2.5 text-xs flex-shrink-0">Upgrade to Pro</Link>
+            <Link href="/#pricing" className="btn-primary px-5 py-2.5 text-xs flex-shrink-0">{isStarter ? 'Upgrade to Pro' : 'See Plans'}</Link>
           </div>
         )}
 
@@ -215,7 +224,7 @@ export default function DashboardPage() {
           <div className="mb-6 px-4 py-4 rounded-xl text-sm flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between"
             style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', color: '#F87171' }}>
             <span>{error}</span>
-            {!isPro && <Link href="/#pricing" className="btn-primary px-4 py-2 text-xs flex-shrink-0">Upgrade to Pro</Link>}
+            {!isPro && <Link href="/#pricing" className="btn-primary px-4 py-2 text-xs flex-shrink-0">{isStarter ? 'Upgrade to Pro' : 'See Plans'}</Link>}
           </div>
         )}
 

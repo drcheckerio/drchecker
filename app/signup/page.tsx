@@ -94,7 +94,7 @@ export default function SignupPage() {
             </div>
 
             <div className="mt-6 space-y-2.5">
-              {['100 domains per bulk check', '10 checks every day', 'CSV export & sorting', 'Upgrade to Pro anytime — $5/mo'].map((f) => (
+              {['100 domains per bulk check', '10 checks every day', 'CSV export & sorting', 'Upgrade anytime — Starter $9 or Pro $49/mo'].map((f) => (
                 <div key={f} className="flex items-center gap-2 text-xs text-muted">
                   <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#22C55E' }} />
                   {f}

@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   if (!ctx) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const { userId, plan } = await req.json()
-  if (!userId || !['free', 'pro'].includes(plan)) {
+  if (!userId || !['free', 'starter', 'pro'].includes(plan)) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { Crown, Shield, LogOut, Search, Users, TrendingUp, LayoutDashboard, Check } from 'lucide-react'
+import { Crown, Shield, LogOut, Search, Users, TrendingUp, LayoutDashboard, Check, Zap } from 'lucide-react'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -29,7 +29,7 @@ export default function AdminPage() {
     })
   }, [router, loadUsers])
 
-  const setPlan = async (userId: string, plan: 'free' | 'pro') => {
+  const setPlan = async (userId: string, plan: 'free' | 'starter' | 'pro') => {
     setUpdating(userId)
     const res = await fetch('/api/admin/users', {
       method: 'POST',
@@ -56,6 +56,7 @@ export default function AdminPage() {
   )
 
   const proCount = users.filter(u => u.plan === 'pro').length
+  const starterCount = users.filter(u => u.plan === 'starter').length
 
   if (pageLoading) {
     return (
@@ -87,15 +88,16 @@ export default function AdminPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-8 animate-slide-up">
           <h1 className="text-2xl sm:text-3xl font-black text-white">Admin <span className="gradient-text">Panel</span></h1>
-          <p className="text-muted text-sm mt-1">Manage users and grant Pro access</p>
+          <p className="text-muted text-sm mt-1">Manage users and set their plan (Free / Starter / Pro)</p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             { icon: <Users className="w-5 h-5" />, label: 'Total Users', value: users.length, color: '#3B82F6' },
             { icon: <Crown className="w-5 h-5" />, label: 'Pro Users', value: proCount, color: '#FF8A1E' },
-            { icon: <TrendingUp className="w-5 h-5" />, label: 'Free Users', value: users.length - proCount, color: '#22C55E' },
+            { icon: <Zap className="w-5 h-5" />, label: 'Starter Users', value: starterCount, color: '#A855F7' },
+            { icon: <TrendingUp className="w-5 h-5" />, label: 'Free Users', value: users.length - proCount - starterCount, color: '#22C55E' },
           ].map((s, i) => (
             <div key={s.label} className="card p-5 animate-slide-up" style={{ animationDelay: `${i * 60}ms` }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: `${s.color}18`, color: s.color, border: `1px solid ${s.color}35` }}>{s.icon}</div>
@@ -122,7 +124,7 @@ export default function AdminPage() {
                   <th>Plan</th>
                   <th>Checks Today</th>
                   <th>Joined</th>
-                  <th style={{ textAlign: 'right' }}>Pro Access</th>
+                  <th style={{ textAlign: 'right' }}>Set Plan</th>
                 </tr>
               </thead>
               <tbody>
@@ -141,26 +143,31 @@ export default function AdminPage() {
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
                         style={u.plan === 'pro'
                           ? { background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.35)' }
+                          : u.plan === 'starter'
+                          ? { background: 'rgba(168,85,247,0.15)', color: '#C4A5F7', border: '1px solid rgba(168,85,247,0.35)' }
                           : { background: 'rgba(148,163,184,0.08)', color: '#CBD5E1', border: '1px solid rgba(148,163,184,0.2)' }}>
-                        {u.plan === 'pro' ? <Crown className="w-3 h-3" /> : <Shield className="w-3 h-3" />}
-                        {u.plan === 'pro' ? 'PRO' : 'FREE'}
+                        {u.plan === 'pro' ? <Crown className="w-3 h-3" /> : u.plan === 'starter' ? <Zap className="w-3 h-3" /> : <Shield className="w-3 h-3" />}
+                        {u.plan === 'pro' ? 'PRO' : u.plan === 'starter' ? 'STARTER' : 'FREE'}
                       </span>
                     </td>
                     <td className="text-sm text-muted">{u.last_check_date === new Date().toISOString().slice(0, 10) ? (u.checks_today ?? 0) : 0}</td>
                     <td className="text-sm text-muted">{new Date(u.created_at).toLocaleDateString()}</td>
                     <td>
-                      <div className="flex justify-end">
-                        {u.plan === 'pro' ? (
-                          <button onClick={() => setPlan(u.id, 'free')} disabled={updating === u.id}
-                            className="btn-outline px-4 py-2 text-xs disabled:opacity-50">
-                            {updating === u.id ? '...' : 'Revoke Pro'}
-                          </button>
-                        ) : (
-                          <button onClick={() => setPlan(u.id, 'pro')} disabled={updating === u.id}
-                            className="btn-primary px-4 py-2 text-xs gap-1.5 disabled:opacity-50">
-                            {updating === u.id ? '...' : <><Crown className="w-3 h-3" /> Grant Pro</>}
-                          </button>
-                        )}
+                      <div className="flex justify-end gap-1.5">
+                        {(['free', 'starter', 'pro'] as const).map((pl) => {
+                          const activePlan = u.plan === pl || (pl === 'free' && u.plan !== 'starter' && u.plan !== 'pro')
+                          return (
+                            <button key={pl} onClick={() => setPlan(u.id, pl)} disabled={updating === u.id || activePlan}
+                              className={`px-3 py-1.5 text-xs rounded-lg font-bold transition-all disabled:cursor-default ${activePlan ? '' : 'btn-outline'}`}
+                              style={activePlan ? (
+                                pl === 'pro' ? { background: 'rgba(255,138,30,0.18)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.4)' }
+                                : pl === 'starter' ? { background: 'rgba(168,85,247,0.18)', color: '#C4A5F7', border: '1px solid rgba(168,85,247,0.4)' }
+                                : { background: 'rgba(148,163,184,0.12)', color: '#CBD5E1', border: '1px solid rgba(148,163,184,0.25)' }
+                              ) : {}}>
+                              {updating === u.id ? '…' : pl === 'free' ? 'Free' : pl === 'starter' ? 'Starter' : 'Pro'}
+                            </button>
+                          )
+                        })}
                       </div>
                     </td>
                   </tr>
