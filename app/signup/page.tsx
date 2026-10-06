@@ -19,16 +19,25 @@ export default function SignupPage() {
     if (!email || !password || !name) { setError('Please fill in all fields.'); return }
     if (password.length < 6) { setError('Password must be at least 6 characters.'); return }
     setLoading(true); setError('')
-    const { data, error: err } = await supabase.auth.signUp({
-      email, password,
-      options: { data: { full_name: name } },
-    })
-    setLoading(false)
-    if (err) { setError(err.message); return }
-    if (data.session) {
-      router.push('/dashboard')
-    } else {
-      setNeedsConfirm(true)
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      })
+      const data = await res.json()
+      setLoading(false)
+      if (!res.ok) { setError(data.error || 'Something went wrong. Please try again.'); return }
+      if (data.needsConfirm) {
+        setNeedsConfirm(true)
+      } else {
+        // Email confirmation is off — sign in client-side to establish the session
+        await supabase.auth.signInWithPassword({ email, password })
+        router.push('/dashboard')
+      }
+    } catch {
+      setLoading(false)
+      setError('Could not reach the server. Please try again.')
     }
   }
 
