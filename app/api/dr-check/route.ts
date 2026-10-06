@@ -6,6 +6,27 @@ import { createServerSupabaseClient } from '@/lib/supabase'
 export const maxDuration = 60
 
 const DR_API = process.env.DR_API_ENDPOINT
+// Official Ahrefs free Domain Rating API key. When set, we call Ahrefs directly
+// (no Cloudflare Worker needed). Falls back to DR_API_ENDPOINT if the key is absent.
+const AHREFS_KEY = process.env.AHREFS_API_KEY
+
+function drRequest(domain: string): { url: string; init: RequestInit } {
+  const target = encodeURIComponent(domain)
+  if (AHREFS_KEY) {
+    return {
+      url: `https://api.ahrefs.com/v3/public/domain-rating-free?target=${target}`,
+      init: {
+        headers: { Accept: 'application/json', Authorization: `Bearer ${AHREFS_KEY}` },
+        next: { revalidate: 21600 },
+        signal: AbortSignal.timeout(8000),
+      },
+    }
+  }
+  return {
+    url: `${DR_API}/?target=${target}`,
+    init: { next: { revalidate: 21600 }, signal: AbortSignal.timeout(8000) },
+  }
+}
 
 const LIMITS = {
   guest: { perCheck: 100, perDay: 1 as number | null },
@@ -33,10 +54,8 @@ function toResult(domain: string, dr: number) {
 async function fetchDR(domain: string): Promise<{ domain: string; dr: number; rating: string; error?: string }> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      const res = await fetch(`${DR_API}/?target=${encodeURIComponent(domain)}`, {
-        next: { revalidate: 21600 },
-        signal: AbortSignal.timeout(8000),
-      })
+      const { url, init } = drRequest(domain)
+      const res = await fetch(url, init)
 
       // Transient upstream problems → retry
       if (res.status === 429 || res.status >= 500) throw new Error(`upstream ${res.status}`)
@@ -64,7 +83,7 @@ async function fetchDR(domain: string): Promise<{ domain: string; dr: number; ra
 
 export async function POST(req: NextRequest) {
   try {
-    if (!DR_API) return NextResponse.json({ error: 'DR API not configured' }, { status: 500 })
+    if (!AHREFS_KEY && !DR_API) return NextResponse.json({ error: 'DR API not configured' }, { status: 500 })
 
     const { domains } = await req.json()
     if (!domains || !Array.isArray(domains) || domains.length === 0) {
