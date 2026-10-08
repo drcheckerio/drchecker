@@ -26,6 +26,9 @@ export default function DashboardPage() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [copied, setCopied] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [checkedCount, setCheckedCount] = useState(0)
+  const [totalCount, setTotalCount] = useState(0)
 
   const loadProfile = useCallback(async (userId: string) => {
     const { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
@@ -67,28 +70,38 @@ export default function DashboardPage() {
     router.push('/')
   }
 
+  const CHUNK_SIZE = 100
+
   const handleCheck = async () => {
-    const domains = input.split('\n').map(d => d.trim()).filter(Boolean)
+    let domains = input.split('\n').map(d => d.trim()).filter(Boolean)
     if (!domains.length) return
+    domains = domains.slice(0, perCheck)
+    const total = domains.length
     setLoading(true); setError(''); setResults([]); setSortKey(null)
+    setProgress(0); setCheckedCount(0); setTotalCount(total)
+
+    const collected: DRResult[] = []
     try {
-      const res = await fetch('/api/dr-check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ domains }),
-      })
-      const data = await res.json()
-      if (res.status === 429) {
-        setError(data.error)
-      } else if (data.results) {
-        setResults(data.results)
-        loadProfile(session.user.id)
-      } else {
-        setError(data.error || 'Failed to fetch results.')
+      for (let i = 0; i < domains.length; i += CHUNK_SIZE) {
+        const chunk = domains.slice(i, i + CHUNK_SIZE)
+        const res = await fetch('/api/dr-check', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ domains: chunk }),
+        })
+        const data = await res.json()
+        if (res.status === 429) { setError(data.error); setLoading(false); return }
+        if (!data.results) { setError(data.error || 'Failed to fetch results.'); setLoading(false); return }
+        collected.push(...data.results)
+        const done = Math.min(i + chunk.length, total)
+        setResults([...collected])
+        setCheckedCount(done)
+        setProgress(Math.round((done / total) * 100))
       }
+      loadProfile(session.user.id)
     } catch { setError('Something went wrong. Please try again.') }
     finally { setLoading(false) }
   }
@@ -223,9 +236,28 @@ export default function DashboardPage() {
           )}
           <button onClick={handleCheck} disabled={loading || !input.trim()} className="mt-4 btn-primary w-full py-3.5 text-sm gap-2">
             {loading
-              ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking domains...</>
+              ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking {checkedCount.toLocaleString()} / {totalCount.toLocaleString()} domains…</>
               : <><Globe className="w-4 h-4" /> Check DR for All Domains</>}
           </button>
+
+          {loading && totalCount > 0 && (
+            <div className="mt-4 animate-slide-up">
+              <div className="flex items-center justify-between mb-2 text-xs">
+                <span className="font-semibold text-white flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full animate-pulse-soft" style={{ background: '#FF8A1E', boxShadow: '0 0 8px #FF8A1E' }}></span>
+                  Fetching live Ahrefs DR…
+                </span>
+                <span className="font-black" style={{ color: '#FFA94D' }}>{progress}%</span>
+              </div>
+              <div className="w-full h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(148,163,184,0.12)' }}>
+                <div className="h-full rounded-full transition-all duration-500 ease-out relative"
+                  style={{ width: `${Math.max(progress, 3)}%`, background: 'linear-gradient(90deg, #FF8A1E, #FF6A00)', boxShadow: '0 0 12px rgba(255,138,30,0.5)' }}>
+                  <div className="absolute inset-0 opacity-40" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)', animation: 'shimmer 1.5s linear infinite' }}></div>
+                </div>
+              </div>
+              <p className="text-xs text-muted mt-2 text-center">{checkedCount.toLocaleString()} of {totalCount.toLocaleString()} domains checked{totalCount >= 500 ? ' · large checks can take up to a minute' : ''}</p>
+            </div>
+          )}
         </div>
 
         {error && (
