@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import { DRResult } from '@/types'
@@ -7,6 +7,7 @@ import { cleanDomain, getDRColor, getDRRating } from '@/lib/utils'
 import { ArrowUpDown, Download, Copy, Check, ChevronUp, ChevronDown, Layers, Globe, AlertCircle, Crown } from 'lucide-react'
 import Reveal from '@/components/layout/Reveal'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 
 type SortKey = 'domain' | 'dr' | 'rating'
 type SortDir = 'asc' | 'desc'
@@ -41,37 +42,71 @@ export default function BulkCheckerPage() {
   const [progress, setProgress] = useState(0)
   const [checksUsed, setChecksUsed] = useState<number | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [session, setSession] = useState<any>(null)
+  const [plan, setPlan] = useState<'guest' | 'free' | 'pro'>('guest')
+  const [checkedCount, setCheckedCount] = useState(0)
+  const [totalCount, setTotalCount] = useState(0)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setSession(session)
+      if (session?.user) {
+        const { data } = await supabase.from('profiles').select('plan').eq('id', session.user.id).single()
+        setPlan(data?.plan === 'pro' ? 'pro' : 'free')
+      }
+    })
+    const { data: sub } = supabase.auth.onAuthStateChange(async (_e, s) => {
+      setSession(s)
+      if (s?.user) {
+        const { data } = await supabase.from('profiles').select('plan').eq('id', s.user.id).single()
+        setPlan(data?.plan === 'pro' ? 'pro' : 'free')
+      } else setPlan('guest')
+    })
+    return () => sub.subscription.unsubscribe()
+  }, [])
+
+  const isLoggedIn = !!session
+  const perCheck = plan === 'pro' ? 1000 : plan === 'free' ? 50 : GUEST_DOMAINS_PER_CHECK
+  const perDay: number | null = plan === 'pro' ? null : plan === 'free' ? 10 : GUEST_CHECKS_PER_DAY
+
+  const CHUNK_SIZE = 100
 
   const handleCheck = async () => {
-    const used = getGuestChecksToday()
-    setChecksUsed(used)
-    if (used >= GUEST_CHECKS_PER_DAY) {
-      setError(`You've used all ${GUEST_CHECKS_PER_DAY} free checks for today. Sign up free for 50 domains per check — or upgrade to Pro for 1,000 domains with unlimited checks.`)
-      return
+    // Guests are limited client-side; logged-in users are enforced server-side by plan.
+    if (!isLoggedIn) {
+      const used = getGuestChecksToday()
+      setChecksUsed(used)
+      if (used >= GUEST_CHECKS_PER_DAY) {
+        setError(`You've used all ${GUEST_CHECKS_PER_DAY} free checks for today. Sign up free for 50 domains per check — or upgrade to Pro for 1,000 domains with unlimited checks.`)
+        return
+      }
     }
 
-    const domains = input.split('\n').map(d => d.trim()).filter(Boolean).slice(0, GUEST_DOMAINS_PER_CHECK)
+    let domains = input.split('\n').map(d => d.trim()).filter(Boolean).slice(0, perCheck)
     if (!domains.length) return
-    setLoading(true); setError(''); setResults([]); setSortKey(null); setProgress(0)
+    const total = domains.length
+    setLoading(true); setError(''); setResults([]); setSortKey(null)
+    setProgress(0); setCheckedCount(0); setTotalCount(total)
+
+    const collected: DRResult[] = []
     try {
-      const cleaned = domains.map(cleanDomain).filter(Boolean)
-      const progressInterval = setInterval(() => setProgress(p => Math.min(p + 12, 88)), 250)
-      const res = await fetch('/api/dr-check', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ domains: cleaned }),
-      })
-      clearInterval(progressInterval)
-      setProgress(100)
-      const data = await res.json()
-      if (data.results) {
-        setResults(data.results)
-        setChecksUsed(incrementGuestChecks())
-      } else {
-        setError('Failed to fetch results. Please try again.')
+      for (let i = 0; i < domains.length; i += CHUNK_SIZE) {
+        const chunk = domains.slice(i, i + CHUNK_SIZE).map(cleanDomain).filter(Boolean)
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+        if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+        const res = await fetch('/api/dr-check', {
+          method: 'POST', headers, body: JSON.stringify({ domains: chunk }),
+        })
+        const data = await res.json()
+        if (res.status === 429) { setError(data.error); setLoading(false); return }
+        if (!data.results) { setError('Failed to fetch results. Please try again.'); setLoading(false); return }
+        collected.push(...data.results)
+        const done = Math.min(i + chunk.length, total)
+        setResults([...collected]); setCheckedCount(done); setProgress(Math.round((done / total) * 100))
       }
+      if (!isLoggedIn) setChecksUsed(incrementGuestChecks())
     } catch { setError('Something went wrong. Please try again.') }
-    finally { setLoading(false); setTimeout(() => setProgress(0), 600) }
+    finally { setLoading(false) }
   }
 
   const sortedResults = sortKey === null ? [...results] : [...results].sort((a, b) => {
@@ -123,30 +158,32 @@ export default function BulkCheckerPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
           {[
-            { icon: '👤', label: 'Guest', limit: '20 domains · 10 checks/day', active: true, href: '' },
-            { icon: '✅', label: 'Free Account', limit: '50 domains · 10 checks/day', active: false, href: '/signup' },
-            { icon: '👑', label: 'Pro — $19/mo', limit: '1,000 domains · Unlimited', active: false, href: '/#pricing' },
-          ].map((tier) => (
-            <div key={tier.label} className="card p-4 flex items-center gap-3"
-              style={tier.active ? { borderColor: 'rgba(255,138,30,0.4)', background: 'rgba(255,138,30,0.05)' } : {}}>
+            { key: 'guest', icon: '👤', label: 'Guest', limit: '20 domains · 10 checks/day', href: '/signup', cta: 'Sign up' },
+            { key: 'free', icon: '✅', label: 'Free Account', limit: '50 domains · 10 checks/day', href: '/#pricing', cta: 'Upgrade' },
+            { key: 'pro', icon: '👑', label: 'Pro — $19/mo', limit: '1,000 domains · Unlimited', href: '/#pricing', cta: 'Upgrade' },
+          ].map((tier) => {
+            const active = tier.key === plan
+            return (
+            <div key={tier.key} className="card p-4 flex items-center gap-3"
+              style={active ? { borderColor: 'rgba(255,138,30,0.4)', background: 'rgba(255,138,30,0.05)' } : {}}>
               <span className="text-xl">{tier.icon}</span>
               <div className="min-w-0">
                 <div className="text-xs font-extrabold text-white">{tier.label}</div>
                 <div className="text-xs text-muted truncate">{tier.limit}</div>
               </div>
-              {tier.active
+              {active
                 ? <span className="ml-auto text-xs font-bold flex-shrink-0" style={{ color: '#FF8A1E' }}>Current</span>
-                : <Link href={tier.href} className="ml-auto text-xs font-bold hover:underline flex-shrink-0" style={{ color: '#FF8A1E' }}>Upgrade</Link>}
+                : <Link href={tier.href} className="ml-auto text-xs font-bold hover:underline flex-shrink-0" style={{ color: '#FF8A1E' }}>{tier.cta}</Link>}
             </div>
-          ))}
+          )})}
         </div>
 
         <div className="card p-5 sm:p-6 mb-6" style={{ background: 'rgba(15,22,41,0.65)' }}>
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
             <label className="text-sm font-bold text-white">Enter Domains <span className="text-muted font-normal">(one per line)</span></label>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${domainCount > GUEST_DOMAINS_PER_CHECK ? '' : 'text-muted'}`}
-              style={domainCount > GUEST_DOMAINS_PER_CHECK ? { color: '#F59E0B', background: 'rgba(245,158,11,0.12)' } : {}}>
-              {domainCount} / {GUEST_DOMAINS_PER_CHECK} domains
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${domainCount > perCheck ? '' : 'text-muted'}`}
+              style={domainCount > perCheck ? { color: '#F59E0B', background: 'rgba(245,158,11,0.12)' } : {}}>
+              {domainCount.toLocaleString()} / {perCheck.toLocaleString()} domains
             </span>
           </div>
           <textarea
@@ -156,25 +193,47 @@ export default function BulkCheckerPage() {
             rows={8}
             className="input-dark w-full px-4 py-3 text-sm font-mono resize-none"
           />
-          {domainCount > GUEST_DOMAINS_PER_CHECK && (
+          {domainCount > perCheck && (
             <div className="mt-2 flex items-center gap-2 text-xs flex-wrap" style={{ color: '#F59E0B' }}>
               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-              Only the first {GUEST_DOMAINS_PER_CHECK} domains will be checked. <Link href="/signup" className="underline font-semibold">Sign up free</Link> for 50 per check.
+              Only the first {perCheck.toLocaleString()} domains will be checked.
+              {plan === 'guest' && <> <Link href="/signup" className="underline font-semibold">Sign up free</Link> for 50 per check.</>}
+              {plan === 'free' && <> <Link href="/#pricing" className="underline font-semibold">Upgrade to Pro</Link> for 1,000 per check.</>}
             </div>
           )}
           <button onClick={handleCheck} disabled={loading || !input.trim()}
             className="mt-4 btn-primary w-full py-3.5 text-sm gap-2">
             {loading
-              ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking domains...</>
+              ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking {checkedCount.toLocaleString()} / {totalCount.toLocaleString()} domains…</>
               : <><Globe className="w-4 h-4" /> Check DR for All Domains</>}
           </button>
-          {loading && progress > 0 && (
-            <div className="mt-3 w-full h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
-              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #FF8A1E, #FF6A00)' }} />
+
+          {loading && totalCount > 0 && (
+            <div className="mt-4 animate-slide-up">
+              <div className="flex items-center justify-between mb-2 text-xs">
+                <span className="font-semibold text-white flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full animate-pulse-soft" style={{ background: '#FF8A1E', boxShadow: '0 0 8px #FF8A1E' }}></span>
+                  Fetching live Ahrefs DR…
+                </span>
+                <span className="font-black" style={{ color: '#FFA94D' }}>{progress}%</span>
+              </div>
+              <div className="w-full h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(148,163,184,0.12)' }}>
+                <div className="h-full rounded-full transition-all duration-500 ease-out relative"
+                  style={{ width: `${Math.max(progress, 3)}%`, background: 'linear-gradient(90deg, #FF8A1E, #FF6A00)', boxShadow: '0 0 12px rgba(255,138,30,0.5)' }}>
+                  <div className="absolute inset-0 opacity-40" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)', animation: 'shimmer 1.5s linear infinite' }}></div>
+                </div>
+              </div>
+              <p className="text-xs text-muted mt-2 text-center">{checkedCount.toLocaleString()} of {totalCount.toLocaleString()} domains checked{totalCount >= 500 ? ' · large checks can take up to a minute' : ''}</p>
             </div>
           )}
-          {checksUsed !== null && checksUsed < GUEST_CHECKS_PER_DAY && (
-            <p className="mt-3 text-xs text-muted text-center">{GUEST_CHECKS_PER_DAY - checksUsed} of {GUEST_CHECKS_PER_DAY} free checks remaining today</p>
+          {!isLoggedIn && checksUsed !== null && checksUsed < GUEST_CHECKS_PER_DAY && !loading && (
+            <p className="mt-3 text-xs text-muted text-center">{GUEST_CHECKS_PER_DAY - checksUsed} of {GUEST_CHECKS_PER_DAY} free checks remaining today · <Link href="/signup" className="underline" style={{ color: '#FFA94D' }}>sign up for 50/check</Link></p>
+          )}
+          {isLoggedIn && !loading && (
+            <p className="mt-3 text-xs text-muted text-center">
+              {plan === 'pro' ? 'Pro plan · 1,000 domains per check · unlimited checks' : 'Free account · 50 domains per check · 10 checks/day · '}
+              {plan === 'free' && <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>upgrade to Pro for 1,000/check</Link>}
+            </p>
           )}
         </div>
 
