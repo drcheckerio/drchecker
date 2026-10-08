@@ -4,8 +4,10 @@ import { useRouter } from 'next/navigation'
 import { initializePaddle, type Paddle } from '@paddle/paddle-js'
 import { supabase } from '@/lib/supabase'
 
-const CLIENT_TOKEN = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN
-const PRICE_PRO = process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO
+// Sandbox defaults (client token + price ID are public by design). Production
+// values, when set in Vercel env, override these automatically.
+const CLIENT_TOKEN = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_7ce4c1d401e253b34dc0d0bc784'
+const PRICE_PRO = process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO || 'pri_01m4ecg94e74paqk6g9z4b24y1'
 const PADDLE_ENV = (process.env.NEXT_PUBLIC_PADDLE_ENV as 'sandbox' | 'production') || 'sandbox'
 
 export default function UpgradeButton({
