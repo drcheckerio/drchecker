@@ -65,7 +65,7 @@ export default function SignupPage() {
         ) : (
           <div className="card-glow p-8">
             <h1 className="text-2xl font-black text-white text-center mb-1">Create Your <span className="gradient-text">Free Account</span></h1>
-            <p className="text-muted text-sm text-center mb-7">100 domains per check · 10 checks per day · free forever</p>
+            <p className="text-muted text-sm text-center mb-7">50 domains per check · 10 checks per day · free forever</p>
 
             <div className="space-y-4">
               <div className="relative">
@@ -103,7 +103,7 @@ export default function SignupPage() {
             </div>
 
             <div className="mt-6 space-y-2.5">
-              {['100 domains per bulk check', '10 checks every day', 'CSV export & sorting', 'Upgrade anytime — Starter $9 or Pro $49/mo'].map((f) => (
+              {['50 domains per bulk check', '10 checks every day', 'CSV export & sorting', 'Upgrade to Pro anytime — $19/mo'].map((f) => (
                 <div key={f} className="flex items-center gap-2 text-xs text-muted">
                   <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#22C55E' }} />
                   {f}

@@ -39,14 +39,12 @@ export default function DashboardPage() {
     })
   }, [router, loadProfile])
 
-  const plan = profile?.plan === 'pro' ? 'pro' : profile?.plan === 'starter' ? 'starter' : 'free'
+  const plan = profile?.plan === 'pro' ? 'pro' : 'free'
   const isPro = plan === 'pro'
-  const isStarter = plan === 'starter'
-  const isPaid = isPro || isStarter
-  const perCheck = isPro ? 1000 : 100
-  const perDay = isPaid ? null : 10
-  const planLabel = isPro ? 'PRO Plan' : isStarter ? 'STARTER Plan' : 'Free Plan'
-  const planShort = isPro ? 'Pro' : isStarter ? 'Starter' : 'Free'
+  const perCheck = isPro ? 1000 : 50
+  const perDay = isPro ? null : 10
+  const planLabel = isPro ? 'PRO Plan' : 'Free Plan'
+  const planShort = isPro ? 'Pro' : 'Free'
   const today = new Date().toISOString().slice(0, 10)
   const usedToday = profile?.last_check_date === today ? (profile?.checks_today ?? 0) : 0
 
@@ -152,10 +150,10 @@ export default function DashboardPage() {
             <p className="text-muted text-sm mt-1">Your bulk DR checking dashboard</p>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold"
-            style={isPaid
+            style={isPro
               ? { background: 'linear-gradient(135deg, rgba(255,138,30,0.2), rgba(255,106,0,0.1))', border: '1px solid rgba(255,138,30,0.45)', color: '#FFA94D' }
               : { background: 'rgba(148,163,184,0.08)', border: '1px solid rgba(148,163,184,0.2)', color: '#CBD5E1' }}>
-            {isPro ? <Crown className="w-4 h-4" /> : isStarter ? <Zap className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
+            {isPro ? <Crown className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
             {planLabel}
           </div>
         </div>
@@ -184,14 +182,10 @@ export default function DashboardPage() {
             <div className="flex items-center gap-3">
               <Crown className="w-6 h-6 flex-shrink-0" style={{ color: '#FF8A1E' }} />
               <p className="text-sm text-white font-semibold">
-                {isStarter ? (
-                  <>Upgrade to Pro <span className="text-muted font-normal">— jump from 100 to 1,000 domains per check for $49/month.</span></>
-                ) : (
-                  <>Need more checks? <span className="text-muted font-normal">Starter ($9/mo) removes daily limits. Pro ($49/mo) unlocks 1,000 domains per check.</span></>
-                )}
+                Upgrade to Pro <span className="text-muted font-normal">— 1,000 domains per check with unlimited checks, just $19/month.</span>
               </p>
             </div>
-            <Link href="/#pricing" className="btn-primary px-5 py-2.5 text-xs flex-shrink-0">{isStarter ? 'Upgrade to Pro' : 'See Plans'}</Link>
+            <Link href="/#pricing" className="btn-primary px-5 py-2.5 text-xs flex-shrink-0">Upgrade to Pro</Link>
           </div>
         )}
 
@@ -224,7 +218,7 @@ export default function DashboardPage() {
           <div className="mb-6 px-4 py-4 rounded-xl text-sm flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between"
             style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', color: '#F87171' }}>
             <span>{error}</span>
-            {!isPro && <Link href="/#pricing" className="btn-primary px-4 py-2 text-xs flex-shrink-0">{isStarter ? 'Upgrade to Pro' : 'See Plans'}</Link>}
+            {!isPro && <Link href="/#pricing" className="btn-primary px-4 py-2 text-xs flex-shrink-0">Upgrade to Pro</Link>}
           </div>
         )}
 

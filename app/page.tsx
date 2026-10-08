@@ -69,21 +69,16 @@ export default function HomePage() {
   const plans = [
     {
       name: 'Guest', icon: <Users className="w-5 h-5" />, price: 'Free', period: 'no account needed',
-      features: ['100 domains per check', '1 free check', 'Live Ahrefs DR data', 'PNG download of results', 'Full DR result card'],
+      features: ['20 domains per check', '10 checks per day', 'Live Ahrefs DR data', 'PNG download of results', 'Full DR result card'],
       cta: 'Start Checking', href: '#top', highlight: false,
     },
     {
       name: 'Free Account', icon: <Shield className="w-5 h-5" />, price: '$0', period: 'forever free',
-      features: ['100 domains per check', '10 checks per day', 'CSV export of bulk results', 'Dashboard access', 'Email support'],
+      features: ['50 domains per check', '10 checks per day', 'CSV export of bulk results', 'Dashboard access', 'Email support'],
       cta: 'Create Free Account', href: '/signup', highlight: false,
     },
     {
-      name: 'Starter', icon: <Zap className="w-5 h-5" />, price: '$9', period: 'per month',
-      features: ['100 domains per check', 'Unlimited checks', 'No daily limits', 'Bulk CSV + copy export', 'Priority support', 'Cancel anytime'],
-      cta: 'Get Starter', href: '/signup?plan=starter', highlight: false,
-    },
-    {
-      name: 'Pro', icon: <Crown className="w-5 h-5" />, price: '$49', period: 'per month',
+      name: 'Pro', icon: <Crown className="w-5 h-5" />, price: '$19', period: 'per month',
       features: ['1,000 domains per check', 'Unlimited checks', 'Highest bulk capacity online', 'Priority processing speed', 'Priority support', 'Cancel anytime'],
       cta: 'Go Pro Now', href: '/signup?plan=pro', highlight: true,
     },
@@ -91,7 +86,7 @@ export default function HomePage() {
 
   const faqs = [
     { q: 'What is Ahrefs Domain Rating (DR)?', a: "Ahrefs Domain Rating (DR) is a metric that shows the strength of a website's backlink profile on a logarithmic scale from 0 to 100. The higher the DR, the stronger and more authoritative the website is considered by SEO professionals worldwide." },
-    { q: 'Is this DR checker really free?', a: 'Yes. Guests can run 1 free check of up to 100 domains with no account. Create a free account for 10 checks per day. Need more? Starter ($9/mo) gives unlimited 100-domain checks, and Pro ($49/mo) unlocks 1,000 domains per check with unlimited checks.' },
+    { q: 'Is this DR checker really free?', a: 'Yes. Guests can check up to 20 domains per check, 10 times per day with no account. Create a free account to raise that to 50 domains per check, 10 times daily. Pro ($19/mo) unlocks 1,000 domains per check with unlimited checks.' },
     { q: 'How do you increase Domain Rating?', a: 'We increase DR through high-authority backlink placement using proven white-hat methodologies. Your website gains links from strong, established domains which raises your Ahrefs DR. The process typically takes 2–4 weeks to complete.' },
     { q: 'Is the DR increase permanent?', a: 'Yes — our DR 20+, 30+ and 40+ packages come with a Lifetime Permanent Guarantee. The DR 50+ and DR 70+ packages include a full 1 Year Permanent Guarantee. If your DR drops below the target within the guarantee period, we restore it free of charge.' },
     { q: 'How long does it take to increase DR?', a: 'DR increase campaigns typically take 2–4 weeks to fully reflect in Ahrefs. This is the natural time Ahrefs takes to crawl, index, and recalculate ratings after new authority links are established.' },
@@ -148,7 +143,7 @@ export default function HomePage() {
               </button>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-between mt-3 px-1 gap-2">
-              <p className="text-xs text-muted">Free · 100 domains per check · 1 free check — <Link href="/signup" style={{ color: '#FFA94D' }}>sign up</Link> for 10/day</p>
+              <p className="text-xs text-muted">Free · 20 domains per check · 10 checks/day — <Link href="/signup" style={{ color: '#FFA94D' }}>sign up</Link> for 50/check</p>
               <Link href="/bulk-dr-checker"
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: 'rgba(255,138,30,0.14)', border: '1px solid rgba(255,138,30,0.35)', color: '#FFA94D' }}>
@@ -225,7 +220,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-3">
                   <Crown className="w-5 h-5 flex-shrink-0" style={{ color: '#FF8A1E' }} />
                   <p className="text-sm text-white font-semibold">
-                    Checking many sites? <span className="text-muted font-normal">Pro gives you 1,000 domains per check, unlimited — $49/month. Starter is $9/mo for unlimited 100-domain checks.</span>
+                    Checking many sites? <span className="text-muted font-normal">Pro gives you 1,000 domains per check with unlimited checks — just $19/month.</span>
                   </p>
                 </div>
                 <Link href="/#pricing" className="btn-primary px-5 py-2 text-xs flex-shrink-0">Upgrade to Pro</Link>
@@ -311,7 +306,7 @@ export default function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-black mb-4 text-white">Simple, <span className="gradient-text">Honest Pricing</span></h2>
             <p className="text-muted max-w-xl mx-auto">Start checking for free. Upgrade only when you need serious volume.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             {plans.map((plan) => (
               <div key={plan.name}
                 className={`relative p-6 flex flex-col rounded-2xl transition-transform duration-300 hover:-translate-y-1 ${plan.highlight ? 'card-glow' : 'card'}`}
@@ -580,7 +575,7 @@ export default function HomePage() {
                   <p className="text-muted text-sm leading-relaxed"><strong className="text-white">Website value:</strong> DR is the first metric every website buyer checks. <strong className="text-white">Partnerships:</strong> brands and agencies filter outreach targets by DR — a strong rating gets your emails answered.</p>
                 </> },
                 { icon: '🆓', title: 'How to Check Ahrefs DR for Free', body: <>
-                  <p className="text-muted text-sm leading-relaxed">Checking DR normally requires a $99+/month Ahrefs subscription. Our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> pulls the same live data at zero cost — guests get 1 free check of up to 100 domains, a <Link href="/signup" className="underline" style={{ color: '#FFA94D' }}>free account</Link> unlocks 100 domains 10 times daily, Starter ($9/mo) gives unlimited 100-domain checks, and <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>Pro at $49/month</Link> gives you 1,000 domains per check with unlimited runs. Every single check produces a shareable result card downloadable as PNG.</p>
+                  <p className="text-muted text-sm leading-relaxed">Checking DR normally requires a $99+/month Ahrefs subscription. Our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> pulls the same live data at zero cost — guests get 20 domains per check 10 times daily, a <Link href="/signup" className="underline" style={{ color: '#FFA94D' }}>free account</Link> unlocks 50 domains per check 10 times daily, and <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>Pro at $19/month</Link> gives you 1,000 domains per check with unlimited runs. Every single check produces a shareable result card downloadable as PNG.</p>
                 </> },
                 { icon: '📈', title: 'How to Increase Your Domain Rating', body: <>
                   <p className="text-muted text-sm leading-relaxed mb-3">Organic routes — link-worthy content, digital PR, guest posting — work but often take 6–12 months. Our <Link href="/increase-dr" className="underline" style={{ color: '#FFA94D' }}>Increase DR service</Link> handles everything: high-authority white-hat backlinks raise your DR to a guaranteed target of <strong className="text-white">20+, 30+, 40+, 50+, 70+, 75+ or 80+</strong> within 2–4 weeks.</p>

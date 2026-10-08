@@ -11,8 +11,8 @@ import Link from 'next/link'
 type SortKey = 'domain' | 'dr' | 'rating'
 type SortDir = 'asc' | 'desc'
 
-const GUEST_DOMAINS_PER_CHECK = 100
-const GUEST_CHECKS_PER_DAY = 1
+const GUEST_DOMAINS_PER_CHECK = 20
+const GUEST_CHECKS_PER_DAY = 10
 
 function getGuestChecksToday(): number {
   if (typeof window === 'undefined') return 0
@@ -46,7 +46,7 @@ export default function BulkCheckerPage() {
     const used = getGuestChecksToday()
     setChecksUsed(used)
     if (used >= GUEST_CHECKS_PER_DAY) {
-      setError(`You've used your free check for today. Sign up free for 10 checks/day with 100 domains each — or upgrade for unlimited checks.`)
+      setError(`You've used all ${GUEST_CHECKS_PER_DAY} free checks for today. Sign up free for 50 domains per check — or upgrade to Pro for 1,000 domains with unlimited checks.`)
       return
     }
 
@@ -121,12 +121,11 @@ export default function BulkCheckerPage() {
           <p className="text-muted max-w-xl mx-auto">Check Ahrefs Domain Rating for up to 1,000 domains at once — the most powerful bulk DR checker available online. Paste one domain per line.</p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
           {[
-            { icon: '👤', label: 'Guest', limit: '100 domains · 1 free check', active: true, href: '' },
-            { icon: '✅', label: 'Free Account', limit: '100 domains · 10 checks/day', active: false, href: '/signup' },
-            { icon: '⚡', label: 'Starter — $9/mo', limit: '100 domains · Unlimited', active: false, href: '/#pricing' },
-            { icon: '👑', label: 'Pro — $49/mo', limit: '1,000 domains · Unlimited', active: false, href: '/#pricing' },
+            { icon: '👤', label: 'Guest', limit: '20 domains · 10 checks/day', active: true, href: '' },
+            { icon: '✅', label: 'Free Account', limit: '50 domains · 10 checks/day', active: false, href: '/signup' },
+            { icon: '👑', label: 'Pro — $19/mo', limit: '1,000 domains · Unlimited', active: false, href: '/#pricing' },
           ].map((tier) => (
             <div key={tier.label} className="card p-4 flex items-center gap-3"
               style={tier.active ? { borderColor: 'rgba(255,138,30,0.4)', background: 'rgba(255,138,30,0.05)' } : {}}>
@@ -160,7 +159,7 @@ export default function BulkCheckerPage() {
           {domainCount > GUEST_DOMAINS_PER_CHECK && (
             <div className="mt-2 flex items-center gap-2 text-xs flex-wrap" style={{ color: '#F59E0B' }}>
               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-              Only the first {GUEST_DOMAINS_PER_CHECK} domains will be checked. <Link href="/signup" className="underline font-semibold">Sign up free</Link> for 100 per check.
+              Only the first {GUEST_DOMAINS_PER_CHECK} domains will be checked. <Link href="/signup" className="underline font-semibold">Sign up free</Link> for 50 per check.
             </div>
           )}
           <button onClick={handleCheck} disabled={loading || !input.trim()}
@@ -271,10 +270,10 @@ export default function BulkCheckerPage() {
         <div className="mt-8 card-glow p-6 text-center">
           <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#FF8A1E' }} />
           <h3 className="font-extrabold text-white mb-2">Unlock the Full Power of Bulk DR Checking</h3>
-          <p className="text-muted text-sm mb-5 max-w-md mx-auto">Free account: 100 domains × 10 checks/day. Starter ($9/mo): unlimited 100-domain checks. Pro ($49/mo): 1,000 domains per check, unlimited. No other bulk DR checker comes close.</p>
+          <p className="text-muted text-sm mb-5 max-w-md mx-auto">Free account: 50 domains × 10 checks/day. Pro ($19/mo): 1,000 domains per check with unlimited checks. No other bulk DR checker comes close.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/signup" className="btn-primary px-6 py-2.5 text-sm">Sign Up Free</Link>
-            <Link href="/#pricing" className="btn-outline px-6 py-2.5 text-sm">See Plans — from $9/mo</Link>
+            <Link href="/#pricing" className="btn-outline px-6 py-2.5 text-sm">Go Pro — $19/mo</Link>
           </div>
         </div>
 
@@ -295,7 +294,7 @@ export default function BulkCheckerPage() {
 
           <h2>No Other Website Offers This Much Bulk Checking</h2>
           <p>Here is the honest state of the market: most free DR checkers allow exactly one domain at a time. The handful that support bulk input typically cap you at 5, 10, or at best 20 domains per run, often behind aggressive captchas, and frequently serve cached or outdated scores. For anyone doing serious volume, those limits make the tools effectively useless.</p>
-          <p>Our bulk DR checker was built specifically to break that ceiling. As a <strong>guest with no account</strong>, you can run 1 free check of up to 100 domains — matching or beating the best free tools available. Create a <strong>free account</strong> and your capacity jumps to 100 domains per check, 10 times per day at zero cost. Need more volume? Our <strong>Starter plan at just $9/month</strong> removes the daily limit entirely for unlimited 100-domain checks, and our <strong>Pro plan at $49/month</strong> unlocks 1,000 domains in a single check with unlimited checks — a scale of bulk DR checking that, to our knowledge, no other website on the internet currently offers.</p>
+          <p>Our bulk DR checker was built specifically to break that ceiling. As a <strong>guest with no account</strong>, you can check 20 domains per run, 10 times per day — matching or beating the best free tools available. Create a <strong>free account</strong> and your capacity jumps to 50 domains per check, 10 times per day at zero cost. Need serious volume? Our <strong>Pro plan at just $19/month</strong> unlocks 1,000 domains in a single check with unlimited checks — a scale of bulk DR checking that, to our knowledge, no other website on the internet currently offers.</p>
           <p>Every result is pulled from <strong>live Ahrefs data</strong> — the same figures you would see inside Ahrefs Site Explorer at that moment, not stale snapshots from a months-old database. When you are pricing a link placement or approving a domain purchase, that freshness is the difference between a good decision and an expensive mistake.</p>
 
           <h2>Who Needs a Bulk Domain Rating Checker?</h2>
@@ -310,13 +309,13 @@ export default function BulkCheckerPage() {
           <p>Practical monitoring workflows our users run: agencies re-check their full client list every Monday and log the CSV, creating a week-by-week authority timeline. Link sellers re-verify inventory before each price update. Investors re-scan watchlists monthly to catch domains whose authority is rising before the market prices it in. Site owners who purchased our <a href="/increase-dr">Increase DR service</a> track their climb toward the guaranteed target in real time. With free accounts allowing 10 bulk checks daily, this kind of routine monitoring costs nothing — and Pro's unlimited checks remove the ceiling entirely for agencies running many lists per day.</p>
 
           <h2>Bulk DR Checker vs. Ahrefs Batch Analysis</h2>
-          <p>Ahrefs' own Batch Analysis is excellent, but it requires a paid Ahrefs subscription starting at $99+/month, consumes your plan's credits, and is one more interface inside an already dense toolset. If DR lookups are the specific job you need done, paying $99+ for it makes no sense. Our tool delivers the same live DR figures — because the data comes from Ahrefs — through a purpose-built, lightning-fast interface at a fraction of the cost: free for most users, $9/month for unlimited checks, and $49/month for full agency-scale 1,000-domain volume. Many of our users run full Ahrefs subscriptions for deep research and still use our bulk checker daily simply because it is faster for the DR-list workflow.</p>
+          <p>Ahrefs' own Batch Analysis is excellent, but it requires a paid Ahrefs subscription starting at $99+/month, consumes your plan's credits, and is one more interface inside an already dense toolset. If DR lookups are the specific job you need done, paying $99+ for it makes no sense. Our tool delivers the same live DR figures — because the data comes from Ahrefs — through a purpose-built, lightning-fast interface at a fraction of the cost: free for most users and just $19/month for full agency-scale 1,000-domain volume with unlimited checks. Many of our users run full Ahrefs subscriptions for deep research and still use our bulk checker daily simply because it is faster for the DR-list workflow.</p>
 
           <h2>Tips for Getting the Most From Bulk DR Checks</h2>
           <p>A few practices that separate professionals: <strong>Deduplicate at the source</strong> — our tool removes duplicates automatically, but clean lists keep your check limits efficient. <strong>Sort by DR descending</strong> immediately after each check to prioritize outreach from the top down. <strong>Keep dated CSV exports</strong> — a folder of weekly exports becomes a longitudinal authority database that reveals trends no single check can show. <strong>Cross-reference before purchases</strong> — when buying domains or placements, always run your own fresh bulk check rather than trusting seller-provided screenshots; scores change and screenshots get doctored. <strong>Benchmark in context</strong> — a DR 35 domain is weak in the finance niche but potentially strong in a narrow local niche; always compare against direct competitors, which is exactly what checking them all in one bulk run makes effortless.</p>
 
           <h2>Start Bulk Checking Now — Free</h2>
-          <p>The tool at the top of this page is live and ready. Paste your list, hit check, and get every Ahrefs DR score in seconds — no signup required for your first check. When you hit the guest limit, a <a href="/signup">free account</a> takes ten seconds to create and gives you 10 checks per day. Need more? <a href="/#pricing">Starter is $9/month</a> for unlimited 100-domain checks, and <a href="/#pricing">Pro at $49/month</a> gives you the largest bulk DR checking capacity available anywhere online: 1,000 domains per check, unlimited checks, forever. Found domains with disappointing scores? Our <a href="/increase-dr">Increase DR service</a> raises any website to a guaranteed DR target of 20+ up to 80+ within 2–4 weeks, backed by permanent guarantees. Questions? <a href="/contact">Contact us</a> — we respond fast.</p>
+          <p>The tool at the top of this page is live and ready. Paste your list, hit check, and get every Ahrefs DR score in seconds — no signup required to start. When you hit the guest limit, a <a href="/signup">free account</a> takes ten seconds to create and gives you 50 domains per check, 10 times a day. Need more? <a href="/#pricing">Pro at just $19/month</a> gives you the largest bulk DR checking capacity available anywhere online: 1,000 domains per check, unlimited checks, forever. Found domains with disappointing scores? Our <a href="/increase-dr">Increase DR service</a> raises any website to a guaranteed DR target of 20+ up to 80+ within 2–4 weeks, backed by permanent guarantees. Questions? <a href="/contact">Contact us</a> — we respond fast.</p>
         </article>
         </Reveal>
 
@@ -330,10 +329,10 @@ export default function BulkCheckerPage() {
           </Reveal>
           <div className="space-y-3">
             {[
-              { q: 'How many domains can I check at once with the bulk DR checker?', a: 'Guests can run 1 free check of up to 100 domains with no account. A free account unlocks 100 domains per check, 10 times daily. Starter ($9/month) removes daily limits for unlimited 100-domain checks, and Pro ($49/month) checks up to 1,000 domains in a single run with unlimited runs — the highest bulk DR checking capacity available on any website.' },
+              { q: 'How many domains can I check at once with the bulk DR checker?', a: 'Guests can check 20 domains per run, 10 times per day with no account. A free account unlocks 50 domains per check, 10 times daily. Pro ($19/month) checks up to 1,000 domains in a single run with unlimited runs — the highest bulk DR checking capacity available on any website.' },
               { q: 'Is the DR data accurate and up to date?', a: 'Yes. Every score is pulled from live Ahrefs data at the moment you run the check — the same figures shown inside Ahrefs Site Explorer. We never serve months-old cached databases.' },
               { q: 'Can I export my bulk results?', a: 'Absolutely. Every results table includes one-click CSV download and a copy-to-clipboard option in tab-separated format that pastes perfectly into Excel and Google Sheets.' },
-              { q: 'Do I need an Ahrefs subscription to use this?', a: 'No. That is the whole point — you get live Ahrefs DR figures without paying $99+/month for an Ahrefs plan. Our tool is free to start, $9/month for unlimited 100-domain checks, and $49/month for full 1,000-domain agency-scale checking.' },
+              { q: 'Do I need an Ahrefs subscription to use this?', a: 'No. That is the whole point — you get live Ahrefs DR figures without paying $99+/month for an Ahrefs plan. Our tool is free to start, and just $19/month for full 1,000-domain agency-scale checking with unlimited runs.' },
               { q: 'What format should my domain list be in?', a: 'Anything goes: bare domains, full URLs, with or without www or https. Paste one per line and our system automatically cleans, normalizes, and deduplicates every entry before checking.' },
               { q: 'How often should I re-check DR for my domain lists?', a: 'DR changes as Ahrefs recrawls the web. Agencies typically re-check client and inventory lists weekly; investors re-scan watchlists monthly. With 10 free checks daily on a free account, routine monitoring costs nothing.' },
               { q: 'Why do some domains return a DR of 0?', a: 'A DR of 0 usually means the domain is brand new, has virtually no backlinks known to Ahrefs, or was entered with a typo. Double-check spelling first; if the domain is genuinely new, DR 0 is its real current score.' },

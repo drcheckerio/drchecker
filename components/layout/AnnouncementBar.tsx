@@ -14,7 +14,7 @@ export default function AnnouncementBar() {
         <p className="text-white text-xs sm:text-sm font-semibold text-center">
           Check 1,000 domains per run —{' '}
           <Link href="/#pricing" className="font-extrabold underline underline-offset-2 hover:opacity-80 transition-opacity">
-            Go Pro for just $49/month →
+            Go Pro for just $19/month →
           </Link>
         </p>
         <button onClick={() => setVisible(false)} className="absolute right-4 text-white/70 hover:text-white transition-colors" aria-label="Close">

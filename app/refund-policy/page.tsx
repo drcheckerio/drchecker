@@ -19,9 +19,9 @@ export default function RefundPolicyPage() {
         <div className="legal-content card p-6 sm:p-9">
           <p>At drchecker.io we want you to be fully satisfied with our services. This policy explains when and how refunds apply to our Pro subscription and our Increase DR services.</p>
 
-          <h2>1. Paid Subscriptions (Starter $9/month, Pro $49/month)</h2>
+          <h2>1. Pro Subscription ($19/month)</h2>
           <ul>
-            <li><strong>7-day money-back guarantee:</strong> If you are not satisfied with your Starter or Pro subscription, contact us within 7 days of your first payment for a full refund — no questions asked.</li>
+            <li><strong>7-day money-back guarantee:</strong> If you are not satisfied with your Pro subscription, contact us within 7 days of your first payment for a full refund — no questions asked.</li>
             <li><strong>Renewals:</strong> Monthly renewal charges are non-refundable once a new billing cycle begins, but you can cancel anytime and keep Pro access until the end of your paid period.</li>
             <li><strong>Cancellation:</strong> Cancel anytime from your dashboard billing page. No cancellation fees ever.</li>
           </ul>

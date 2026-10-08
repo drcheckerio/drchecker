@@ -29,9 +29,8 @@ function drRequest(domain: string): { url: string; init: RequestInit } {
 }
 
 const LIMITS = {
-  guest: { perCheck: 100, perDay: 1 as number | null },
-  free: { perCheck: 100, perDay: 10 as number | null },
-  starter: { perCheck: 100, perDay: null as number | null },
+  guest: { perCheck: 20, perDay: 10 as number | null },
+  free: { perCheck: 50, perDay: 10 as number | null },
   pro: { perCheck: 1000, perDay: null as number | null },
 }
 
@@ -91,7 +90,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ===== Identify user & plan =====
-    let tier: 'guest' | 'free' | 'starter' | 'pro' = 'guest'
+    let tier: 'guest' | 'free' | 'pro' = 'guest'
     let profile: any = null
     const admin = createServerSupabaseClient()
 
@@ -103,7 +102,7 @@ export async function POST(req: NextRequest) {
         const { data: prof } = await admin.from('profiles').select('*').eq('id', user.id).single()
         if (prof) {
           profile = prof
-          tier = prof.plan === 'pro' ? 'pro' : prof.plan === 'starter' ? 'starter' : 'free'
+          tier = prof.plan === 'pro' ? 'pro' : 'free'
         }
       }
     }
@@ -117,8 +116,8 @@ export async function POST(req: NextRequest) {
       if (profile.last_check_date !== today) checksToday = 0
       if (checksToday >= limits.perDay) {
         const upgradeMsg = tier === 'free'
-          ? `Daily limit reached (${limits.perDay} checks/day on Free). Upgrade to Starter ($9/mo) for unlimited 100-domain checks, or Pro ($49/mo) for 1,000 domains per check.`
-          : `Daily limit reached (${limits.perDay} checks/day). Upgrade for unlimited checks.`
+          ? `Daily limit reached (${limits.perDay} checks/day on Free). Upgrade to Pro ($19/mo) for 1,000 domains per check with unlimited checks.`
+          : `Daily limit reached (${limits.perDay} checks/day). Upgrade to Pro for unlimited checks.`
         return NextResponse.json({ error: upgradeMsg, limitReached: true }, { status: 429 })
       }
       await admin.from('profiles').update({
