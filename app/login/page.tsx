@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import GoogleButton from '@/components/auth/GoogleButton'
 import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
@@ -39,6 +40,13 @@ export default function LoginPage() {
         <div className="card-glow p-8">
           <h1 className="text-2xl font-black text-white text-center mb-1">Welcome <span className="gradient-text">Back</span></h1>
           <p className="text-muted text-sm text-center mb-7">Log in to access your dashboard</p>
+
+          <GoogleButton label="Continue with Google" />
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px" style={{ background: 'rgba(148,163,184,0.15)' }}></div>
+            <span className="text-xs text-muted">or</span>
+            <div className="flex-1 h-px" style={{ background: 'rgba(148,163,184,0.15)' }}></div>
+          </div>
 
           <div className="space-y-4">
             <div className="relative">

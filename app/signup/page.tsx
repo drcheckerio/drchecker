@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import GoogleButton from '@/components/auth/GoogleButton'
 import { Mail, Lock, User, ArrowRight, CheckCircle, Eye, EyeOff } from 'lucide-react'
 
 export default function SignupPage() {
@@ -66,6 +67,13 @@ export default function SignupPage() {
           <div className="card-glow p-8">
             <h1 className="text-2xl font-black text-white text-center mb-1">Create Your <span className="gradient-text">Free Account</span></h1>
             <p className="text-muted text-sm text-center mb-7">50 domains per check · 10 checks per day · free forever</p>
+
+            <GoogleButton label="Sign up with Google" />
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-1 h-px" style={{ background: 'rgba(148,163,184,0.15)' }}></div>
+              <span className="text-xs text-muted">or</span>
+              <div className="flex-1 h-px" style={{ background: 'rgba(148,163,184,0.15)' }}></div>
+            </div>
 
             <div className="space-y-4">
               <div className="relative">
