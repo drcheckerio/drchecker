@@ -17,6 +17,7 @@ export default function Footer() {
     Legal: [
       { label: 'Privacy Policy', href: '/privacy-policy' },
       { label: 'Refund Policy', href: '/refund-policy' },
+      { label: 'Terms of Service', href: '/terms' },
     ],
   }
 

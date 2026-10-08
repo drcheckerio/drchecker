@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import UpgradeButton from '@/components/paddle/UpgradeButton'
 import { DRResult } from '@/types'
 import { getDRColor, getDRRating } from '@/lib/utils'
 import {
@@ -36,6 +37,19 @@ export default function DashboardPage() {
       if (!session) { router.push('/login'); return }
       setSession(session)
       loadProfile(session.user.id).finally(() => setPageLoading(false))
+
+      // Just returned from Paddle checkout — poll for the webhook to flip the plan to Pro
+      if (typeof window !== 'undefined' && window.location.search.includes('upgraded=1')) {
+        let tries = 0
+        const poll = setInterval(async () => {
+          tries++
+          await loadProfile(session.user.id)
+          if (tries >= 8) {
+            clearInterval(poll)
+            window.history.replaceState(null, '', '/dashboard')
+          }
+        }, 2500)
+      }
     })
   }, [router, loadProfile])
 
@@ -185,7 +199,7 @@ export default function DashboardPage() {
                 Upgrade to Pro <span className="text-muted font-normal">— 1,000 domains per check with unlimited checks, just $19/month.</span>
               </p>
             </div>
-            <Link href="/#pricing" className="btn-primary px-5 py-2.5 text-xs flex-shrink-0">Upgrade to Pro</Link>
+            <UpgradeButton className="btn-primary px-5 py-2.5 text-xs flex-shrink-0" label="Upgrade to Pro" />
           </div>
         )}
 
@@ -218,7 +232,7 @@ export default function DashboardPage() {
           <div className="mb-6 px-4 py-4 rounded-xl text-sm flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between"
             style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', color: '#F87171' }}>
             <span>{error}</span>
-            {!isPro && <Link href="/#pricing" className="btn-primary px-4 py-2 text-xs flex-shrink-0">Upgrade to Pro</Link>}
+            {!isPro && <UpgradeButton className="btn-primary px-4 py-2 text-xs flex-shrink-0" label="Upgrade to Pro" />}
           </div>
         )}
 
