@@ -143,7 +143,7 @@ export default function HomePage() {
               </button>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-between mt-3 px-1 gap-2">
-              <p className="text-xs text-muted">Free · 20 domains per check · 10 checks/day — <Link href="/signup" style={{ color: '#FFA94D' }}>sign up</Link> for 50/check</p>
+              <p className="text-xs text-muted">Single checks are 100% free & unlimited · No sign-up — <Link href="/bulk-dr-checker" style={{ color: '#FFA94D' }}>bulk check up to 20 domains, 10/day free →</Link></p>
               <Link href="/bulk-dr-checker"
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all hover:opacity-90"
                 style={{ background: 'rgba(255,138,30,0.14)', border: '1px solid rgba(255,138,30,0.35)', color: '#FFA94D' }}>
