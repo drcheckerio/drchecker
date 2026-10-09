@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Reveal from '@/components/layout/Reveal'
+import { ServiceJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 import { TrendingUp, CheckCircle, Award, Clock, Shield, MessageCircle, Mail, Search, Link2, BarChart3, ChevronRight, Star, Users, Zap, Globe } from 'lucide-react'
 
@@ -43,6 +44,8 @@ function Stars({ rating }: { rating: number }) {
 export default function IncreaseDRPage() {
   return (
     <div className="min-h-screen">
+      <ServiceJsonLd packages={packages} />
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Increase DR', path: '/increase-dr' }]} />
       <Navbar />
 
       {/* Hero */}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import { SiteJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://drchecker.io'),
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <SiteJsonLd />
         <Providers>{children}</Providers>
       </body>
     </html>

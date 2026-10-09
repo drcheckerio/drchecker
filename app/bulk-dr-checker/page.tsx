@@ -6,6 +6,7 @@ import { DRResult } from '@/types'
 import { cleanDomain, getDRColor, getDRRating } from '@/lib/utils'
 import { ArrowUpDown, Download, Copy, Check, ChevronUp, ChevronDown, Layers, Globe, AlertCircle, Crown } from 'lucide-react'
 import Reveal from '@/components/layout/Reveal'
+import { FaqJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
@@ -31,6 +32,17 @@ function incrementGuestChecks() {
   return count
 }
 
+const BULK_FAQS = [
+              { q: 'How many domains can I check at once with the bulk DR checker?', a: 'Guests can check 20 domains per run, 10 times per day with no account. A free account unlocks 50 domains per check, 10 times daily. Pro ($19/month) checks up to 1,000 domains in a single run with unlimited runs — the highest bulk DR checking capacity available on any website.' },
+              { q: 'Is the DR data accurate and up to date?', a: 'Yes. Every score is pulled from live Ahrefs data at the moment you run the check — the same figures shown inside Ahrefs Site Explorer. We never serve months-old cached databases.' },
+              { q: 'Can I export my bulk results?', a: 'Absolutely. Every results table includes one-click CSV download and a copy-to-clipboard option in tab-separated format that pastes perfectly into Excel and Google Sheets.' },
+              { q: 'Do I need an Ahrefs subscription to use this?', a: 'No. That is the whole point — you get live Ahrefs DR figures without paying $99+/month for an Ahrefs plan. Our tool is free to start, and just $19/month for full 1,000-domain agency-scale checking with unlimited runs.' },
+              { q: 'What format should my domain list be in?', a: 'Anything goes: bare domains, full URLs, with or without www or https. Paste one per line and our system automatically cleans, normalizes, and deduplicates every entry before checking.' },
+              { q: 'How often should I re-check DR for my domain lists?', a: 'DR changes as Ahrefs recrawls the web. Agencies typically re-check client and inventory lists weekly; investors re-scan watchlists monthly. With 10 free checks daily on a free account, routine monitoring costs nothing.' },
+              { q: 'Why do some domains return a DR of 0?', a: 'A DR of 0 usually means the domain is brand new, has virtually no backlinks known to Ahrefs, or was entered with a typo. Double-check spelling first; if the domain is genuinely new, DR 0 is its real current score.' },
+              { q: 'Can you increase the DR of domains from my list?', a: 'Yes — that is our specialty. Our Increase DR service raises any website to a guaranteed target (DR 20+ up to DR 80+) within 2–4 weeks, with Lifetime guarantees on DR 20–40 packages and 1 Year guarantees on DR 50–80. See the Increase DR page for pricing.' },
+]
+
 export default function BulkCheckerPage() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -44,6 +56,7 @@ export default function BulkCheckerPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [session, setSession] = useState<any>(null)
   const [plan, setPlan] = useState<'guest' | 'free' | 'pro'>('guest')
+  const [fullName, setFullName] = useState<string>('')
   const [checkedCount, setCheckedCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
 
@@ -51,16 +64,18 @@ export default function BulkCheckerPage() {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
-        const { data } = await supabase.from('profiles').select('plan').eq('id', session.user.id).single()
+        const { data } = await supabase.from('profiles').select('plan, full_name').eq('id', session.user.id).single()
         setPlan(data?.plan === 'pro' ? 'pro' : 'free')
+        setFullName(data?.full_name || '')
       }
     })
     const { data: sub } = supabase.auth.onAuthStateChange(async (_e, s) => {
       setSession(s)
       if (s?.user) {
-        const { data } = await supabase.from('profiles').select('plan').eq('id', s.user.id).single()
+        const { data } = await supabase.from('profiles').select('plan, full_name').eq('id', s.user.id).single()
         setPlan(data?.plan === 'pro' ? 'pro' : 'free')
-      } else setPlan('guest')
+        setFullName(data?.full_name || '')
+      } else { setPlan('guest'); setFullName('') }
     })
     return () => sub.subscription.unsubscribe()
   }, [])
@@ -148,6 +163,8 @@ export default function BulkCheckerPage() {
 
   return (
     <div className="min-h-screen">
+      <FaqJsonLd faqs={BULK_FAQS} />
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Bulk DR Checker', path: '/bulk-dr-checker' }]} />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
         <div className="text-center mb-10">
@@ -156,6 +173,33 @@ export default function BulkCheckerPage() {
           <p className="text-muted max-w-xl mx-auto">Check Ahrefs Domain Rating for up to 1,000 domains at once — the most powerful bulk DR checker available online. Paste one domain per line.</p>
         </div>
 
+        {plan === 'pro' ? (
+          <div className="mb-8 p-6 sm:p-7 rounded-2xl relative overflow-hidden animate-slide-up"
+            style={{ background: 'linear-gradient(135deg, rgba(255,138,30,0.14), rgba(255,106,0,0.06))', border: '1px solid rgba(255,138,30,0.4)', boxShadow: '0 0 50px rgba(255,138,30,0.12)' }}>
+            <div className="absolute -top-16 -right-10 w-56 h-56 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,138,30,0.22), transparent 70%)' }} />
+            <div className="relative flex flex-col sm:flex-row sm:items-center gap-5">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, #FF8A1E, #FF6A00)', boxShadow: '0 0 24px rgba(255,138,30,0.45)' }}>
+                <Crown className="w-7 h-7 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <h2 className="text-xl sm:text-2xl font-black text-white">Welcome back{fullName ? `, ${fullName.split(' ')[0]}` : ''}</h2>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black text-white" style={{ background: 'linear-gradient(135deg, #FF8A1E, #FF6A00)' }}>PRO</span>
+                </div>
+                <p className="text-sm text-muted leading-relaxed">You have the highest bulk DR capacity available anywhere. Paste your list and go — no daily limits.</p>
+              </div>
+              <div className="flex gap-3 flex-shrink-0">
+                {[{ value: '1,000', label: 'Domains / check' }, { value: '\u221E', label: 'Checks per day' }].map((s) => (
+                  <div key={s.label} className="px-4 py-3 rounded-xl text-center" style={{ background: 'rgba(7,11,20,0.45)', border: '1px solid rgba(255,138,30,0.22)' }}>
+                    <div className="text-xl font-black" style={{ color: '#FFA94D' }}>{s.value}</div>
+                    <div className="text-[11px] text-muted whitespace-nowrap">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
           {[
             { key: 'guest', icon: '👤', label: 'Guest', limit: '20 domains · 10 checks/day', href: '/signup', cta: 'Sign up' },
@@ -177,6 +221,7 @@ export default function BulkCheckerPage() {
             </div>
           )})}
         </div>
+        )}
 
         <div className="card p-5 sm:p-6 mb-6" style={{ background: 'rgba(15,22,41,0.65)' }}>
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -325,21 +370,23 @@ export default function BulkCheckerPage() {
           </div>
         )}
 
-        {/* Upgrade banner above content */}
+        {/* Upgrade banner — hidden for users who are already Pro */}
+        {plan !== 'pro' && (
         <div className="mt-8 card-glow p-6 text-center">
           <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#FF8A1E' }} />
           <h3 className="font-extrabold text-white mb-2">Unlock the Full Power of Bulk DR Checking</h3>
           <p className="text-muted text-sm mb-5 max-w-md mx-auto">Free account: 50 domains × 10 checks/day. Pro ($19/mo): 1,000 domains per check with unlimited checks. No other bulk DR checker comes close.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/signup" className="btn-primary px-6 py-2.5 text-sm">Sign Up Free</Link>
-            <Link href="/#pricing" className="btn-outline px-6 py-2.5 text-sm">Go Pro — $19/mo</Link>
+            {plan === 'guest' && <Link href="/signup" className="btn-primary px-6 py-2.5 text-sm">Sign Up Free</Link>}
+            <Link href="/#pricing" className={`${plan === 'guest' ? 'btn-outline' : 'btn-primary'} px-6 py-2.5 text-sm`}>Go Pro — $19/mo</Link>
           </div>
         </div>
+        )}
 
         {/* ===== 2000+ WORD SEO CONTENT — single card ===== */}
         <Reveal>
         <article className="legal-content card p-6 sm:p-9 mt-10">
-          <h1 className="text-2xl sm:text-3xl font-black text-white mb-2" style={{ marginTop: 0 }}>Bulk DR Checker — The Complete Guide to Checking Domain Rating at Scale</h1>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mb-2" style={{ marginTop: 0 }}>Bulk DR Checker — The Complete Guide to Checking Domain Rating at Scale</h2>
           <p>If you work with more than a handful of websites, checking Domain Rating one domain at a time is simply not an option. Whether you are an SEO agency managing dozens of client sites, a link builder vetting hundreds of prospects, a domain investor evaluating an entire portfolio, or a digital marketing specialist auditing competitors — you need a <strong>bulk DR checker</strong> that can process large lists of domains quickly, accurately, and affordably. That is exactly what this tool was built for, and on this page we explain everything you need to know about bulk Domain Rating checking: what it is, why it matters, who needs it, and why no other website currently offers bulk checking at the scale we do.</p>
 
           <h2>What is a Bulk DR Checker?</h2>
@@ -387,16 +434,7 @@ export default function BulkCheckerPage() {
             </div>
           </Reveal>
           <div className="space-y-3">
-            {[
-              { q: 'How many domains can I check at once with the bulk DR checker?', a: 'Guests can check 20 domains per run, 10 times per day with no account. A free account unlocks 50 domains per check, 10 times daily. Pro ($19/month) checks up to 1,000 domains in a single run with unlimited runs — the highest bulk DR checking capacity available on any website.' },
-              { q: 'Is the DR data accurate and up to date?', a: 'Yes. Every score is pulled from live Ahrefs data at the moment you run the check — the same figures shown inside Ahrefs Site Explorer. We never serve months-old cached databases.' },
-              { q: 'Can I export my bulk results?', a: 'Absolutely. Every results table includes one-click CSV download and a copy-to-clipboard option in tab-separated format that pastes perfectly into Excel and Google Sheets.' },
-              { q: 'Do I need an Ahrefs subscription to use this?', a: 'No. That is the whole point — you get live Ahrefs DR figures without paying $99+/month for an Ahrefs plan. Our tool is free to start, and just $19/month for full 1,000-domain agency-scale checking with unlimited runs.' },
-              { q: 'What format should my domain list be in?', a: 'Anything goes: bare domains, full URLs, with or without www or https. Paste one per line and our system automatically cleans, normalizes, and deduplicates every entry before checking.' },
-              { q: 'How often should I re-check DR for my domain lists?', a: 'DR changes as Ahrefs recrawls the web. Agencies typically re-check client and inventory lists weekly; investors re-scan watchlists monthly. With 10 free checks daily on a free account, routine monitoring costs nothing.' },
-              { q: 'Why do some domains return a DR of 0?', a: 'A DR of 0 usually means the domain is brand new, has virtually no backlinks known to Ahrefs, or was entered with a typo. Double-check spelling first; if the domain is genuinely new, DR 0 is its real current score.' },
-              { q: 'Can you increase the DR of domains from my list?', a: 'Yes — that is our specialty. Our Increase DR service raises any website to a guaranteed target (DR 20+ up to DR 80+) within 2–4 weeks, with Lifetime guarantees on DR 20–40 packages and 1 Year guarantees on DR 50–80. See the Increase DR page for pricing.' },
-            ].map((faq, i) => (
+            {BULK_FAQS.map((faq, i) => (
               <Reveal key={i} delay={i * 40}>
                 <div className="card overflow-hidden">
                   <button onClick={() => setOpenFaq(openFaq === i ? null : i)}

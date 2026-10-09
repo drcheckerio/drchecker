@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Reveal from '@/components/layout/Reveal'
+import { ArticleJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 import { blogPosts, getPost } from '@/lib/blog-posts'
 import { Calendar, Clock, ArrowLeft, ArrowRight, TrendingUp } from 'lucide-react'
@@ -30,6 +31,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="min-h-screen">
+      <ArticleJsonLd title={post.title} description={post.excerpt} slug={post.slug} date={post.date} />
+      <BreadcrumbJsonLd items={[{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }, { name: post.title, path: `/blog/${post.slug}` }]} />
       <Navbar />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">

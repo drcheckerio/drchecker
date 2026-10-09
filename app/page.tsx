@@ -4,6 +4,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import DRResultCard from '@/components/dr/DRResultCard'
 import Reveal from '@/components/layout/Reveal'
+import { AppJsonLd, FaqJsonLd } from '@/components/seo/JsonLd'
 import { DRResult } from '@/types'
 import { cleanDomain } from '@/lib/utils'
 import Link from 'next/link'
@@ -97,6 +98,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen" id="top">
+      <AppJsonLd />
+      <FaqJsonLd faqs={faqs} />
       <Navbar />
 
       {/* HERO + CHECKER */}
