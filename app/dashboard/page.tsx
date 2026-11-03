@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [progress, setProgress] = useState(0)
   const [checkedCount, setCheckedCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
+  const [verifying, setVerifying] = useState(false)
 
   const loadProfile = useCallback(async (userId: string) => {
     const { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
@@ -41,17 +42,38 @@ export default function DashboardPage() {
       setSession(session)
       loadProfile(session.user.id).finally(() => setPageLoading(false))
 
-      // Just returned from Paddle checkout — poll for the webhook to flip the plan to Pro
-      if (typeof window !== 'undefined' && window.location.search.includes('upgraded=1')) {
+      // Ask Paddle directly whether this user has an active subscription and
+      // sync their plan. This is authoritative, so an upgrade lands even if the
+      // webhook was missed or delayed.
+      const verifyPlan = async () => {
+        try {
+          const res = await fetch('/api/paddle/verify', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${session.access_token}` },
+          })
+          const data = await res.json()
+          if (data?.changed) await loadProfile(session.user.id)
+          return data?.plan
+        } catch { return undefined }
+      }
+
+      const justUpgraded = typeof window !== 'undefined' && window.location.search.includes('upgraded=1')
+      if (justUpgraded) {
+        setVerifying(true)
+        // Paddle can take a few seconds to register the subscription.
         let tries = 0
         const poll = setInterval(async () => {
           tries++
-          await loadProfile(session.user.id)
-          if (tries >= 8) {
+          const plan = await verifyPlan()
+          if (plan === 'pro' || tries >= 8) {
             clearInterval(poll)
+            setVerifying(false)
+            await loadProfile(session.user.id)
             window.history.replaceState(null, '', '/dashboard')
           }
         }, 2500)
+      } else {
+        verifyPlan()
       }
     })
   }, [router, loadProfile])
@@ -184,6 +206,15 @@ export default function DashboardPage() {
             {planLabel}
           </div>
         </div>
+
+        {verifying && (
+          <div className="card-glow p-4 mb-6 flex items-center gap-3 animate-slide-up">
+            <span className="w-4 h-4 border-2 rounded-full animate-spin flex-shrink-0" style={{ borderColor: 'rgba(255,138,30,0.25)', borderTopColor: '#FF8A1E' }}></span>
+            <p className="text-sm text-white font-semibold">
+              Confirming your payment with Paddle… <span className="text-muted font-normal">this usually takes a few seconds.</span>
+            </p>
+          </div>
+        )}
 
         {/* Stats cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
