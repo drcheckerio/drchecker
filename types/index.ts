@@ -16,7 +16,10 @@ export interface Profile {
 
 export interface DRResult {
   domain: string
+  /** Ahrefs DR3 — the long-standing Domain Rating model, always present. */
   dr: number
+  /** Ahrefs DR4 — the newer model. Only present when a Pro user runs a comparison. */
+  dr4?: number
   rating: DRRating
   ahrefs_rank?: number
   backlinks?: number

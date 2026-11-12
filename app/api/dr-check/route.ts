@@ -10,11 +10,17 @@ const DR_API = process.env.DR_API_ENDPOINT
 // (no Cloudflare Worker needed). Falls back to DR_API_ENDPOINT if the key is absent.
 const AHREFS_KEY = process.env.AHREFS_API_KEY
 
-function drRequest(domain: string): { url: string; init: RequestInit } {
+// Ahrefs serves two Domain Rating models. dr3 is the long-standing score and
+// stays the default; dr4 is the newer model, requested with &version=dr4.
+export type DRVersion = 'dr3' | 'dr4'
+
+function drRequest(domain: string, version: DRVersion = 'dr3'): { url: string; init: RequestInit } {
   const target = encodeURIComponent(domain)
   if (AHREFS_KEY) {
+    // Omit the param for dr3 so behaviour is byte-identical to before.
+    const versionParam = version === 'dr4' ? '&version=dr4' : ''
     return {
-      url: `https://api.ahrefs.com/v3/public/domain-rating-free?target=${target}`,
+      url: `https://api.ahrefs.com/v3/public/domain-rating-free?target=${target}${versionParam}`,
       init: {
         headers: { Accept: 'application/json', Authorization: `Bearer ${AHREFS_KEY}` },
         next: { revalidate: 21600 },
@@ -22,11 +28,15 @@ function drRequest(domain: string): { url: string; init: RequestInit } {
       },
     }
   }
+  // Legacy Worker fallback: it only knows dr3.
   return {
     url: `${DR_API}/?target=${target}`,
     init: { next: { revalidate: 21600 }, signal: AbortSignal.timeout(8000) },
   }
 }
+
+// dr4 can only be served by the official API, not the legacy Worker.
+const DR4_AVAILABLE = !!AHREFS_KEY
 
 const LIMITS = {
   guest: { perCheck: 20, perDay: 10 as number | null },
@@ -50,10 +60,10 @@ function toResult(domain: string, dr: number) {
 
 // Fetch DR with automatic retries + backoff to survive upstream rate limiting.
 // Domains Ahrefs has no data for (brand-new/unindexed) are a VALID result: DR 0 — not an error.
-async function fetchDR(domain: string): Promise<{ domain: string; dr: number; rating: string; error?: string }> {
+async function fetchDR(domain: string, version: DRVersion = 'dr3'): Promise<{ domain: string; dr: number; rating: string; error?: string }> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      const { url, init } = drRequest(domain)
+      const { url, init } = drRequest(domain, version)
       const res = await fetch(url, init)
 
       // Transient upstream problems → retry
@@ -80,11 +90,19 @@ async function fetchDR(domain: string): Promise<{ domain: string; dr: number; ra
   return { ...toResult(domain, 0), error: 'Could not fetch DR for this domain' }
 }
 
+// Pro compare mode: pull both models for one domain in parallel.
+// DR3 stays the primary `dr` so ratings, colours, sorting and CSV keep working
+// unchanged; DR4 rides along as an extra field.
+async function fetchBothVersions(domain: string) {
+  const [three, four] = await Promise.all([fetchDR(domain, 'dr3'), fetchDR(domain, 'dr4')])
+  return { ...three, dr4: four.dr }
+}
+
 export async function POST(req: NextRequest) {
   try {
     if (!AHREFS_KEY && !DR_API) return NextResponse.json({ error: 'DR API not configured' }, { status: 500 })
 
-    const { domains } = await req.json()
+    const { domains, dr4: dr4Requested } = await req.json()
     if (!domains || !Array.isArray(domains) || domains.length === 0) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
     }
@@ -128,31 +146,47 @@ export async function POST(req: NextRequest) {
 
     const cleaned = Array.from(new Set(domains.slice(0, limits.perCheck).map(cleanDomain).filter(Boolean))) as string[]
 
+    // ===== DR4 comparison — Pro only =====
+    // Each domain costs two upstream calls in this mode, so halve the batch size
+    // to keep outbound concurrency (and Ahrefs rate limiting) where it was.
+    const withDr4 = dr4Requested === true && tier === 'pro' && DR4_AVAILABLE
+    const fetchOne = withDr4 ? fetchBothVersions : (d: string) => fetchDR(d)
+    const batchSize = withDr4 ? Math.ceil(BATCH_SIZE / 2) : BATCH_SIZE
+
     // ===== Batched fetching with order preserved =====
     const results: any[] = new Array(cleaned.length)
     const failedIdx: number[] = []
 
-    for (let i = 0; i < cleaned.length; i += BATCH_SIZE) {
-      const batch = cleaned.slice(i, i + BATCH_SIZE)
-      const batchResults = await Promise.all(batch.map(fetchDR))
+    for (let i = 0; i < cleaned.length; i += batchSize) {
+      const batch = cleaned.slice(i, i + batchSize)
+      const batchResults = await Promise.all(batch.map((d) => fetchOne(d)))
       batchResults.forEach((r, j) => {
         results[i + j] = r
         if (r.error) failedIdx.push(i + j)
       })
-      if (i + BATCH_SIZE < cleaned.length) await sleep(BATCH_DELAY_MS)
+      if (i + batchSize < cleaned.length) await sleep(BATCH_DELAY_MS)
     }
 
     // ===== Final salvage pass: retry failures gently in small batches =====
     if (failedIdx.length > 0 && failedIdx.length <= 200) {
       for (let i = 0; i < failedIdx.length; i += 10) {
         const slice = failedIdx.slice(i, i + 10)
-        const retried = await Promise.all(slice.map((idx) => fetchDR(cleaned[idx])))
+        const retried = await Promise.all(slice.map((idx) => fetchOne(cleaned[idx])))
         retried.forEach((r, j) => { if (!r.error) results[slice[j]] = r })
         await sleep(200)
       }
     }
 
-    return NextResponse.json({ results, tier, capApplied: limits.perCheck })
+    return NextResponse.json({
+      results,
+      tier,
+      capApplied: limits.perCheck,
+      dr4: withDr4,
+      // Tells the client why DR4 was ignored, if it asked for it.
+      dr4Unavailable: dr4Requested === true && !withDr4
+        ? (tier !== 'pro' ? 'Pro plan required' : 'DR4 is not available right now')
+        : undefined,
+    })
   } catch (error) {
     console.error('DR Check error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

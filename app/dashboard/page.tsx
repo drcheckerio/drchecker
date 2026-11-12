@@ -11,7 +11,7 @@ import {
   ArrowUpDown, BarChart3, Zap, TrendingUp, AlertCircle
 } from 'lucide-react'
 
-type SortKey = 'domain' | 'dr' | 'rating'
+type SortKey = 'domain' | 'dr' | 'dr4' | 'rating'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -29,6 +29,9 @@ export default function DashboardPage() {
   const [progress, setProgress] = useState(0)
   const [checkedCount, setCheckedCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
+  // Pro-only: also pull Ahrefs' newer DR4 model alongside DR3.
+  const [compareDr4, setCompareDr4] = useState(false)
+  const [showingDr4, setShowingDr4] = useState(false)
   const [verifying, setVerifying] = useState(false)
 
   const loadProfile = useCallback(async (userId: string) => {
@@ -99,8 +102,9 @@ export default function DashboardPage() {
     if (!domains.length) return
     domains = domains.slice(0, perCheck)
     const total = domains.length
+    const useDr4 = isPro && compareDr4
     setLoading(true); setError(''); setResults([]); setSortKey(null)
-    setProgress(0); setCheckedCount(0); setTotalCount(total)
+    setProgress(0); setCheckedCount(0); setTotalCount(total); setShowingDr4(useDr4)
 
     const collected: DRResult[] = []
     try {
@@ -112,11 +116,13 @@ export default function DashboardPage() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session.access_token}`,
           },
-          body: JSON.stringify({ domains: chunk }),
+          body: JSON.stringify({ domains: chunk, dr4: useDr4 }),
         })
         const data = await res.json()
         if (res.status === 429) { setError(data.error); setLoading(false); return }
         if (!data.results) { setError(data.error || 'Failed to fetch results.'); setLoading(false); return }
+        // The server is the authority on whether DR4 was actually served.
+        if (useDr4 && data.dr4 === false) setShowingDr4(false)
         collected.push(...data.results)
         const done = Math.min(i + chunk.length, total)
         setResults([...collected])
@@ -131,6 +137,7 @@ export default function DashboardPage() {
   const sorted = sortKey === null ? [...results] : [...results].sort((a, b) => {
     let cmp = 0
     if (sortKey === 'dr') cmp = a.dr - b.dr
+    else if (sortKey === 'dr4') cmp = (a.dr4 ?? 0) - (b.dr4 ?? 0)
     else if (sortKey === 'domain') cmp = a.domain.localeCompare(b.domain)
     else cmp = a.rating.localeCompare(b.rating)
     return sortDir === 'asc' ? cmp : -cmp
@@ -142,7 +149,11 @@ export default function DashboardPage() {
   }
 
   const downloadCSV = () => {
-    const csv = ['Domain,DR Score,Rating', ...sorted.map(r => `${r.domain},${r.dr},${r.rating}`), '', 'Checked on drchecker.io'].join('\n')
+    const csv = [
+      showingDr4 ? 'Domain,DR3,DR4,Rating' : 'Domain,DR Score,Rating',
+      ...sorted.map(r => showingDr4 ? `${r.domain},${r.dr},${r.dr4 ?? ''},${r.rating}` : `${r.domain},${r.dr},${r.rating}`),
+      '', 'Checked on drchecker.io',
+    ].join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -151,7 +162,8 @@ export default function DashboardPage() {
   }
 
   const copyResults = async () => {
-    await navigator.clipboard.writeText(sorted.map(r => `${r.domain}\t${r.dr}\t${r.rating}`).join('\n'))
+    await navigator.clipboard.writeText(sorted.map(r =>
+      showingDr4 ? `${r.domain}\t${r.dr}\t${r.dr4 ?? ''}\t${r.rating}` : `${r.domain}\t${r.dr}\t${r.rating}`).join('\n'))
     setCopied(true); setTimeout(() => setCopied(false), 2000)
   }
 
@@ -265,6 +277,37 @@ export default function DashboardPage() {
               Only the first {perCheck.toLocaleString()} domains will be checked{!isPro && <> — <Link href="/#pricing" className="underline font-semibold">upgrade to Pro</Link> for 1,000/check</>}.
             </div>
           )}
+          {/* DR4 comparison — Pro only */}
+          {isPro && (
+            <button
+              type="button"
+              onClick={() => setCompareDr4(v => !v)}
+              disabled={loading}
+              aria-pressed={compareDr4}
+              className="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all disabled:opacity-60"
+              style={{
+                background: compareDr4 ? 'rgba(255,138,30,0.10)' : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${compareDr4 ? 'rgba(255,138,30,0.40)' : 'rgba(255,255,255,0.08)'}`,
+              }}
+            >
+              <span className="relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors"
+                style={{ background: compareDr4 ? '#FF8A1E' : 'rgba(255,255,255,0.15)' }}>
+                <span className="absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all"
+                  style={{ left: compareDr4 ? '1.125rem' : '0.125rem' }} />
+              </span>
+              <span className="min-w-0">
+                <span className="flex items-center gap-2 text-sm font-semibold text-white">
+                  Compare DR3 &amp; DR4
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
+                    style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
+                </span>
+                <span className="block text-xs text-muted mt-0.5">
+                  Show Ahrefs&apos; new DR4 model side by side with the classic DR3 score. Takes a little longer.
+                </span>
+              </span>
+            </button>
+          )}
+
           <button onClick={handleCheck} disabled={loading || !input.trim()} className="mt-4 btn-primary w-full py-3.5 text-sm gap-2">
             {loading
               ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>Checking {checkedCount.toLocaleString()} / {totalCount.toLocaleString()} domains…</>
@@ -322,7 +365,17 @@ export default function DashboardPage() {
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('domain')}><div className="flex items-center gap-1.5">Domain <SortIcon col="domain" /></div></th>
-                    <th onClick={() => handleSort('dr')}><div className="flex items-center gap-1.5">DR Score <SortIcon col="dr" /></div></th>
+                    <th onClick={() => handleSort('dr')}><div className="flex items-center gap-1.5">{showingDr4 ? 'DR3' : 'DR Score'} <SortIcon col="dr" /></div></th>
+                    {showingDr4 && (
+                      <th onClick={() => handleSort('dr4')}>
+                        <div className="flex items-center gap-1.5">
+                          DR4
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
+                            style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
+                          <SortIcon col="dr4" />
+                        </div>
+                      </th>
+                    )}
                     <th onClick={() => handleSort('rating')}><div className="flex items-center gap-1.5">Rating <SortIcon col="rating" /></div></th>
                   </tr>
                 </thead>
@@ -330,6 +383,8 @@ export default function DashboardPage() {
                   {sorted.map((r, i) => {
                     const color = getDRColor(r.dr)
                     const rating = getDRRating(r.dr)
+                    const dr4Color = r.dr4 !== undefined ? getDRColor(r.dr4) : color
+                    const delta = r.dr4 !== undefined ? r.dr4 - r.dr : 0
                     return (
                       <tr key={i}>
                         <td>
@@ -348,6 +403,20 @@ export default function DashboardPage() {
                             </div>
                           </div>
                         </td>
+                        {showingDr4 && (
+                          <td>
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-black flex-shrink-0"
+                                style={{ background: `${dr4Color}20`, color: dr4Color }}>{r.dr4 ?? '—'}</div>
+                              {r.dr4 !== undefined && delta !== 0 && (
+                                <span className="text-[11px] font-bold tabular-nums"
+                                  style={{ color: delta > 0 ? '#22C55E' : '#EF4444' }}>
+                                  {delta > 0 ? '+' : ''}{delta}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        )}
                         <td>
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
                             style={{ background: `${color}18`, color, border: `1px solid ${color}35` }}>
