@@ -60,11 +60,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </div>
             <div className="flex-1">
               <p className="font-extrabold text-white mb-1">Ready to grow your Domain Rating?</p>
-              <p className="text-sm text-muted">Check any domain free, or get a guaranteed DR increase in 2–4 weeks.</p>
+              <p className="text-sm text-muted">Check any domain free, or bulk check up to 1,000 at once.</p>
             </div>
             <div className="flex gap-2 flex-shrink-0 w-full sm:w-auto">
               <Link href="/" className="btn-outline px-4 py-2.5 text-xs flex-1 sm:flex-none">Check DR</Link>
-              <Link href="/increase-dr" className="btn-primary px-4 py-2.5 text-xs flex-1 sm:flex-none">Increase DR</Link>
+              <Link href="/bulk-dr-checker" className="btn-primary px-4 py-2.5 text-xs flex-1 sm:flex-none">Bulk Check</Link>
             </div>
           </div>
         </div>

@@ -7,7 +7,6 @@ export default function Footer() {
     Tools: [
       { label: 'DR Checker', href: '/' },
       { label: 'Bulk DR Checker', href: '/bulk-dr-checker' },
-      { label: 'Increase DR', href: '/increase-dr' },
     ],
     Company: [
       { label: 'Blog', href: '/blog' },
@@ -31,7 +30,7 @@ export default function Footer() {
               <img src="/logo-nav.png" alt="DR Checker logo" className="h-14 w-auto" />
             </Link>
             <p className="text-muted text-sm leading-relaxed max-w-xs">
-              The fastest way to check Ahrefs Domain Rating for any website — free bulk DR checker with live Ahrefs data, plus guaranteed DR increase services.
+              The fastest way to check Ahrefs Domain Rating for any website — a free bulk DR checker with live Ahrefs data, sorting and CSV export.
             </p>
             <Link href="/contact" className="mt-5 inline-flex items-center gap-2 text-sm text-muted hover:text-white transition-colors">
               <Mail className="w-4 h-4" /> Contact us

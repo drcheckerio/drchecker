@@ -20,7 +20,7 @@ export function SiteJsonLd() {
         name: 'DR Checker',
         url: SITE,
         logo: { '@type': 'ImageObject', url: `${SITE}/logo-full.png` },
-        description: 'Free bulk Ahrefs Domain Rating (DR) checker and guaranteed DR increase services.',
+        description: 'Free bulk Ahrefs Domain Rating (DR) checker with live Ahrefs data and CSV export.',
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
@@ -80,27 +80,6 @@ export function FaqJsonLd({ faqs }: { faqs: { q: string; a: string }[] }) {
   )
 }
 
-/** Increase DR packages as a Service with an offer catalog. */
-export function ServiceJsonLd({ packages }: { packages: { target: string; price: number }[] }) {
-  return (
-    <Script data={{
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      name: 'Increase Domain Rating (DR) Service',
-      serviceType: 'SEO link building / Domain Rating increase',
-      url: `${SITE}/increase-dr`,
-      provider: { '@id': `${SITE}/#organization` },
-      description: 'Guaranteed Ahrefs Domain Rating increase to a target tier using high-authority white-hat backlinks, delivered in 2–4 weeks.',
-      offers: packages.map((p) => ({
-        '@type': 'Offer',
-        name: `Increase to ${p.target}`,
-        price: String(p.price),
-        priceCurrency: 'USD',
-        url: `${SITE}/increase-dr`,
-      })),
-    }} />
-  )
-}
 
 /** Blog post article markup. */
 export function ArticleJsonLd({ title, description, slug, date }: { title: string; description: string; slug: string; date: string }) {

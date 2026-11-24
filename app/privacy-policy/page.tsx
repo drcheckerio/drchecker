@@ -17,14 +17,14 @@ export default function PrivacyPolicyPage() {
         <p className="text-muted text-sm mb-10">Last updated: July 2026</p>
 
         <div className="legal-content card p-6 sm:p-9">
-          <p>Welcome to drchecker.io ("we", "our", "us"). This Privacy Policy explains how we collect, use, and protect your information when you use our website and services, including our free Domain Rating checker, bulk checking tools, and DR increase services.</p>
+          <p>Welcome to drchecker.io ("we", "our", "us"). This Privacy Policy explains how we collect, use, and protect your information when you use our website and services, including our free Domain Rating checker and bulk checking tools.</p>
 
           <h2>1. Information We Collect</h2>
           <p><strong>Information you provide directly:</strong></p>
           <ul>
             <li>Account information — email address and name when you create an account.</li>
             <li>Payment information — processed securely by our payment provider (Paddle). We never store your full card details on our servers.</li>
-            <li>Order details — domains and requirements you submit when ordering our DR increase services.</li>
+            <li>Domains you check — the domain lists you submit to the checker in order to return results.</li>
             <li>Communications — messages you send us via email or contact forms.</li>
           </ul>
           <p><strong>Information collected automatically:</strong></p>

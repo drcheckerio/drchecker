@@ -57,15 +57,6 @@ export default function HomePage() {
     finally { setLoading(false) }
   }
 
-  const drPackages = [
-    { target: 'DR 20+', price: 39, original: 78, guarantee: 'Lifetime Permanent Guarantee', popular: false, rating: 4.9, reviews: 214 },
-    { target: 'DR 30+', price: 69, original: 138, guarantee: 'Lifetime Permanent Guarantee', popular: false, rating: 5.0, reviews: 187 },
-    { target: 'DR 40+', price: 129, original: 258, guarantee: 'Lifetime Permanent Guarantee', popular: true, rating: 4.9, reviews: 342 },
-    { target: 'DR 50+', price: 99, original: 198, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 5.0, reviews: 156 },
-    { target: 'DR 70+', price: 249, original: 498, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 4.9, reviews: 128 },
-    { target: 'DR 75+', price: 499, original: 998, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 5.0, reviews: 64 },
-    { target: 'DR 80+', price: 1999, original: 3998, guarantee: '1 Year Permanent Guarantee', popular: false, rating: 5.0, reviews: 31 },
-  ]
 
   const plans = [
     {
@@ -88,9 +79,6 @@ export default function HomePage() {
   const faqs = [
     { q: 'What is Ahrefs Domain Rating (DR)?', a: "Ahrefs Domain Rating (DR) is a metric that shows the strength of a website's backlink profile on a logarithmic scale from 0 to 100. The higher the DR, the stronger and more authoritative the website is considered by SEO professionals worldwide." },
     { q: 'Is this DR checker really free?', a: 'Yes. Guests can check up to 20 domains per check, 10 times per day with no account. Create a free account to raise that to 50 domains per check, 10 times daily. Pro ($19/mo) unlocks 1,000 domains per check with unlimited checks.' },
-    { q: 'How do you increase Domain Rating?', a: 'We increase DR through high-authority backlink placement using proven white-hat methodologies. Your website gains links from strong, established domains which raises your Ahrefs DR. The process typically takes 2–4 weeks to complete.' },
-    { q: 'Is the DR increase permanent?', a: 'Yes — our DR 20+, 30+ and 40+ packages come with a Lifetime Permanent Guarantee. The DR 50+ and DR 70+ packages include a full 1 Year Permanent Guarantee. If your DR drops below the target within the guarantee period, we restore it free of charge.' },
-    { q: 'How long does it take to increase DR?', a: 'DR increase campaigns typically take 2–4 weeks to fully reflect in Ahrefs. This is the natural time Ahrefs takes to crawl, index, and recalculate ratings after new authority links are established.' },
     { q: 'How accurate is your DR data?', a: 'Our results come directly from live Ahrefs data — the same figures you would see inside Ahrefs Site Explorer. Data is refreshed continuously as Ahrefs recrawls the web.' },
     { q: 'What is a good DR score?', a: '0–29 is Poor (new/weak sites), 30–49 is Fair (growing authority), 50–69 is Good (strong, competitive sites), and 70–100 is Excellent (top-tier authority like major publications). Always benchmark against competitors in your specific niche.' },
     { q: 'Can I order a custom DR target?', a: 'Absolutely. If you need a specific DR target not listed in our packages, contact us via email or WhatsApp and we will prepare a custom quote for your exact requirement.' },
@@ -348,100 +336,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* INCREASE DR */}
-      <section className="section" id="increase-dr">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="badge-primary mb-4">Our #1 Service</div>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4 text-white">Increase Your <span className="gradient-text">Domain Rating</span></h2>
-            <p className="text-muted max-w-2xl mx-auto leading-relaxed">
-              We increase your website's Ahrefs DR to guaranteed targets using high-authority backlinks.
-              Every package includes a permanent guarantee — if your DR drops within the guarantee window, we restore it free.
-            </p>
-            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold"
-              style={{ background: 'rgba(30,41,66,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
-              <Clock className="w-4 h-4" style={{ color: '#FF8A1E' }} />
-              Delivery time: 2–4 weeks
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {drPackages.map((pkg) => (
-              <div key={pkg.target}
-                className={`relative p-6 rounded-2xl transition-transform duration-300 hover:-translate-y-1 ${pkg.popular ? 'card-glow' : 'card'}`}
-                style={pkg.popular ? { border: '1px solid rgba(255,138,30,0.5)', boxShadow: '0 0 36px rgba(255,138,30,0.15)' } : {}}>
-                {pkg.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="badge-primary px-4 py-1" style={{ background: '#FF8A1E', color: '#fff', border: 'none' }}>Most Popular</div>
-                  </div>
-                )}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center"
-                    style={{ background: 'rgba(255,138,30,0.15)', border: '1px solid rgba(255,138,30,0.3)' }}>
-                    <TrendingUp className="w-5 h-5" style={{ color: '#FF8A1E' }} />
-                  </div>
-                  <div className="text-right">
-                    <div className="flex items-center gap-2 justify-end">
-                      <span className="text-sm font-bold line-through" style={{ color: '#5A657E' }}>${pkg.original}</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black text-white" style={{ background: 'linear-gradient(135deg, #22C55E, #16A34A)' }}>50% OFF</span>
-                    </div>
-                    <div className="text-3xl font-black text-white">${pkg.price}</div>
-                    <div className="text-xs text-muted">one-time</div>
-                  </div>
-                </div>
-                <h3 className="text-xl font-extrabold text-white mb-1">Increase to {pkg.target}</h3>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <div className="flex items-center gap-0.5">
-                    {[1,2,3,4,5].map((s) => (
-                      <svg key={s} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill={s <= Math.round(pkg.rating) ? '#FBBF24' : 'rgba(148,163,184,0.25)'}>
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-xs font-bold text-white">{pkg.rating.toFixed(1)}</span>
-                  <span className="text-xs text-muted">({pkg.reviews} reviews)</span>
-                </div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Award className="w-4 h-4 flex-shrink-0" style={{ color: '#22C55E' }} />
-                  <span className="text-xs font-bold" style={{ color: '#22C55E' }}>{pkg.guarantee}</span>
-                </div>
-                <ul className="space-y-2 mb-6">
-                  {['High-authority backlinks', 'White-hat methodology', 'Live Ahrefs verification', '2–4 week delivery'].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#22C55E' }} />
-                      <span className="text-muted">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/signup" className={`w-full py-3 rounded-xl text-sm font-bold text-center block transition-all ${pkg.popular ? 'btn-primary' : 'btn-outline'}`}>
-                  Order Now
-                </Link>
-              </div>
-            ))}
-
-            <div className="p-6 rounded-2xl card flex flex-col justify-between" style={{ borderStyle: 'dashed', borderColor: 'rgba(255,138,30,0.4)' }}>
-              <div>
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: 'rgba(30,41,66,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                  <MessageCircle className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-xl font-extrabold text-white mb-2">Custom Package</h3>
-                <p className="text-sm text-muted leading-relaxed mb-5">
-                  Need a specific DR target, multiple websites, or an agency deal? Contact us directly and we'll build a custom quote for you.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Link href="/contact" className="btn-primary py-3 text-sm gap-2">
-                  <Mail className="w-4 h-4" /> Contact via Email
-                </Link>
-                <button className="btn-outline py-3 text-sm gap-2" disabled title="WhatsApp coming soon">
-                  <MessageCircle className="w-4 h-4" /> WhatsApp (Coming Soon)
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* HOW IT WORKS */}
       <section className="section" id="how-it-works">
@@ -564,7 +458,7 @@ export default function HomePage() {
                 </> },
                 { icon: '🧮', title: 'How is Domain Rating Calculated?', body: <>
                   <p className="text-muted text-sm leading-relaxed mb-3">Ahrefs counts how many <strong className="text-white">unique domains</strong> link to your website, evaluates the <strong className="text-white">DR of each linking domain</strong> (a link from DR 85 transfers far more authority than one from DR 15), and considers how many other sites each linker also links to.</p>
-                  <p className="text-muted text-sm leading-relaxed">Results sit on a <strong className="text-white">logarithmic scale</strong> — moving from DR 10 to 20 is easy, but DR 70 to 80 requires exponentially more link authority. This is why high-DR sites are so valuable and why our <Link href="/increase-dr" className="underline" style={{ color: '#FFA94D' }}>Increase DR service</Link> is priced by target tier.</p>
+                  <p className="text-muted text-sm leading-relaxed">Results sit on a <strong className="text-white">logarithmic scale</strong> — moving from DR 10 to 20 is easy, but DR 70 to 80 requires exponentially more link authority. This is why high-DR sites are so valuable, and why a few points of movement at the top of the scale represents far more authority than the same jump lower down.</p>
                 </> },
                 { icon: '🎯', title: 'What is a Good Domain Rating?', body: <>
                   <p className="text-muted text-sm leading-relaxed mb-3">The industry recognizes four tiers: <strong style={{ color: '#EF4444' }}>0–29 Poor</strong> (new sites), <strong style={{ color: '#F59E0B' }}>30–49 Fair</strong> (growing authority), <strong style={{ color: '#3B82F6' }}>50–69 Good</strong> (strong, competitive sites), and <strong style={{ color: '#22C55E' }}>70–100 Excellent</strong> (elite authority).</p>
@@ -581,12 +475,12 @@ export default function HomePage() {
                   <p className="text-muted text-sm leading-relaxed">Checking DR normally requires a $99+/month Ahrefs subscription. Our <Link href="/" className="underline" style={{ color: '#FFA94D' }}>free DR checker</Link> pulls the same live data at zero cost — guests get 20 domains per check 10 times daily, a <Link href="/signup" className="underline" style={{ color: '#FFA94D' }}>free account</Link> unlocks 50 domains per check 10 times daily, and <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>Pro at $19/month</Link> gives you 1,000 domains per check with unlimited runs. Every single check produces a shareable result card downloadable as PNG.</p>
                 </> },
                 { icon: '📈', title: 'How to Increase Your Domain Rating', body: <>
-                  <p className="text-muted text-sm leading-relaxed mb-3">Organic routes — link-worthy content, digital PR, guest posting — work but often take 6–12 months. Our <Link href="/increase-dr" className="underline" style={{ color: '#FFA94D' }}>Increase DR service</Link> handles everything: high-authority white-hat backlinks raise your DR to a guaranteed target of <strong className="text-white">20+, 30+, 40+, 50+, 70+, 75+ or 80+</strong> within 2–4 weeks.</p>
-                  <p className="text-muted text-sm leading-relaxed">DR 20–40 packages carry a <strong style={{ color: '#22C55E' }}>Lifetime Permanent Guarantee</strong>; DR 50–80 packages include a full <strong style={{ color: '#22C55E' }}>1 Year Guarantee</strong>. If your rating drops below target inside the window, we restore it free.</p>
+                  <p className="text-muted text-sm leading-relaxed mb-3">The routes that work are link-worthy content, digital PR and guest posting, and they typically take 6–12 months to move the needle. Track your progress by re-checking your domain and your competitors here as your campaigns land.</p>
+                  <p className="text-muted text-sm leading-relaxed">Authority compounds, so the earliest links matter most. Benchmark against your competitors first, then aim for the gap rather than a round number.</p>
                 </> },
                 { icon: '💡', title: 'Common Myths About DR', body: <>
                   <p className="text-muted text-sm leading-relaxed mb-3"><strong className="text-white">"DR is a Google ranking factor"</strong> — it isn't, but it closely mirrors the link signals Google does use. <strong className="text-white">"More backlinks always means higher DR"</strong> — false; five links from authoritative domains beat a thousand spammy ones.</p>
-                  <p className="text-muted text-sm leading-relaxed"><strong className="text-white">"DR updates instantly"</strong> — Ahrefs recalculates as it recrawls the web, taking days to weeks. That's exactly why honest DR campaigns quote 2–4 week timelines.</p>
+                  <p className="text-muted text-sm leading-relaxed"><strong className="text-white">"DR updates instantly"</strong> — Ahrefs recalculates as it recrawls the web, taking days to weeks. That's why a new link rarely shows up in your rating straight away.</p>
                 </> },
               ].map((sec, i) => (
                 <Reveal key={sec.title} delay={i * 60}>
@@ -612,10 +506,10 @@ export default function HomePage() {
           <div className="card-glow p-8 sm:p-10 text-center relative overflow-hidden">
             <div className="relative">
               <h2 className="text-2xl sm:text-3xl font-black mb-4 text-white">Ready to Grow Your <span className="gradient-text">Domain Rating?</span></h2>
-              <p className="text-muted mb-8 max-w-lg mx-auto">Check any domain free right now — or let us increase your DR with a guaranteed result in 2–4 weeks.</p>
+              <p className="text-muted mb-8 max-w-lg mx-auto">Check any domain free right now, or go Pro to run 1,000 domains in a single bulk check.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="#top" className="btn-primary px-8 py-3 text-sm">Check DR Free</a>
-                <Link href="/increase-dr" className="btn-outline px-8 py-3 text-sm">See Increase DR Packages</Link>
+                <Link href="/bulk-dr-checker" className="btn-outline px-8 py-3 text-sm">Try Bulk DR Checker</Link>
               </div>
             </div>
           </div>

@@ -67,10 +67,10 @@ export default function BlogPage() {
           <Reveal delay={300}>
             <div className="card-glow p-7 text-center mt-10">
               <h3 className="text-xl font-black text-white mb-2">Want a Higher <span className="gradient-text">Domain Rating?</span></h3>
-              <p className="text-muted text-sm mb-5 max-w-md mx-auto">Check any domain free, bulk check up to 1,000 at once, or let us raise your DR to a guaranteed target in 2–4 weeks.</p>
+              <p className="text-muted text-sm mb-5 max-w-md mx-auto">Check any domain free, or bulk check up to 1,000 domains in a single run with CSV export.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/" className="btn-primary px-6 py-2.5 text-sm">Check DR Free</Link>
-                <Link href="/increase-dr" className="btn-outline px-6 py-2.5 text-sm">Increase DR Packages</Link>
+                <Link href="/bulk-dr-checker" className="btn-outline px-6 py-2.5 text-sm">Bulk DR Checker</Link>
               </div>
             </div>
           </Reveal>

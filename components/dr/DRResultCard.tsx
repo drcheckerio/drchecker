@@ -207,18 +207,18 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
 
       </div>
 
-      {/* Increase DR CTA — below card, not in PNG */}
+      {/* Bulk checker CTA — below card, not in PNG */}
       <div className="mt-5 card-glow p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,138,30,0.2)', border: '1px solid rgba(255,138,30,0.4)' }}>
             <TrendingUp className="w-6 h-6" style={{ color: '#FF8A1E' }} />
           </div>
           <div className="flex-1">
-            <p className="font-extrabold text-white text-base mb-1">Want a Higher DR for {domain}?</p>
-            <p className="text-sm text-muted leading-relaxed">We increase Domain Rating to 20+, 30+, 40+, 50+, 70+ or even 80+ — with permanent guarantees. Delivered in 2–4 weeks.</p>
+            <p className="font-extrabold text-white text-base mb-1">Checking more than {domain}?</p>
+            <p className="text-sm text-muted leading-relaxed">Run a whole list at once with the Bulk DR Checker — up to 1,000 domains per check on Pro, with CSV export.</p>
           </div>
-          <Link href="/increase-dr" className="btn-primary px-6 py-3 text-sm flex-shrink-0 w-full sm:w-auto">
-            Increase DR Now <ChevronRight className="w-4 h-4 ml-1" />
+          <Link href="/bulk-dr-checker" className="btn-primary px-6 py-3 text-sm flex-shrink-0 w-full sm:w-auto">
+            Bulk Check Domains <ChevronRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
       </div>

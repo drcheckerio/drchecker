@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { Menu, X, TrendingUp, Search, Layers, Tag, BookOpen, LogIn, LayoutDashboard, Shield, Crown, LogOut, ChevronDown, User } from 'lucide-react'
+import { Menu, X, Search, Layers, Tag, BookOpen, LogIn, LayoutDashboard, Shield, Crown, LogOut, ChevronDown, User } from 'lucide-react'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -49,7 +49,6 @@ export default function Navbar() {
   const navLinks = [
     { label: 'DR Checker', href: '/', icon: <Search className="w-4 h-4" /> },
     { label: 'Bulk DR Checker', href: '/bulk-dr-checker', icon: <Layers className="w-4 h-4" /> },
-    { label: 'Increase DR', href: '/increase-dr', icon: <TrendingUp className="w-4 h-4" />, accent: true },
     { label: 'Pricing', href: '/#pricing', icon: <Tag className="w-4 h-4" /> },
     { label: 'Blog', href: '/blog', icon: <BookOpen className="w-4 h-4" /> },
   ]
@@ -142,7 +141,7 @@ export default function Navbar() {
                     ? { background: 'linear-gradient(135deg, rgba(255,138,30,0.18), rgba(255,106,0,0.1))', color: '#FFB25E', border: '1px solid rgba(255,138,30,0.35)' }
                     : { color: '#8B96AD', border: '1px solid transparent' }}>
                   <span className={active ? '' : 'group-hover:text-white transition-colors'}
-                    style={{ color: active ? '#FFB25E' : link.accent ? '#FFA94D' : undefined }}>{link.icon}</span>
+                    style={{ color: active ? '#FFB25E' : undefined }}>{link.icon}</span>
                   <span className={active ? '' : 'group-hover:text-white transition-colors'}>{link.label}</span>
                 </Link>
               )
@@ -193,7 +192,7 @@ export default function Navbar() {
                     ? { background: 'linear-gradient(135deg, rgba(255,138,30,0.18), rgba(255,106,0,0.1))', color: '#FFB25E', border: '1px solid rgba(255,138,30,0.35)' }
                     : { color: '#CBD5E1', border: '1px solid rgba(148,163,184,0.08)' }}
                   onClick={() => setMobileOpen(false)}>
-                  <span style={{ color: active ? '#FFB25E' : link.accent ? '#FFA94D' : '#8B96AD' }}>{link.icon}</span>
+                  <span style={{ color: active ? '#FFB25E' : '#8B96AD' }}>{link.icon}</span>
                   {link.label}
                 </Link>
               )

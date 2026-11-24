@@ -17,7 +17,7 @@ export default function TermsPage() {
         <p className="text-muted text-sm mb-10">Last updated: October 2026</p>
 
         <div className="legal-content card p-6 sm:p-9">
-          <p>These Terms of Service ("Terms") govern your access to and use of drchecker.io ("we", "our", "us"), including our free Domain Rating checker, bulk DR checking tools, paid subscriptions, and DR increase services. By using our website or services, you agree to these Terms.</p>
+          <p>These Terms of Service ("Terms") govern your access to and use of drchecker.io ("we", "our", "us"), including our free Domain Rating checker, bulk DR checking tools, and paid subscriptions. By using our website or services, you agree to these Terms.</p>
 
           <h2>1. Our Services</h2>
           <p>drchecker.io provides tools to check the Ahrefs Domain Rating (DR) of websites, in single and bulk form, and offers optional paid services to increase a website's Domain Rating. Domain Rating data is sourced from Ahrefs; "Domain Rating" and the DR metric are properties of Ahrefs. We are not affiliated with or endorsed by Ahrefs.</p>
@@ -44,32 +44,25 @@ export default function TermsPage() {
             <li>Refunds are governed by our <Link href="/refund-policy">Refund Policy</Link>.</li>
           </ul>
 
-          <h2>5. Increase DR Services</h2>
-          <ul>
-            <li>DR increase campaigns are delivered within the stated timeframe (typically 2–4 weeks) to a guaranteed target tier.</li>
-            <li>Guarantees and refund eligibility for these services are described on the <Link href="/increase-dr">Increase DR</Link> page and in our <Link href="/refund-policy">Refund Policy</Link>.</li>
-            <li>We use white-hat methods only. We are not responsible for DR changes caused by your own actions, third parties, or changes to Ahrefs' methodology.</li>
-          </ul>
-
-          <h2>6. Acceptable Use</h2>
+          <h2>5. Acceptable Use</h2>
           <p>You agree not to: use the service for unlawful purposes; attempt to gain unauthorized access to our systems; overload, scrape, or disrupt the service; resell access without permission; or use the data in violation of Ahrefs' terms or the Domain Rating License.</p>
 
-          <h2>7. Data & Accuracy</h2>
+          <h2>6. Data & Accuracy</h2>
           <p>DR figures are provided "as is" from Ahrefs and may change as Ahrefs recrawls the web. We do not guarantee the accuracy, completeness, or availability of any data, and the service may be unavailable from time to time.</p>
 
-          <h2>8. Intellectual Property</h2>
+          <h2>7. Intellectual Property</h2>
           <p>All content, branding, and software on drchecker.io are owned by us or our licensors. "Domain Rating by Ahrefs" is attributed to Ahrefs. You may not copy, modify, or distribute our content without permission.</p>
 
-          <h2>9. Disclaimers & Limitation of Liability</h2>
+          <h2>8. Disclaimers & Limitation of Liability</h2>
           <p>The service is provided "as is" without warranties of any kind. To the maximum extent permitted by law, we are not liable for any indirect, incidental, or consequential damages, or for any loss arising from your use of, or inability to use, the service. Our total liability for any claim is limited to the amount you paid us in the 3 months preceding the claim.</p>
 
-          <h2>10. Termination</h2>
+          <h2>9. Termination</h2>
           <p>We may suspend or terminate your access if you violate these Terms. You may stop using the service at any time and request account deletion.</p>
 
-          <h2>11. Changes to These Terms</h2>
+          <h2>10. Changes to These Terms</h2>
           <p>We may update these Terms from time to time. Material changes will be posted on this page with an updated date. Continued use after changes constitutes acceptance.</p>
 
-          <h2>12. Contact</h2>
+          <h2>11. Contact</h2>
           <p>Questions about these Terms? Reach us via our <Link href="/contact">Contact page</Link>.</p>
         </div>
       </div>

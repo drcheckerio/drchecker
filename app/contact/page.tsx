@@ -13,7 +13,7 @@ export default function ContactPage() {
   const [subject, setSubject] = useState('General question')
   const [message, setMessage] = useState('')
 
-  const subjects = ['General question', 'Increase DR enquiry', 'Billing / subscription', 'Bug report', 'Custom package quote']
+  const subjects = ['General question', 'Billing / subscription', 'Bug report', 'Feature request']
 
   const handleSend = () => {
     const body = `Name: ${name}\nEmail: ${email}\n\n${message}`
@@ -36,7 +36,7 @@ export default function ContactPage() {
             Get in <span className="gradient-text">Touch</span>
           </h1>
           <p className="text-muted max-w-xl mx-auto">
-            Questions about bulk DR checking, your subscription, or a custom Increase DR package? We reply fast.
+            Questions about bulk DR checking or your Pro subscription? We reply fast.
           </p>
         </div>
       </section>
@@ -124,8 +124,8 @@ export default function ContactPage() {
                 <Link href="/#faq" className="flex items-center gap-2 text-sm text-muted hover:text-white transition-colors">
                   <HelpCircle className="w-4 h-4 flex-shrink-0" /> DR checker FAQ
                 </Link>
-                <Link href="/increase-dr" className="flex items-center gap-2 text-sm text-muted hover:text-white transition-colors">
-                  <TrendingUp className="w-4 h-4 flex-shrink-0" /> Increase DR packages
+                <Link href="/bulk-dr-checker" className="flex items-center gap-2 text-sm text-muted hover:text-white transition-colors">
+                  <TrendingUp className="w-4 h-4 flex-shrink-0" /> Bulk DR Checker
                 </Link>
                 <Link href="/refund-policy" className="flex items-center gap-2 text-sm text-muted hover:text-white transition-colors">
                   <CreditCard className="w-4 h-4 flex-shrink-0" /> Refund policy
