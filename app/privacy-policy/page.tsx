@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
           </ul>
 
           <h2>4. Data Retention</h2>
-          <p>We keep account data for as long as your account is active. Order records are retained for accounting and guarantee-servicing purposes. You may request deletion of your account and associated personal data at any time by contacting us.</p>
+          <p>We keep account data for as long as your account is active. Subscription and payment records are retained as long as required for accounting and tax purposes. You may request deletion of your account and associated personal data at any time by contacting us.</p>
 
           <h2>5. Data Security</h2>
           <p>We use industry-standard measures to protect your data, including encrypted connections (HTTPS), secure authentication, and row-level security on our database. No method of transmission over the internet is 100% secure, but we work continuously to protect your information.</p>

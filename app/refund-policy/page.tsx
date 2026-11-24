@@ -42,7 +42,7 @@ export default function RefundPolicyPage() {
           <p>Send us a message via the <Link href="/contact">Contact page</Link> with your account email and reason. We respond to all refund requests within 48 hours.</p>
 
           <h2>5. Questions</h2>
-          <p>Unsure whether your situation qualifies? Just ask — we're fair, and our guarantee exists to protect you. Reach us anytime via <Link href="/contact">Contact</Link>.</p>
+          <p>Unsure whether your situation qualifies? Just ask — we're fair, and our 7-day money-back guarantee exists to protect you. Reach us anytime via <Link href="/contact">Contact</Link>.</p>
         </div>
       </div>
       <Footer />

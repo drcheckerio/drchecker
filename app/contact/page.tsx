@@ -74,7 +74,7 @@ export default function ContactPage() {
               <div>
                 <label htmlFor="contact-message" className="block text-xs font-semibold text-white mb-1.5">Message</label>
                 <textarea id="contact-message" value={message} onChange={(e) => setMessage(e.target.value)} rows={6}
-                  placeholder="Tell us what you need — include your domain if it's about a DR campaign."
+                  placeholder="Tell us what you need — include your account email if it's about your subscription."
                   className="input-dark w-full px-4 py-3 text-sm resize-none" />
               </div>
 
