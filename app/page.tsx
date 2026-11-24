@@ -81,7 +81,7 @@ export default function HomePage() {
     { q: 'Is this DR checker really free?', a: 'Yes. Guests can check up to 20 domains per check, 10 times per day with no account. Create a free account to raise that to 50 domains per check, 10 times daily. Pro ($19/mo) unlocks 1,000 domains per check with unlimited checks.' },
     { q: 'How accurate is your DR data?', a: 'Our results come directly from live Ahrefs data — the same figures you would see inside Ahrefs Site Explorer. Data is refreshed continuously as Ahrefs recrawls the web.' },
     { q: 'What is a good DR score?', a: '0–29 is Poor (new/weak sites), 30–49 is Fair (growing authority), 50–69 is Good (strong, competitive sites), and 70–100 is Excellent (top-tier authority like major publications). Always benchmark against competitors in your specific niche.' },
-    { q: 'Can I order a custom DR target?', a: 'Absolutely. If you need a specific DR target not listed in our packages, contact us via email or WhatsApp and we will prepare a custom quote for your exact requirement.' },
+    { q: 'Can I cancel my Pro subscription?', a: 'Yes. Pro is month-to-month with no contract and no cancellation fee. You can cancel at any time and keep full Pro access until the end of the period you have already paid for.' },
   ]
 
   return (
