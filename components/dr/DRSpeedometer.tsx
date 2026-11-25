@@ -133,12 +133,18 @@ export default function DRSpeedometer({ score, size = 280, animated = true, star
   return (
     <div className="flex flex-col items-center relative">
       <canvas ref={canvasRef} style={{ width: size, height: size }} />
-      <div className="text-center -mt-12 relative z-10">
-        <div className="text-5xl font-black" style={{ color: displayColor }}>{currentScore}</div>
-        <div className="text-xs font-bold text-muted uppercase tracking-widest mt-1">DR SCORE</div>
-        <div className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold"
-          style={{ background: `${color}20`, color, border: `1px solid ${color}45` }}>
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: color }}></span>
+      {/* The overlay scales with `size`; fixed type collided with the arc on
+          smaller gauges. The ratios below reproduce the original look at 280. */}
+      <div className="text-center relative z-10" style={{ marginTop: -size * 0.17 }}>
+        <div className="font-black leading-none" style={{ color: displayColor, fontSize: size * 0.19 }}>{currentScore}</div>
+        <div className="font-bold text-muted uppercase tracking-widest" style={{ fontSize: Math.max(9, size * 0.043), marginTop: size * 0.014 }}>DR SCORE</div>
+        <div className="inline-flex items-center gap-1.5 rounded-full font-bold"
+          style={{
+            background: `${color}20`, color, border: `1px solid ${color}45`,
+            marginTop: size * 0.043, fontSize: Math.max(11, size * 0.05),
+            padding: `${size * 0.021}px ${size * 0.057}px`,
+          }}>
+          <span className="rounded-full" style={{ width: size * 0.021, height: size * 0.021, background: color }}></span>
           {rating}
         </div>
       </div>

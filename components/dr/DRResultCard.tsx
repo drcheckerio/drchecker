@@ -211,6 +211,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
             </div>
             )}
 
+            {!hasDr4 && (
             <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
               <p className="text-xs font-extrabold text-white uppercase tracking-wider mb-3">DR Score Range</p>
               <div className="grid grid-cols-2 gap-2">
@@ -230,6 +231,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
                 ))}
               </div>
             </div>
+            )}
 
             {/* Result for — below DR Score Range */}
             <div className="rounded-xl p-4 flex-1" style={{ background: 'rgba(7,11,20,0.7)', border: '1px solid rgba(148,163,184,0.1)' }}>
@@ -267,6 +269,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
       {/* ===== HIDDEN EXPORT CARD (clean, solid colors, static needle — used only for PNG) ===== */}
       <div style={{ position: 'fixed', left: '-10000px', top: 0, pointerEvents: 'none' }}>
         <div ref={exportRef} style={{ width: 900, background: '#0A0F1E', border: '1px solid #2A3348', borderRadius: 20, padding: 28, fontFamily: 'Inter, sans-serif' }}>
+          {!hasDr4 && (
           <div style={{ display: 'flex', gap: 20 }}>
             {/* Left */}
             <div style={{ flex: '1 1 55%', background: '#101830', border: '1px solid #2A3348', borderRadius: 16, padding: 22 }}>
@@ -327,6 +330,68 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               </div>
             </div>
           </div>
+          )}
+
+          {hasDr4 && (
+            <>
+              <div style={{ display: 'flex', gap: 20 }}>
+                {/* DR3 */}
+                <div style={{ flex: '1 1 50%', background: '#101830', border: '1px solid #2A3348', borderRadius: 16, padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: 15, color: '#fff', letterSpacing: 0.5 }}>DR3 · CLASSIC</div>
+                      <div style={{ fontSize: 11, color: '#8B96AD', marginTop: 2 }}>Ahrefs Domain Rating</div>
+                    </div>
+                    <div style={{ background: '#0E2418', border: '1px solid #1E5A38', color: '#22C55E', fontSize: 10, fontWeight: 600, borderRadius: 999, padding: '4px 10px' }}>● Live</div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                    <DRSpeedometer score={result.dr} size={225} animated={false} />
+                  </div>
+                </div>
+                {/* DR4 */}
+                <div style={{ flex: '1 1 50%', background: '#101830', border: '1px solid #4A3010', borderRadius: 16, padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: 15, color: '#FFA94D', letterSpacing: 0.5 }}>DR4 · NEW MODEL</div>
+                      <div style={{ fontSize: 11, color: '#8B96AD', marginTop: 2 }}>Ahrefs&apos; updated Domain Rating</div>
+                    </div>
+                    <div style={{ background: '#2A1A08', border: '1px solid #6B4411', color: '#FFA94D', fontSize: 10, fontWeight: 800, borderRadius: 999, padding: '4px 10px' }}>NEW</div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                    <DRSpeedometer score={result.dr4 as number} size={225} animated={false} />
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 16, background: '#101830', border: '1px solid #2A3348', borderRadius: 14, padding: '12px 16px' }}>
+                <span style={{ fontSize: 12, color: '#8B96AD', fontWeight: 600 }}>DR3</span>
+                <span style={{ fontSize: 22, fontWeight: 900, color }}>{result.dr}</span>
+                <span style={{ fontSize: 14, color: '#5A657E' }}>&rarr;</span>
+                <span style={{ fontSize: 12, color: '#8B96AD', fontWeight: 600 }}>DR4</span>
+                <span style={{ fontSize: 22, fontWeight: 900, color: dr4Color }}>{result.dr4}</span>
+                <span style={{
+                  fontSize: 13, fontWeight: 900, borderRadius: 10, padding: '4px 10px',
+                  background: dr4Delta > 0 ? '#0E2418' : dr4Delta < 0 ? '#2A1115' : '#141B2E',
+                  border: `1px solid ${dr4Delta > 0 ? '#1E5A38' : dr4Delta < 0 ? '#5A1E26' : '#232C42'}`,
+                  color: dr4Delta > 0 ? '#22C55E' : dr4Delta < 0 ? '#EF4444' : '#8B96AD',
+                }}>{dr4Delta > 0 ? '+' : ''}{dr4Delta}</span>
+              </div>
+
+              <div style={{ background: '#1A1208', border: '1px solid #4A3010', borderRadius: 12, padding: '10px 14px', textAlign: 'center', fontSize: 12, marginTop: 14 }}>
+                <span style={{ fontWeight: 800, color: '#fff' }}>Checked on <span style={{ color: '#FF8A1E' }}>drchecker.io</span></span>
+                <span style={{ color: '#8B96AD' }}> — Free Bulk Ahrefs DR Checker</span>
+              </div>
+
+              <div style={{ background: '#080D1A', border: '1px solid #232C42', borderRadius: 14, padding: 16, marginTop: 14 }}>
+                <div style={{ fontSize: 11, color: '#8B96AD', fontWeight: 600, marginBottom: 6 }}>Result for</div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 6 }}>🌐 {domain}</div>
+                <div style={{ fontSize: 11.5, color: '#8B96AD', lineHeight: 1.6 }}>
+                  {domain} has a <span style={{ color, fontWeight: 800 }}>DR of {result.dr}</span> on the classic model
+                  and <span style={{ color: dr4Color, fontWeight: 800 }}>DR {result.dr4}</span> on DR4. {drMessage}
+                </div>
+              </div>
+            </>
+          )}
 
         </div>
       </div>
