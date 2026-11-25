@@ -6,6 +6,16 @@ import { supabase } from '@/lib/supabase'
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
+  // Count this visitor once per browser session. The server decides whether
+  // they are new today; sessionStorage just avoids pinging on every page view.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('drc_counted')) return
+      sessionStorage.setItem('drc_counted', '1')
+    } catch { /* private mode — ping anyway, server dedupes by day */ }
+    fetch('/api/visit', { method: 'POST', keepalive: true }).catch(() => {})
+  }, [])
+
   useEffect(() => {
     // Supabase returns from Google OAuth or an email-confirmation link with
     // #access_token=... in the URL hash (sometimes on the homepage if it fell

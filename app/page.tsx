@@ -8,6 +8,7 @@ import { AppJsonLd, FaqJsonLd } from '@/components/seo/JsonLd'
 import { DRResult } from '@/types'
 import { cleanDomain } from '@/lib/utils'
 import { supabase } from '@/lib/supabase'
+import LiveStats from '@/components/stats/LiveStats'
 import Link from 'next/link'
 import {
   Search, Zap, Shield, BarChart3, Globe, CheckCircle, TrendingUp,
@@ -333,6 +334,15 @@ export default function HomePage() {
                 <strong className="text-white">Which should you use?</strong> Most SEO professionals lead with <strong className="text-white">DR</strong> because Ahrefs runs one of the largest live backlink indexes, making it the most responsive of the three — and the default metric quoted on link marketplaces. That said, smart link vetting rarely relies on a single number. Cross-referencing metrics gives a fuller picture: a domain with strong DR but weak Trust Flow may have high link <em>volume</em> but questionable link <em>quality</em>. For a second opinion on any domain, you can check its Moz Domain Authority and Page Authority with this <a href="https://dachecker.io/domain-authority-checker" target="_blank" rel="noopener" className="font-semibold underline" style={{ color: '#FFA94D' }}>DA PA Checker</a>, then compare it against the DR you get here. Reading DR, DA and TF together is the most reliable way to judge a site\'s true authority before you buy a link or a domain.
               </p>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* LIVE USAGE COUNTER */}
+      <section className="pb-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <LiveStats />
           </Reveal>
         </div>
       </section>

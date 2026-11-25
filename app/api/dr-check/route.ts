@@ -200,6 +200,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Public counter: record the work actually done. Fire-and-forget — a stats
+    // failure must never affect the user's results.
+    try {
+      const admin = createServerSupabaseClient()
+      void admin.rpc('bump_stats', { p_domains: cleaned.length, p_checks: 1 })
+    } catch { /* counters are best-effort */ }
+
     // Visible in Vercel logs — tells us whether the rate ceiling is the problem.
     if (stats.rateLimited > 0 || stats.failed > 0) {
       console.log(`[dr-check] tier=${tier} domains=${cleaned.length} dr4=${withDr4} 429s=${stats.rateLimited} failed=${stats.failed}`)
