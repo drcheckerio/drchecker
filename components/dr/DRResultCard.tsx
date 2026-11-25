@@ -24,6 +24,37 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
   const dr4Color = hasDr4 ? getDRColor(result.dr4 as number) : color
   const dr4Delta = hasDr4 ? (result.dr4 as number) - result.dr : 0
 
+  // Compact DR4 panel — sits where the two stat tiles normally go on desktop,
+  // and under the gauge on mobile. Smaller gauge, same live needle.
+  const dr4Card = hasDr4 ? (
+    <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)', border: '1px solid rgba(255,138,30,0.35)' }}>
+      <div className="flex items-center justify-between gap-2 mb-1">
+        <div>
+          <p className="text-xs font-extrabold tracking-wide" style={{ color: '#FFA94D' }}>DR4 · NEW MODEL</p>
+          <p className="text-[11px] text-muted mt-0.5">Ahrefs&apos; updated Domain Rating</p>
+        </div>
+        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide flex-shrink-0"
+          style={{ background: 'rgba(255,138,30,0.16)', border: '1px solid rgba(255,138,30,0.4)', color: '#FFA94D' }}>NEW</span>
+      </div>
+      <div className="flex justify-center">
+        <DRSpeedometer score={result.dr4 as number} size={165} animated={true} start={startAnim} />
+      </div>
+      <div className="flex items-center justify-center gap-2 mt-1">
+        <span className="text-[11px] text-muted font-semibold">vs DR3 {result.dr}</span>
+        <span className="px-2 py-0.5 rounded-lg text-xs font-black tabular-nums"
+          style={{
+            background: dr4Delta > 0 ? 'rgba(34,197,94,0.14)' : dr4Delta < 0 ? 'rgba(239,68,68,0.14)' : 'rgba(255,255,255,0.05)',
+            color: dr4Delta > 0 ? '#22C55E' : dr4Delta < 0 ? '#EF4444' : '#8B96AD',
+          }}>
+          {dr4Delta > 0 ? '+' : ''}{dr4Delta}
+        </span>
+      </div>
+      <p className="text-[11px] text-muted leading-snug text-center mt-2">
+        Ahrefs&apos; new rating model, running alongside the classic DR3. It judges link quality more strictly.
+      </p>
+    </div>
+  ) : null
+
 
   // Start needle animation only once the card is fully visible on screen
   useEffect(() => {
@@ -93,7 +124,6 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
 
       {/* ===== ON-SCREEN CARD ===== */}
       <div ref={cardRef} className="rounded-2xl p-4 sm:p-6" style={{ background: '#0A0F1E', border: '1px solid rgba(148,163,184,0.12)' }}>
-        {!hasDr4 && (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
 
           {/* Left: gauge */}
@@ -124,6 +154,8 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               </div>
             </div>
 
+            {hasDr4 && <div className="lg:hidden mt-3">{dr4Card}</div>}
+
             {/* Mobile-only: credit ABOVE result — stays in every screenshot */}
             <div className="lg:hidden flex items-center justify-center mt-3 py-2.5 rounded-xl" style={{ background: 'rgba(255,138,30,0.07)', border: '1px solid rgba(255,138,30,0.2)' }}>
               <div className="flex items-center gap-2 flex-wrap">
@@ -150,6 +182,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
 
           {/* Right: panels — desktop only */}
           <div className="hidden lg:flex lg:col-span-2 flex-col gap-4">
+            {hasDr4 ? dr4Card : (
             <div className="grid grid-cols-2 gap-4">
               <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
                 <p className="text-xs text-muted font-semibold mb-3">DR Score</p>
@@ -176,6 +209,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
                 </div>
               </div>
             </div>
+            )}
 
             <div className="card p-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
               <p className="text-xs font-extrabold text-white uppercase tracking-wider mb-3">DR Score Range</p>
@@ -212,115 +246,6 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
             </div>
           </div>
         </div>
-        )}
-
-        {/* ===== DR3 vs DR4 — two live gauges ===== */}
-        {hasDr4 && (
-          <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* DR3 — classic model */}
-              <div className="card p-4 sm:p-6" style={{ background: 'rgba(15,22,41,0.65)' }}>
-                <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
-                  <div>
-                    <h3 className="font-extrabold text-base text-white tracking-wide">DR3 <span className="text-muted">· CLASSIC</span></h3>
-                    <p className="text-xs text-muted mt-0.5">Ahrefs Domain Rating</p>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold"
-                    style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#22C55E' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse-soft"></span>
-                    Live
-                  </div>
-                </div>
-                <div className="flex justify-center my-1">
-                  <DRSpeedometer score={result.dr} size={240} animated={true} start={startAnim} />
-                </div>
-                <p className="text-center text-xs text-muted leading-relaxed mt-2">
-                  The long-standing Domain Rating the SEO industry has used for years.
-                </p>
-              </div>
-
-              {/* DR4 — new model */}
-              <div className="card p-4 sm:p-6" style={{ background: 'rgba(15,22,41,0.65)', border: '1px solid rgba(255,138,30,0.35)', boxShadow: '0 0 26px rgba(255,138,30,0.10)' }}>
-                <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
-                  <div>
-                    <h3 className="font-extrabold text-base tracking-wide" style={{ color: '#FFA94D' }}>DR4 <span className="text-muted">· NEW MODEL</span></h3>
-                    <p className="text-xs text-muted mt-0.5">Ahrefs&apos; updated Domain Rating</p>
-                  </div>
-                  <div className="px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide"
-                    style={{ background: 'rgba(255,138,30,0.16)', border: '1px solid rgba(255,138,30,0.4)', color: '#FFA94D' }}>
-                    NEW
-                  </div>
-                </div>
-                <div className="flex justify-center my-1">
-                  <DRSpeedometer score={result.dr4 as number} size={240} animated={true} start={startAnim} />
-                </div>
-                <p className="text-center text-xs text-muted leading-relaxed mt-2">
-                  Ahrefs&apos; rebuilt scoring model, designed to judge link quality more strictly.
-                </p>
-              </div>
-            </div>
-
-            {/* Comparison + what DR4 actually is */}
-            <div className="card p-4 sm:p-5 mt-4" style={{ background: 'rgba(15,22,41,0.65)' }}>
-              <div className="flex items-center justify-center gap-3 sm:gap-5 flex-wrap mb-3">
-                <div className="text-center">
-                  <div className="text-[10px] text-muted font-semibold uppercase tracking-wider mb-0.5">DR3</div>
-                  <div className="text-2xl sm:text-3xl font-black" style={{ color }}>{result.dr}</div>
-                </div>
-                <ArrowRight className="w-5 h-5 flex-shrink-0" style={{ color: '#8B96AD' }} />
-                <div className="text-center">
-                  <div className="text-[10px] text-muted font-semibold uppercase tracking-wider mb-0.5">DR4</div>
-                  <div className="text-2xl sm:text-3xl font-black" style={{ color: dr4Color }}>{result.dr4}</div>
-                </div>
-                <div className="px-3 py-1.5 rounded-xl text-sm font-black tabular-nums"
-                  style={{
-                    background: dr4Delta > 0 ? 'rgba(34,197,94,0.14)' : dr4Delta < 0 ? 'rgba(239,68,68,0.14)' : 'rgba(255,255,255,0.05)',
-                    border: `1px solid ${dr4Delta > 0 ? 'rgba(34,197,94,0.35)' : dr4Delta < 0 ? 'rgba(239,68,68,0.35)' : 'rgba(255,255,255,0.1)'}`,
-                    color: dr4Delta > 0 ? '#22C55E' : dr4Delta < 0 ? '#EF4444' : '#8B96AD',
-                  }}>
-                  {dr4Delta > 0 ? '+' : ''}{dr4Delta}
-                </div>
-              </div>
-              <p className="text-xs text-muted leading-relaxed text-center max-w-2xl mx-auto">
-                <span className="font-bold text-white">What is DR4?</span> It is Ahrefs&apos; new Domain Rating model,
-                running alongside the original DR3 rather than replacing it overnight. It weighs the quality and
-                relevance of backlinks more heavily, so sites built on genuinely strong links tend to hold or gain
-                points, while sites propped up by low-value links often drop.{' '}
-                {dr4Delta > 0
-                  ? <>Here <span className="font-bold text-white">{domain}</span> scores <span className="font-bold" style={{ color: '#22C55E' }}>{dr4Delta} higher</span> on the new model — a sign its backlink profile holds up under stricter scrutiny.</>
-                  : dr4Delta < 0
-                  ? <>Here <span className="font-bold text-white">{domain}</span> scores <span className="font-bold" style={{ color: '#EF4444' }}>{Math.abs(dr4Delta)} lower</span> on the new model, which usually points to links the stricter model values less.</>
-                  : <>Here <span className="font-bold text-white">{domain}</span> scores the same on both models.</>}
-              </p>
-            </div>
-
-            {/* Credit — stays in every screenshot */}
-            <div className="flex items-center justify-center mt-4 py-2.5 rounded-xl" style={{ background: 'rgba(255,138,30,0.07)', border: '1px solid rgba(255,138,30,0.2)' }}>
-              <div className="flex items-center gap-2 flex-wrap justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo-mark.png" alt="drchecker.io" width={20} height={20} className="rounded-md" />
-                <span className="text-xs font-bold text-white">Checked on <span style={{ color: '#FF8A1E' }}>drchecker.io</span></span>
-                <span className="text-xs text-muted hidden sm:inline">— Free Bulk Ahrefs DR Checker</span>
-              </div>
-            </div>
-
-            {/* Result for */}
-            <div className="rounded-xl p-3 sm:p-4 mt-4" style={{ background: 'rgba(7,11,20,0.7)', border: '1px solid rgba(148,163,184,0.1)' }}>
-              <p className="text-xs text-muted mb-2 font-semibold">Result for</p>
-              <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: 'rgba(255,138,30,0.15)' }}>
-                  <Globe className="w-3.5 h-3.5" style={{ color: '#FF8A1E' }} />
-                </div>
-                <span className="font-bold text-sm text-white">{domain}</span>
-              </div>
-              <p className="text-xs text-muted leading-relaxed">
-                {domain} has a <span className="font-extrabold" style={{ color }}>DR of {result.dr}</span> on the classic
-                model and <span className="font-extrabold" style={{ color: dr4Color }}>DR {result.dr4}</span> on DR4. {drMessage}
-              </p>
-            </div>
-          </>
-        )}
-
       </div>
 
       {/* Bulk checker CTA — below card, not in PNG */}
