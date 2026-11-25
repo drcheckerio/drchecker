@@ -44,9 +44,23 @@ const LIMITS = {
   pro: { perCheck: 1000, perDay: null as number | null },
 }
 
-const BATCH_SIZE = 25
-const BATCH_DELAY_MS = 120
+// ===== Priority lanes =====
+// Pro traffic must never queue behind free traffic. Same API key, but Pro runs
+// at full concurrency with almost no gap between batches, while free and guest
+// traffic runs narrower and slower so it consumes less of the shared Ahrefs
+// rate budget. Free checks are small (<=50 domains), so the slowdown is a
+// second or two; Pro checks are large, so they get the headroom.
+const LANES = {
+  guest: { batch: 8, delay: 450 },
+  free: { batch: 10, delay: 350 },
+  pro: { batch: 25, delay: 50 },
+} as const
+
 const MAX_ATTEMPTS = 3
+
+// Counts upstream 429s for one request so we can see whether we are actually
+// hitting Ahrefs' rate ceiling rather than guessing.
+type RateStats = { rateLimited: number; failed: number }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -60,14 +74,15 @@ function toResult(domain: string, dr: number) {
 
 // Fetch DR with automatic retries + backoff to survive upstream rate limiting.
 // Domains Ahrefs has no data for (brand-new/unindexed) are a VALID result: DR 0 — not an error.
-async function fetchDR(domain: string, version: DRVersion = 'dr3'): Promise<{ domain: string; dr: number; rating: string; error?: string }> {
+async function fetchDR(domain: string, version: DRVersion = 'dr3', stats?: RateStats): Promise<{ domain: string; dr: number; rating: string; error?: string }> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       const { url, init } = drRequest(domain, version)
       const res = await fetch(url, init)
 
       // Transient upstream problems → retry
-      if (res.status === 429 || res.status >= 500) throw new Error(`upstream ${res.status}`)
+      if (res.status === 429) { if (stats) stats.rateLimited++; throw new Error('upstream 429') }
+      if (res.status >= 500) throw new Error(`upstream ${res.status}`)
 
       // 4xx (except 429) = the API understood us but has nothing for this domain → DR 0
       if (!res.ok) return toResult(domain, 0)
@@ -87,14 +102,15 @@ async function fetchDR(domain: string, version: DRVersion = 'dr3'): Promise<{ do
       }
     }
   }
+  if (stats) stats.failed++
   return { ...toResult(domain, 0), error: 'Could not fetch DR for this domain' }
 }
 
 // Pro compare mode: pull both models for one domain in parallel.
 // DR3 stays the primary `dr` so ratings, colours, sorting and CSV keep working
 // unchanged; DR4 rides along as an extra field.
-async function fetchBothVersions(domain: string) {
-  const [three, four] = await Promise.all([fetchDR(domain, 'dr3'), fetchDR(domain, 'dr4')])
+async function fetchBothVersions(domain: string, stats?: RateStats) {
+  const [three, four] = await Promise.all([fetchDR(domain, 'dr3', stats), fetchDR(domain, 'dr4', stats)])
   return { ...three, dr4: four.dr }
 }
 
@@ -150,8 +166,15 @@ export async function POST(req: NextRequest) {
     // Each domain costs two upstream calls in this mode, so halve the batch size
     // to keep outbound concurrency (and Ahrefs rate limiting) where it was.
     const withDr4 = dr4Requested === true && tier === 'pro' && DR4_AVAILABLE
-    const fetchOne = withDr4 ? fetchBothVersions : (d: string) => fetchDR(d)
-    const batchSize = withDr4 ? Math.ceil(BATCH_SIZE / 2) : BATCH_SIZE
+    const stats: RateStats = { rateLimited: 0, failed: 0 }
+    const fetchOne = withDr4
+      ? (d: string) => fetchBothVersions(d, stats)
+      : (d: string) => fetchDR(d, 'dr3', stats)
+
+    // Lane decides how hard this request is allowed to push Ahrefs.
+    const lane = LANES[tier as keyof typeof LANES] ?? LANES.guest
+    const batchSize = withDr4 ? Math.ceil(lane.batch / 2) : lane.batch
+    const batchDelay = lane.delay
 
     // ===== Batched fetching with order preserved =====
     const results: any[] = new Array(cleaned.length)
@@ -164,7 +187,7 @@ export async function POST(req: NextRequest) {
         results[i + j] = r
         if (r.error) failedIdx.push(i + j)
       })
-      if (i + batchSize < cleaned.length) await sleep(BATCH_DELAY_MS)
+      if (i + batchSize < cleaned.length) await sleep(batchDelay)
     }
 
     // ===== Final salvage pass: retry failures gently in small batches =====
@@ -177,9 +200,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Visible in Vercel logs — tells us whether the rate ceiling is the problem.
+    if (stats.rateLimited > 0 || stats.failed > 0) {
+      console.log(`[dr-check] tier=${tier} domains=${cleaned.length} dr4=${withDr4} 429s=${stats.rateLimited} failed=${stats.failed}`)
+    }
+
     return NextResponse.json({
       results,
       tier,
+      rateLimited: stats.rateLimited,
       capApplied: limits.perCheck,
       dr4: withDr4,
       // Tells the client why DR4 was ignored, if it asked for it.

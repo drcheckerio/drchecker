@@ -33,14 +33,14 @@ function incrementGuestChecks() {
 }
 
 const BULK_FAQS = [
-              { q: 'How many domains can I check at once with the bulk DR checker?', a: 'Guests can check 20 domains per run, 10 times per day with no account. A free account unlocks 50 domains per check, 10 times daily. Pro ($19/month) checks up to 1,000 domains in a single run with unlimited runs — the highest bulk DR checking capacity available on any website.' },
+              { q: 'How many domains can I check at once with the bulk DR checker?', a: 'Guests can check 20 domains per run, 10 times per day with no account. A free account unlocks 50 domains per check, 10 times daily. Pro ($19/month) checks up to 1,000 domains in a single run with unlimited runs, and is the only plan with the DR3 vs DR4 comparison — the highest bulk DR checking capacity available on any website.' },
               { q: 'Is the DR data accurate and up to date?', a: 'Yes. Every score is pulled from live Ahrefs data at the moment you run the check — the same figures shown inside Ahrefs Site Explorer. We never serve months-old cached databases.' },
               { q: 'Can I export my bulk results?', a: 'Absolutely. Every results table includes one-click CSV download and a copy-to-clipboard option in tab-separated format that pastes perfectly into Excel and Google Sheets.' },
               { q: 'Do I need an Ahrefs subscription to use this?', a: 'No. That is the whole point — you get live Ahrefs DR figures without paying $99+/month for an Ahrefs plan. Our tool is free to start, and just $19/month for full 1,000-domain agency-scale checking with unlimited runs.' },
               { q: 'What format should my domain list be in?', a: 'Anything goes: bare domains, full URLs, with or without www or https. Paste one per line and our system automatically cleans, normalizes, and deduplicates every entry before checking.' },
               { q: 'How often should I re-check DR for my domain lists?', a: 'DR changes as Ahrefs recrawls the web. Agencies typically re-check client and inventory lists weekly; investors re-scan watchlists monthly. With 10 free checks daily on a free account, routine monitoring costs nothing.' },
               { q: 'Why do some domains return a DR of 0?', a: 'A DR of 0 usually means the domain is brand new, has virtually no backlinks known to Ahrefs, or was entered with a typo. Double-check spelling first; if the domain is genuinely new, DR 0 is its real current score.' },
-              { q: 'Can I compare Ahrefs\u2019 DR3 and DR4 scores?', a: 'Yes. Ahrefs now publishes two Domain Rating models, and Pro accounts can switch on a side-by-side comparison that shows DR3 and DR4 for every domain in the list, along with the difference between them. Both scores are included in the CSV export.' },
+              { q: 'Can I compare Ahrefs\u2019 DR3 and DR4 scores?', a: 'Yes, on the Pro plan. Ahrefs now publishes two Domain Rating models, and Pro accounts can switch on a side-by-side comparison that shows DR3 and DR4 for every domain in the list, along with the difference between them. Both scores are included in the CSV export.' },
 ]
 
 export default function BulkCheckerPage() {
@@ -213,7 +213,7 @@ export default function BulkCheckerPage() {
           {[
             { key: 'guest', icon: '👤', label: 'Guest', limit: '20 domains · 10 checks/day', href: '/signup', cta: 'Sign up' },
             { key: 'free', icon: '✅', label: 'Free Account', limit: '50 domains · 10 checks/day', href: '/#pricing', cta: 'Upgrade' },
-            { key: 'pro', icon: '👑', label: 'Pro — $19/mo', limit: '1,000 domains · Unlimited', href: '/#pricing', cta: 'Upgrade' },
+            { key: 'pro', icon: '👑', label: 'Pro — $19/mo', limit: '1,000 domains · Unlimited · DR4', href: '/#pricing', cta: 'Upgrade' },
           ].map((tier) => {
             const active = tier.key === plan
             return (
