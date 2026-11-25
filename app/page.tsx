@@ -7,6 +7,7 @@ import Reveal from '@/components/layout/Reveal'
 import { AppJsonLd, FaqJsonLd } from '@/components/seo/JsonLd'
 import { DRResult } from '@/types'
 import { cleanDomain } from '@/lib/utils'
+import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import {
   Search, Zap, Shield, BarChart3, Globe, CheckCircle, TrendingUp,
@@ -21,6 +22,23 @@ export default function HomePage() {
   const [error, setError] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const resultRef = useRef<HTMLDivElement>(null)
+  // Pro-only: compare Ahrefs' DR3 and DR4 models on a single check
+  const [session, setSession] = useState<any>(null)
+  const [plan, setPlan] = useState<'guest' | 'free' | 'pro'>('guest')
+  const [compareDr4, setCompareDr4] = useState(false)
+
+  useEffect(() => {
+    const load = async (s: any) => {
+      setSession(s)
+      if (s?.user) {
+        const { data } = await supabase.from('profiles').select('plan').eq('id', s.user.id).single()
+        setPlan(data?.plan === 'pro' ? 'pro' : 'free')
+      } else { setPlan('guest') }
+    }
+    supabase.auth.getSession().then(({ data: { session } }) => load(session))
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => load(s))
+    return () => sub.subscription.unsubscribe()
+  }, [])
 
   useEffect(() => {
     if (result && resultRef.current) {
@@ -42,10 +60,13 @@ export default function HomePage() {
     setLoading(true); setError(''); setResult(null)
     try {
       const clean = cleanDomain(target)
+      const useDr4 = plan === 'pro' && compareDr4
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
       const res = await fetch('/api/dr-check', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ domains: [clean] }),
+        headers,
+        body: JSON.stringify({ domains: [clean], dr4: useDr4 }),
       })
       const data = await res.json()
       if (data.results?.[0] && !data.results[0].error) {
@@ -133,6 +154,33 @@ export default function HomePage() {
                   : <><Search className="w-4 h-4" />Check DR</>}
               </button>
             </div>
+            {/* DR3 vs DR4 comparison — Pro only */}
+            {plan === 'pro' && (
+              <button
+                type="button"
+                onClick={() => setCompareDr4(v => !v)}
+                disabled={loading}
+                aria-pressed={compareDr4}
+                className="mt-3 w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all disabled:opacity-60"
+                style={{
+                  background: compareDr4 ? 'rgba(255,138,30,0.10)' : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${compareDr4 ? 'rgba(255,138,30,0.40)' : 'rgba(255,255,255,0.08)'}`,
+                }}
+              >
+                <span className="relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors"
+                  style={{ background: compareDr4 ? '#FF8A1E' : 'rgba(255,255,255,0.15)' }}>
+                  <span className="absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all"
+                    style={{ left: compareDr4 ? '1.125rem' : '0.125rem' }} />
+                </span>
+                <span className="flex items-center gap-2 text-sm font-semibold text-white">
+                  Compare DR3 &amp; DR4
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
+                    style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
+                  <Crown className="w-3.5 h-3.5" style={{ color: '#FFA94D' }} />
+                </span>
+              </button>
+            )}
+
             <div className="flex flex-col sm:flex-row items-center justify-between mt-3 px-1 gap-2">
               <p className="text-xs text-muted">Single checks are 100% free & unlimited · No sign-up — <Link href="/bulk-dr-checker" style={{ color: '#FFA94D' }}>bulk check up to 20 domains, 10/day free →</Link></p>
               <Link href="/bulk-dr-checker"

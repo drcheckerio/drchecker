@@ -18,6 +18,39 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
   const [downloading, setDownloading] = useState(false)
   const color = getDRColor(result.dr)
 
+  // Ahrefs ships two Domain Rating models. DR4 is only present when a Pro
+  // user ran a comparison; DR3 stays the headline score either way.
+  const hasDr4 = result.dr4 !== undefined
+  const dr4Color = hasDr4 ? getDRColor(result.dr4 as number) : color
+  const dr4Delta = hasDr4 ? (result.dr4 as number) - result.dr : 0
+
+  const dr4Panel = hasDr4 ? (
+    <div className="rounded-xl p-3 mt-3" style={{ background: 'rgba(7,11,20,0.7)', border: '1px solid rgba(255,138,30,0.25)' }}>
+      <div className="flex items-center gap-2 mb-2.5">
+        <p className="text-xs text-muted font-semibold">Ahrefs model comparison</p>
+        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
+          style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="flex-1 rounded-lg px-3 py-2" style={{ background: `${color}14` }}>
+          <div className="text-[10px] text-muted font-semibold mb-0.5">DR3 (classic)</div>
+          <div className="text-xl font-black" style={{ color }}>{result.dr}</div>
+        </div>
+        <div className="flex-1 rounded-lg px-3 py-2" style={{ background: `${dr4Color}14` }}>
+          <div className="text-[10px] text-muted font-semibold mb-0.5">DR4 (new)</div>
+          <div className="text-xl font-black" style={{ color: dr4Color }}>{result.dr4}</div>
+        </div>
+        <div className="text-center px-2">
+          <div className="text-[10px] text-muted font-semibold mb-0.5">Change</div>
+          <div className="text-base font-black tabular-nums"
+            style={{ color: dr4Delta > 0 ? '#22C55E' : dr4Delta < 0 ? '#EF4444' : '#8B96AD' }}>
+            {dr4Delta > 0 ? '+' : ''}{dr4Delta}
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null
+
   // Start needle animation only once the card is fully visible on screen
   useEffect(() => {
     const el = cardRef.current
@@ -137,6 +170,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               <p className="text-xs text-muted leading-relaxed">
                 {domain} has a <span className="font-extrabold" style={{ color }}>DR of {result.dr}</span>. {drMessage}
               </p>
+              {dr4Panel}
             </div>
           </div>
 
@@ -201,6 +235,7 @@ export default function DRResultCard({ result, domain }: DRResultCardProps) {
               <p className="text-xs text-muted leading-relaxed">
                 {domain} has a <span className="font-extrabold" style={{ color }}>DR of {result.dr}</span>. {drMessage}
               </p>
+              {dr4Panel}
             </div>
           </div>
         </div>
