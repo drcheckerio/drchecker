@@ -23,10 +23,11 @@ export default function HomePage() {
   const [error, setError] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const resultRef = useRef<HTMLDivElement>(null)
-  // Pro-only: compare Ahrefs' DR3 and DR4 models on a single check
+  // Pro-only: which Ahrefs model(s) to use on a single check
   const [session, setSession] = useState<any>(null)
   const [plan, setPlan] = useState<'guest' | 'free' | 'pro'>('guest')
-  const [compareDr4, setCompareDr4] = useState(false)
+  const [mode, setMode] = useState<'dr3' | 'dr4' | 'both'>('dr3')
+  const [shownMode, setShownMode] = useState<'dr3' | 'dr4' | 'both'>('dr3')
 
   useEffect(() => {
     const load = async (s: any) => {
@@ -61,17 +62,19 @@ export default function HomePage() {
     setLoading(true); setError(''); setResult(null)
     try {
       const clean = cleanDomain(target)
-      const useDr4 = plan === 'pro' && compareDr4
+      const useMode = plan === 'pro' ? mode : 'dr3'
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
       const res = await fetch('/api/dr-check', {
         method: 'POST',
         headers,
-        body: JSON.stringify({ domains: [clean], dr4: useDr4 }),
+        body: JSON.stringify({ domains: [clean], mode: useMode }),
       })
       const data = await res.json()
       if (data.results?.[0] && !data.results[0].error) {
         setResult(data.results[0])
+        // Server decides which model was actually served (DR4 needs Pro).
+        setShownMode(data.mode === 'dr4' ? 'dr4' : data.mode === 'both' ? 'both' : 'dr3')
       } else {
         setError(data.results?.[0]?.error || 'Could not fetch DR data. Please try again.')
       }
@@ -155,31 +158,36 @@ export default function HomePage() {
                   : <><Search className="w-4 h-4" />Check DR</>}
               </button>
             </div>
-            {/* DR3 vs DR4 comparison — Pro only */}
+            {/* Which Ahrefs model to check — Pro only */}
             {plan === 'pro' && (
-              <button
-                type="button"
-                onClick={() => setCompareDr4(v => !v)}
-                disabled={loading}
-                aria-pressed={compareDr4}
-                className="mt-3 w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all disabled:opacity-60"
-                style={{
-                  background: compareDr4 ? 'rgba(255,138,30,0.10)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${compareDr4 ? 'rgba(255,138,30,0.40)' : 'rgba(255,255,255,0.08)'}`,
-                }}
-              >
-                <span className="relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors"
-                  style={{ background: compareDr4 ? '#FF8A1E' : 'rgba(255,255,255,0.15)' }}>
-                  <span className="absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all"
-                    style={{ left: compareDr4 ? '1.125rem' : '0.125rem' }} />
-                </span>
-                <span className="flex items-center gap-2 text-sm font-semibold text-white">
-                  Compare DR3 &amp; DR4
+              <div className="mt-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-semibold text-white">Domain Rating model</span>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
-                    style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
-                  <Crown className="w-3.5 h-3.5" style={{ color: '#FFA94D' }} />
-                </span>
-              </button>
+                    style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>PRO</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {([
+                    { k: 'dr3' as const, label: 'DR3', sub: 'Classic' },
+                    { k: 'dr4' as const, label: 'DR4', sub: 'New model' },
+                    { k: 'both' as const, label: 'Compare', sub: 'Both' },
+                  ]).map(opt => {
+                    const on = mode === opt.k
+                    return (
+                      <button key={opt.k} type="button" disabled={loading}
+                        onClick={() => setMode(opt.k)}
+                        className="rounded-xl px-3 py-2 text-center transition-all disabled:opacity-60"
+                        style={{
+                          background: on ? 'rgba(255,138,30,0.12)' : 'rgba(255,255,255,0.03)',
+                          border: `1px solid ${on ? 'rgba(255,138,30,0.45)' : 'rgba(255,255,255,0.08)'}`,
+                        }}>
+                        <div className="text-sm font-bold" style={{ color: on ? '#FFA94D' : '#fff' }}>{opt.label}</div>
+                        <div className="text-[10px] text-muted mt-0.5">{opt.sub}</div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
             )}
 
             <div className="flex flex-col sm:flex-row items-center justify-between mt-3 px-1 gap-2">
@@ -265,6 +273,14 @@ export default function HomePage() {
                 </div>
                 <Link href="/#pricing" className="btn-primary px-5 py-2 text-xs flex-shrink-0">Upgrade to Pro</Link>
               </div>
+              {shownMode === 'dr4' && (
+                <div className="flex justify-center mb-3">
+                  <span className="px-3 py-1.5 rounded-full text-xs font-bold"
+                    style={{ background: 'rgba(255,138,30,0.12)', border: '1px solid rgba(255,138,30,0.35)', color: '#FFA94D' }}>
+                    Showing Ahrefs DR4 — the new model
+                  </span>
+                </div>
+              )}
               <DRResultCard result={result} domain={cleanDomain(domain)} />
             </div>
           )}

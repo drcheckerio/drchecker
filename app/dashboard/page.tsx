@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 
 type SortKey = 'domain' | 'dr' | 'dr4' | 'rating'
+type CheckMode = 'dr3' | 'dr4' | 'both'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -29,9 +30,10 @@ export default function DashboardPage() {
   const [progress, setProgress] = useState(0)
   const [checkedCount, setCheckedCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
-  // Pro-only: also pull Ahrefs' newer DR4 model alongside DR3.
-  const [compareDr4, setCompareDr4] = useState(false)
+  // Pro-only: which Ahrefs model(s) to pull.
+  const [mode, setMode] = useState<CheckMode>('dr3')
   const [showingDr4, setShowingDr4] = useState(false)
+  const [shownMode, setShownMode] = useState<CheckMode>('dr3')
   const [verifying, setVerifying] = useState(false)
 
   const loadProfile = useCallback(async (userId: string) => {
@@ -102,9 +104,9 @@ export default function DashboardPage() {
     if (!domains.length) return
     domains = domains.slice(0, perCheck)
     const total = domains.length
-    const useDr4 = isPro && compareDr4
+    const useMode: CheckMode = isPro ? mode : 'dr3'
     setLoading(true); setError(''); setResults([]); setSortKey(null)
-    setProgress(0); setCheckedCount(0); setTotalCount(total); setShowingDr4(useDr4)
+    setProgress(0); setCheckedCount(0); setTotalCount(total); setShowingDr4(useMode === 'both'); setShownMode(useMode)
 
     const collected: DRResult[] = []
     try {
@@ -116,13 +118,13 @@ export default function DashboardPage() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session.access_token}`,
           },
-          body: JSON.stringify({ domains: chunk, dr4: useDr4 }),
+          body: JSON.stringify({ domains: chunk, mode: useMode }),
         })
         const data = await res.json()
         if (res.status === 429) { setError(data.error); setLoading(false); return }
         if (!data.results) { setError(data.error || 'Failed to fetch results.'); setLoading(false); return }
-        // The server is the authority on whether DR4 was actually served.
-        if (useDr4 && data.dr4 === false) setShowingDr4(false)
+        // The server is the authority on which model was actually served.
+        if (useMode !== 'dr3' && data.mode === 'dr3') { setShowingDr4(false); setShownMode('dr3') }
         collected.push(...data.results)
         const done = Math.min(i + chunk.length, total)
         setResults([...collected])
@@ -150,7 +152,7 @@ export default function DashboardPage() {
 
   const downloadCSV = () => {
     const csv = [
-      showingDr4 ? 'Domain,DR3,DR4,Rating' : 'Domain,DR Score,Rating',
+      showingDr4 ? 'Domain,DR3,DR4,Rating' : shownMode === 'dr4' ? 'Domain,DR4,Rating' : 'Domain,DR Score,Rating',
       ...sorted.map(r => showingDr4 ? `${r.domain},${r.dr},${r.dr4 ?? ''},${r.rating}` : `${r.domain},${r.dr},${r.rating}`),
       '', 'Checked on drchecker.io',
     ].join('\n')
@@ -277,35 +279,36 @@ export default function DashboardPage() {
               Only the first {perCheck.toLocaleString()} domains will be checked{!isPro && <> — <Link href="/#pricing" className="underline font-semibold">upgrade to Pro</Link> for 1,000/check</>}.
             </div>
           )}
-          {/* DR4 comparison — Pro only */}
+          {/* Which Ahrefs model to check — Pro only */}
           {isPro && (
-            <button
-              type="button"
-              onClick={() => setCompareDr4(v => !v)}
-              disabled={loading}
-              aria-pressed={compareDr4}
-              className="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all disabled:opacity-60"
-              style={{
-                background: compareDr4 ? 'rgba(255,138,30,0.10)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${compareDr4 ? 'rgba(255,138,30,0.40)' : 'rgba(255,255,255,0.08)'}`,
-              }}
-            >
-              <span className="relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors"
-                style={{ background: compareDr4 ? '#FF8A1E' : 'rgba(255,255,255,0.15)' }}>
-                <span className="absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all"
-                  style={{ left: compareDr4 ? '1.125rem' : '0.125rem' }} />
-              </span>
-              <span className="min-w-0">
-                <span className="flex items-center gap-2 text-sm font-semibold text-white">
-                  Compare DR3 &amp; DR4
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
-                    style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
-                </span>
-                <span className="block text-xs text-muted mt-0.5">
-                  Show Ahrefs&apos; new DR4 model side by side with the classic DR3 score. Takes a little longer.
-                </span>
-              </span>
-            </button>
+            <div className="mt-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-semibold text-white">Domain Rating model</span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
+                  style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>PRO</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {([
+                  { k: 'dr3' as CheckMode, label: 'DR3', sub: 'Classic' },
+                  { k: 'dr4' as CheckMode, label: 'DR4', sub: 'New model' },
+                  { k: 'both' as CheckMode, label: 'Compare', sub: 'Both · slower' },
+                ]).map(opt => {
+                  const on = mode === opt.k
+                  return (
+                    <button key={opt.k} type="button" disabled={loading}
+                      onClick={() => setMode(opt.k)}
+                      className="rounded-xl px-3 py-2.5 text-center transition-all disabled:opacity-60"
+                      style={{
+                        background: on ? 'rgba(255,138,30,0.12)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${on ? 'rgba(255,138,30,0.45)' : 'rgba(255,255,255,0.08)'}`,
+                      }}>
+                      <div className="text-sm font-bold" style={{ color: on ? '#FFA94D' : '#fff' }}>{opt.label}</div>
+                      <div className="text-[10px] text-muted mt-0.5">{opt.sub}</div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
           )}
 
           <button onClick={handleCheck} disabled={loading || !input.trim()} className="mt-4 btn-primary w-full py-3.5 text-sm gap-2">
@@ -365,7 +368,7 @@ export default function DashboardPage() {
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('domain')}><div className="flex items-center gap-1.5">Domain <SortIcon col="domain" /></div></th>
-                    <th onClick={() => handleSort('dr')}><div className="flex items-center gap-1.5">{showingDr4 ? 'DR3' : 'DR Score'} <SortIcon col="dr" /></div></th>
+                    <th onClick={() => handleSort('dr')}><div className="flex items-center gap-1.5">{showingDr4 ? 'DR3' : shownMode === 'dr4' ? 'DR4' : 'DR Score'} <SortIcon col="dr" /></div></th>
                     {showingDr4 && (
                       <th onClick={() => handleSort('dr4')}>
                         <div className="flex items-center gap-1.5">
