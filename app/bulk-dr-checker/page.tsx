@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
 type SortKey = 'domain' | 'dr' | 'dr4' | 'rating'
+type CheckMode = 'dr3' | 'dr4' | 'both'
 type SortDir = 'asc' | 'desc'
 
 const GUEST_DOMAINS_PER_CHECK = 20
@@ -55,28 +56,29 @@ export default function BulkCheckerPage() {
   const [checksUsed, setChecksUsed] = useState<number | null>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [session, setSession] = useState<any>(null)
-  const [plan, setPlan] = useState<'guest' | 'free' | 'pro'>('guest')
+  const [plan, setPlan] = useState<'guest' | 'free' | 'pro' | 'admin'>('guest')
   const [fullName, setFullName] = useState<string>('')
   const [checkedCount, setCheckedCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
-  // Pro-only: also pull Ahrefs' newer DR4 model alongside DR3.
-  const [compareDr4, setCompareDr4] = useState(false)
+  // Pro-only: which Ahrefs model(s) to pull.
+  const [mode, setMode] = useState<CheckMode>('dr3')
   const [showingDr4, setShowingDr4] = useState(false)
+  const [shownMode, setShownMode] = useState<CheckMode>('dr3')
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
-        const { data } = await supabase.from('profiles').select('plan, full_name').eq('id', session.user.id).single()
-        setPlan(data?.plan === 'pro' ? 'pro' : 'free')
+        const { data } = await supabase.from('profiles').select('plan, full_name, is_admin').eq('id', session.user.id).single()
+        setPlan(data?.is_admin ? 'admin' : data?.plan === 'pro' ? 'pro' : 'free')
         setFullName(data?.full_name || '')
       }
     })
     const { data: sub } = supabase.auth.onAuthStateChange(async (_e, s) => {
       setSession(s)
       if (s?.user) {
-        const { data } = await supabase.from('profiles').select('plan, full_name').eq('id', s.user.id).single()
-        setPlan(data?.plan === 'pro' ? 'pro' : 'free')
+        const { data } = await supabase.from('profiles').select('plan, full_name, is_admin').eq('id', s.user.id).single()
+        setPlan(data?.is_admin ? 'admin' : data?.plan === 'pro' ? 'pro' : 'free')
         setFullName(data?.full_name || '')
       } else { setPlan('guest'); setFullName('') }
     })
@@ -84,10 +86,14 @@ export default function BulkCheckerPage() {
   }, [])
 
   const isLoggedIn = !!session
-  const perCheck = plan === 'pro' ? 1000 : plan === 'free' ? 50 : GUEST_DOMAINS_PER_CHECK
-  const perDay: number | null = plan === 'pro' ? null : plan === 'free' ? 10 : GUEST_CHECKS_PER_DAY
+  const perCheck = plan === 'admin' ? 10000 : plan === 'pro' ? 1000 : plan === 'free' ? 50 : GUEST_DOMAINS_PER_CHECK
+  const canUseDr4 = plan === 'pro' || plan === 'admin'
+  const perDay: number | null = (plan === 'pro' || plan === 'admin') ? null : plan === 'free' ? 10 : GUEST_CHECKS_PER_DAY
 
-  const CHUNK_SIZE = 100
+  const CHUNK_SIZE = 250
+  // Chunks run in parallel. Each one is its own API request, so this is what
+  // actually sets the throughput of a big check.
+  const PARALLEL_CHUNKS = 4
 
   const handleCheck = async () => {
     // Guests are limited client-side; logged-in users are enforced server-side by plan.
@@ -100,31 +106,58 @@ export default function BulkCheckerPage() {
       }
     }
 
-    let domains = input.split('\n').map(d => d.trim()).filter(Boolean).slice(0, perCheck)
+    const domains = input.split('\n').map(d => d.trim()).filter(Boolean).slice(0, perCheck)
     if (!domains.length) return
     const total = domains.length
-    const useDr4 = plan === 'pro' && compareDr4
+    const useMode: CheckMode = canUseDr4 ? mode : 'dr3'
     setLoading(true); setError(''); setResults([]); setSortKey(null)
-    setProgress(0); setCheckedCount(0); setTotalCount(total); setShowingDr4(useDr4)
+    setProgress(0); setCheckedCount(0); setTotalCount(total)
+    setShowingDr4(useMode === 'both'); setShownMode(useMode)
 
-    const collected: DRResult[] = []
-    try {
-      for (let i = 0; i < domains.length; i += CHUNK_SIZE) {
-        const chunk = domains.slice(i, i + CHUNK_SIZE).map(cleanDomain).filter(Boolean)
-        const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-        if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
-        const res = await fetch('/api/dr-check', {
-          method: 'POST', headers, body: JSON.stringify({ domains: chunk, dr4: useDr4 }),
-        })
-        const data = await res.json()
-        if (res.status === 429) { setError(data.error); setLoading(false); return }
-        if (!data.results) { setError('Failed to fetch results. Please try again.'); setLoading(false); return }
-        // The server is the authority on whether DR4 was actually served.
-        if (useDr4 && data.dr4 === false) setShowingDr4(false)
-        collected.push(...data.results)
-        const done = Math.min(i + chunk.length, total)
-        setResults([...collected]); setCheckedCount(done); setProgress(Math.round((done / total) * 100))
+    // Build every chunk up front so results can be slotted back in order.
+    const chunks: string[][] = []
+    for (let i = 0; i < domains.length; i += CHUNK_SIZE) {
+      chunks.push(domains.slice(i, i + CHUNK_SIZE).map(cleanDomain).filter(Boolean))
+    }
+    const slots: DRResult[][] = new Array(chunks.length)
+
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (session?.access_token) headers['Authorization'] = `Bearer ${session.access_token}`
+
+    let done = 0
+    let aborted = false
+    let next = 0
+
+    const runOne = async (idx: number) => {
+      const res = await fetch('/api/dr-check', {
+        method: 'POST', headers, body: JSON.stringify({ domains: chunks[idx], mode: useMode }),
+      })
+      const data = await res.json()
+      if (res.status === 429) { setError(data.error); aborted = true; return }
+      if (!data.results) { setError('Failed to fetch results. Please try again.'); aborted = true; return }
+      // The server is the authority on which model was actually served.
+      if (useMode !== 'dr3' && data.mode === 'dr3') { setShowingDr4(false); setShownMode('dr3') }
+      slots[idx] = data.results
+      done += chunks[idx].length
+      // Show whatever has arrived, still in the order the user pasted.
+      setResults(slots.filter(Boolean).flat())
+      setCheckedCount(Math.min(done, total))
+      setProgress(Math.round((Math.min(done, total) / total) * 100))
+    }
+
+    const worker = async () => {
+      while (!aborted) {
+        const idx = next++
+        if (idx >= chunks.length) return
+        await runOne(idx)
       }
+    }
+
+    try {
+      await Promise.all(
+        Array.from({ length: Math.min(PARALLEL_CHUNKS, chunks.length) }, worker)
+      )
+      if (aborted) { setLoading(false); return }
       if (!isLoggedIn) setChecksUsed(incrementGuestChecks())
     } catch { setError('Something went wrong. Please try again.') }
     finally { setLoading(false) }
@@ -145,7 +178,7 @@ export default function BulkCheckerPage() {
   }
 
   const downloadCSV = () => {
-    const header = showingDr4 ? 'Domain,DR3,DR4,Rating' : 'Domain,DR Score,Rating'
+    const header = showingDr4 ? 'Domain,DR3,DR4,Rating' : shownMode === 'dr4' ? 'Domain,DR4,Rating' : 'Domain,DR Score,Rating'
     const rows = sortedResults.map(r =>
       showingDr4 ? `${r.domain},${r.dr},${r.dr4 ?? ''},${r.rating}` : `${r.domain},${r.dr},${r.rating}`)
     const csv = [header, ...rows, '', 'Checked on drchecker.io — Free Bulk Ahrefs DR Checker'].join('\n')
@@ -182,7 +215,7 @@ export default function BulkCheckerPage() {
           <p className="text-muted max-w-xl mx-auto">Check Ahrefs Domain Rating for up to 1,000 domains at once — the most powerful bulk DR checker available online. Paste one domain per line.</p>
         </div>
 
-        {plan === 'pro' ? (
+        {(plan === 'pro' || plan === 'admin') ? (
           <div className="mb-8 p-6 sm:p-7 rounded-2xl relative overflow-hidden animate-slide-up"
             style={{ background: 'linear-gradient(135deg, rgba(255,138,30,0.14), rgba(255,106,0,0.06))', border: '1px solid rgba(255,138,30,0.4)', boxShadow: '0 0 50px rgba(255,138,30,0.12)' }}>
             <div className="absolute -top-16 -right-10 w-56 h-56 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,138,30,0.22), transparent 70%)' }} />
@@ -255,36 +288,41 @@ export default function BulkCheckerPage() {
               {plan === 'free' && <> <Link href="/#pricing" className="underline font-semibold">Upgrade to Pro</Link> for 1,000 per check.</>}
             </div>
           )}
-          {/* DR4 comparison — Pro only */}
-          {plan === 'pro' && (
-            <button
-              type="button"
-              onClick={() => setCompareDr4(v => !v)}
-              disabled={loading}
-              aria-pressed={compareDr4}
-              className="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all disabled:opacity-60"
-              style={{
-                background: compareDr4 ? 'rgba(255,138,30,0.10)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${compareDr4 ? 'rgba(255,138,30,0.40)' : 'rgba(255,255,255,0.08)'}`,
-              }}
-            >
-              <span className="relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors"
-                style={{ background: compareDr4 ? '#FF8A1E' : 'rgba(255,255,255,0.15)' }}>
-                <span className="absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all"
-                  style={{ left: compareDr4 ? '1.125rem' : '0.125rem' }} />
-              </span>
-              <span className="min-w-0">
-                <span className="flex items-center gap-2 text-sm font-semibold text-white">
-                  Compare DR3 &amp; DR4
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
-                    style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>NEW</span>
-                  <Crown className="w-3.5 h-3.5" style={{ color: '#FFA94D' }} />
-                </span>
-                <span className="block text-xs text-muted mt-0.5">
-                  Show Ahrefs&apos; new DR4 model side by side with the classic DR3 score. Takes a little longer.
-                </span>
-              </span>
-            </button>
+          {/* Which Ahrefs model to check — Pro and admin only */}
+          {canUseDr4 && (
+            <div className="mt-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-semibold text-white">Domain Rating model</span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wide"
+                  style={{ background: 'rgba(255,138,30,0.15)', color: '#FFA94D', border: '1px solid rgba(255,138,30,0.3)' }}>PRO</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {([
+                  { k: 'dr3' as CheckMode, label: 'DR3', sub: 'Classic' },
+                  { k: 'dr4' as CheckMode, label: 'DR4', sub: 'New model' },
+                  { k: 'both' as CheckMode, label: 'Compare', sub: 'Both · slower' },
+                ]).map(opt => {
+                  const on = mode === opt.k
+                  return (
+                    <button key={opt.k} type="button" disabled={loading}
+                      onClick={() => setMode(opt.k)}
+                      className="rounded-xl px-3 py-2.5 text-center transition-all disabled:opacity-60"
+                      style={{
+                        background: on ? 'rgba(255,138,30,0.12)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${on ? 'rgba(255,138,30,0.45)' : 'rgba(255,255,255,0.08)'}`,
+                      }}>
+                      <div className="text-sm font-bold" style={{ color: on ? '#FFA94D' : '#fff' }}>{opt.label}</div>
+                      <div className="text-[10px] text-muted mt-0.5">{opt.sub}</div>
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="text-[11px] text-muted mt-2">
+                {mode === 'both'
+                  ? 'Two lookups per domain, so a large list takes about twice as long.'
+                  : 'One lookup per domain.'}
+              </p>
+            </div>
           )}
 
           <button onClick={handleCheck} disabled={loading || !input.trim()}
@@ -317,7 +355,7 @@ export default function BulkCheckerPage() {
           )}
           {isLoggedIn && !loading && (
             <p className="mt-3 text-xs text-muted text-center">
-              {plan === 'pro' ? 'Pro plan · 1,000 domains per check · unlimited checks' : 'Free account · 50 domains per check · 10 checks/day · '}
+              {plan === 'admin' ? 'Admin · 10,000 domains per check · unlimited checks' : plan === 'pro' ? 'Pro plan · 1,000 domains per check · unlimited checks' : 'Free account · 50 domains per check · 10 checks/day · '}
               {plan === 'free' && <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>upgrade to Pro for 1,000/check</Link>}
             </p>
           )}
@@ -353,7 +391,7 @@ export default function BulkCheckerPage() {
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('domain')}><div className="flex items-center gap-1.5">Domain <SortIcon col="domain" /></div></th>
-                    <th onClick={() => handleSort('dr')}><div className="flex items-center gap-1.5">{showingDr4 ? 'DR3' : 'DR Score'} <SortIcon col="dr" /></div></th>
+                    <th onClick={() => handleSort('dr')}><div className="flex items-center gap-1.5">{showingDr4 ? 'DR3' : shownMode === 'dr4' ? 'DR4' : 'DR Score'} <SortIcon col="dr" /></div></th>
                     {showingDr4 && (
                       <th onClick={() => handleSort('dr4')}>
                         <div className="flex items-center gap-1.5">
@@ -440,7 +478,7 @@ export default function BulkCheckerPage() {
         )}
 
         {/* Upgrade banner — hidden for users who are already Pro */}
-        {plan !== 'pro' && (
+        {plan !== 'pro' && plan !== 'admin' && (
         <div className="mt-8 card-glow p-6 text-center">
           <Crown className="w-8 h-8 mx-auto mb-3" style={{ color: '#FF8A1E' }} />
           <h3 className="font-extrabold text-white mb-2">Unlock the Full Power of Bulk DR Checking</h3>

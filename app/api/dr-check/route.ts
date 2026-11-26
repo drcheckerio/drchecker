@@ -42,7 +42,13 @@ const LIMITS = {
   guest: { perCheck: 20, perDay: 10 as number | null },
   free: { perCheck: 50, perDay: 10 as number | null },
   pro: { perCheck: 1000, perDay: null as number | null },
+  // Admin-only testing tier. Kept separate from pro so raising it never
+  // changes what paying customers can do.
+  admin: { perCheck: 10000, perDay: null as number | null },
 }
+
+// Which Ahrefs model(s) to fetch.
+type CheckMode = 'dr3' | 'dr4' | 'both'
 
 // ===== Priority lanes =====
 // Pro traffic must never queue behind free traffic. Same API key, but Pro runs
@@ -54,6 +60,7 @@ const LANES = {
   guest: { batch: 8, delay: 450 },
   free: { batch: 10, delay: 350 },
   pro: { batch: 25, delay: 50 },
+  admin: { batch: 40, delay: 0 },
 } as const
 
 const MAX_ATTEMPTS = 3
@@ -118,13 +125,16 @@ export async function POST(req: NextRequest) {
   try {
     if (!AHREFS_KEY && !DR_API) return NextResponse.json({ error: 'DR API not configured' }, { status: 500 })
 
-    const { domains, dr4: dr4Requested } = await req.json()
+    const body = await req.json()
+    const { domains, dr4: dr4Requested } = body
+    const requestedMode: CheckMode =
+      body.mode === 'dr4' ? 'dr4' : body.mode === 'both' ? 'both' : body.mode === 'dr3' ? 'dr3' : (dr4Requested === true ? 'both' : 'dr3')
     if (!domains || !Array.isArray(domains) || domains.length === 0) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
     }
 
     // ===== Identify user & plan =====
-    let tier: 'guest' | 'free' | 'pro' = 'guest'
+    let tier: 'guest' | 'free' | 'pro' | 'admin' = 'guest'
     let profile: any = null
     const admin = createServerSupabaseClient()
 
@@ -136,7 +146,7 @@ export async function POST(req: NextRequest) {
         const { data: prof } = await admin.from('profiles').select('*').eq('id', user.id).single()
         if (prof) {
           profile = prof
-          tier = prof.plan === 'pro' ? 'pro' : 'free'
+          tier = prof.is_admin ? 'admin' : prof.plan === 'pro' ? 'pro' : 'free'
         }
       }
     }
@@ -165,15 +175,21 @@ export async function POST(req: NextRequest) {
     // ===== DR4 comparison — Pro only =====
     // Each domain costs two upstream calls in this mode, so halve the batch size
     // to keep outbound concurrency (and Ahrefs rate limiting) where it was.
-    const withDr4 = dr4Requested === true && tier === 'pro' && DR4_AVAILABLE
+    // DR4 in any form is Pro (or admin) only, and needs the official API.
+    const mayUseDr4 = (tier === 'pro' || tier === 'admin') && DR4_AVAILABLE
+    const mode: CheckMode = requestedMode !== 'dr3' && !mayUseDr4 ? 'dr3' : requestedMode
+    const withDr4 = mode === 'both'
+
     const stats: RateStats = { rateLimited: 0, failed: 0 }
-    const fetchOne = withDr4
-      ? (d: string) => fetchBothVersions(d, stats)
+    const fetchOne =
+      mode === 'both' ? (d: string) => fetchBothVersions(d, stats)
+      : mode === 'dr4' ? (d: string) => fetchDR(d, 'dr4', stats)
       : (d: string) => fetchDR(d, 'dr3', stats)
 
     // Lane decides how hard this request is allowed to push Ahrefs.
+    // Only 'both' costs two upstream calls per domain, so only it halves.
     const lane = LANES[tier as keyof typeof LANES] ?? LANES.guest
-    const batchSize = withDr4 ? Math.ceil(lane.batch / 2) : lane.batch
+    const batchSize = mode === 'both' ? Math.ceil(lane.batch / 2) : lane.batch
     const batchDelay = lane.delay
 
     // ===== Batched fetching with order preserved =====
@@ -215,12 +231,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       results,
       tier,
+      mode,
       rateLimited: stats.rateLimited,
       capApplied: limits.perCheck,
       dr4: withDr4,
-      // Tells the client why DR4 was ignored, if it asked for it.
-      dr4Unavailable: dr4Requested === true && !withDr4
-        ? (tier !== 'pro' ? 'Pro plan required' : 'DR4 is not available right now')
+      // Tells the client why DR4 was downgraded, if it asked for it.
+      dr4Unavailable: requestedMode !== 'dr3' && mode === 'dr3'
+        ? (!mayUseDr4 && DR4_AVAILABLE ? 'Pro plan required' : 'DR4 is not available right now')
         : undefined,
     })
   } catch (error) {
