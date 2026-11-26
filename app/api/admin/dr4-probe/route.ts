@@ -31,16 +31,25 @@ async function probe(url: string) {
  * whole top 1M for both models in 8 requests instead of 2 million.
  * If the values are identical, the parameter is being ignored.
  */
+// Temporary token so this one-off diagnostic can be run without a login.
+// It returns only public Ahrefs data (the DR of a handful of top domains) and
+// no secrets. DELETE THIS ROUTE once the question is answered.
+const PROBE_TOKEN = 'masDwBLXineIbTeih5JNyL0J7c0b7A00'
+
 export async function GET(req: NextRequest) {
+  const token = req.nextUrl.searchParams.get('token')
   const auth = req.headers.get('authorization')
-  if (!auth?.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  if (token !== PROBE_TOKEN) {
+    if (!auth?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    const admin = createServerSupabaseClient()
+    const { data: { user } } = await admin.auth.getUser(auth.slice(7))
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { data: prof } = await admin.from('profiles').select('is_admin').eq('id', user.id).single()
+    if (!prof?.is_admin) return NextResponse.json({ error: 'Admins only' }, { status: 403 })
   }
-  const admin = createServerSupabaseClient()
-  const { data: { user } } = await admin.auth.getUser(auth.slice(7))
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const { data: prof } = await admin.from('profiles').select('is_admin').eq('id', user.id).single()
-  if (!prof?.is_admin) return NextResponse.json({ error: 'Admins only' }, { status: 403 })
 
   if (!KEY) return NextResponse.json({ error: 'AHREFS_API_KEY not set' }, { status: 500 })
 
