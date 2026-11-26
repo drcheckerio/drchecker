@@ -86,7 +86,7 @@ export default function BulkCheckerPage() {
   }, [])
 
   const isLoggedIn = !!session
-  const perCheck = plan === 'admin' ? 10000 : plan === 'pro' ? 1000 : plan === 'free' ? 50 : GUEST_DOMAINS_PER_CHECK
+  const perCheck = (plan === 'admin' || plan === 'pro') ? 10000 : plan === 'free' ? 50 : GUEST_DOMAINS_PER_CHECK
   const canUseDr4 = plan === 'pro' || plan === 'admin'
   const perDay: number | null = (plan === 'pro' || plan === 'admin') ? null : plan === 'free' ? 10 : GUEST_CHECKS_PER_DAY
 
@@ -355,7 +355,7 @@ export default function BulkCheckerPage() {
           )}
           {isLoggedIn && !loading && (
             <p className="mt-3 text-xs text-muted text-center">
-              {plan === 'admin' ? 'Admin · 10,000 domains per check · unlimited checks' : plan === 'pro' ? 'Pro plan · 1,000 domains per check · unlimited checks' : 'Free account · 50 domains per check · 10 checks/day · '}
+              {plan === 'admin' ? 'Admin · 10,000 domains per check · unlimited checks' : plan === 'pro' ? 'Pro plan · 10,000 domains per check · unlimited checks' : 'Free account · 50 domains per check · 10 checks/day · '}
               {plan === 'free' && <Link href="/#pricing" className="underline" style={{ color: '#FFA94D' }}>upgrade to Pro for 1,000/check</Link>}
             </p>
           )}

@@ -41,7 +41,7 @@ const DR4_AVAILABLE = !!AHREFS_KEY
 const LIMITS = {
   guest: { perCheck: 20, perDay: 10 as number | null },
   free: { perCheck: 50, perDay: 10 as number | null },
-  pro: { perCheck: 1000, perDay: null as number | null },
+  pro: { perCheck: 10000, perDay: null as number | null },
   // Admin-only testing tier. Kept separate from pro so raising it never
   // changes what paying customers can do.
   admin: { perCheck: 10000, perDay: null as number | null },
@@ -59,7 +59,7 @@ type CheckMode = 'dr3' | 'dr4' | 'both'
 const LANES = {
   guest: { batch: 8, delay: 450 },
   free: { batch: 10, delay: 350 },
-  pro: { batch: 25, delay: 50 },
+  pro: { batch: 40, delay: 0 },
   admin: { batch: 40, delay: 0 },
 } as const
 

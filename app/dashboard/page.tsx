@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
   const plan = profile?.plan === 'pro' ? 'pro' : 'free'
   const isPro = plan === 'pro'
-  const perCheck = isPro ? 1000 : 50
+  const perCheck = isPro ? 10000 : 50
   const perDay = isPro ? null : 10
   const planLabel = isPro ? 'PRO Plan' : 'Free Plan'
   const planShort = isPro ? 'Pro' : 'Free'
